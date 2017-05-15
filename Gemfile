@@ -45,6 +45,15 @@ gem 'oj'
 gem 'i18n'
 
 group :development do
+  # rbenv integration for Capistrano.
+  gem 'capistrano-rbenv', require: false
+
+  # Bundler support for Capistrano 3.x.
+  gem 'capistrano-bundler', require: false
+
+  # Passenger support for Capistrano 3.x.
+  gem 'capistrano-passenger', require: false
+
   # An IRB alternative and runtime developer console.
   gem 'pry', require: false
 
