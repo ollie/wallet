@@ -1,0 +1,77 @@
+form.form-horizontal action=url method="post"
+  input type="hidden" name="back_url" value=(params[:back_url] || request.referrer)
+
+  .form-group
+    .col-sm-offset-2.col-sm-9
+      button.js-expense.btn>(
+        class=(!entry.amount || entry.amount < 0 ? 'btn-danger active' : 'btn-default')
+        type="button"
+      ) Výdaje
+      button.js-income.btn(
+        class=(entry.amount && entry.amount > 0 ? 'btn-success active' : 'btn-default')
+        type="button"
+      ) Příjmy
+
+  .form-group class=('has-error' if entry.errors.on(:amount))
+    label.col-sm-2.control-label for="entry-amount" Částka
+    .col-sm-6
+      .input-group
+        input.js-amount.form-control(
+          type="number"
+          step="0.01"
+          name="entry[amount]"
+          id="entry-amount"
+          autofocus="autofocus"
+          value=(format('%.2f', entry.amount) if entry.amount)
+          data-type=(entry.amount && entry.amount > 0 ? 'income' : 'expense')
+        )
+        .input-group-addon Kč
+      - if entry.errors.on(:amount)
+        span.help-block = entry.errors.on(:amount).join(', ')
+
+  /
+    .form-group class=('has-error' if entry.errors.on(:accounted_on))
+      label.col-sm-2.control-label for="entry-accounted_on" Zaúčtováno
+      .col-sm-6
+        input.form-control type="date" name="entry[accounted_on]" id="entry-accounted_on" value=entry.accounted_on
+        - if entry.errors.on(:accounted_on)
+          span.help-block = entry.errors.on(:accounted_on).join(', ')
+
+  .form-group class=('has-error' if entry.errors.on(:accounted_on))
+    label.col-sm-2.control-label for="entry-accounted_on" Zaúčtováno
+    .col-sm-6
+      input.form-control type="date" name="entry[accounted_on]" id="entry-accounted_on" value=entry.accounted_on
+      - if entry.errors.on(:accounted_on)
+        span.help-block = entry.errors.on(:accounted_on).join(', ')
+    .col-sm-2.form-control-static
+      a.js-copy-accounted-on href=""
+        span.glyphicon.glyphicon-arrow-down
+
+  .form-group class=('has-error' if entry.errors.on(:date))
+    label.col-sm-2.control-label for="entry-date" Zaplaceno
+    .col-sm-6
+      input.form-control type="date" name="entry[date]" id="entry-date" value=entry.date
+      - if entry.errors.on(:date)
+        span.help-block = entry.errors.on(:date).join(', ')
+
+  .form-group
+    label.col-sm-2.control-label for="entry-note" Poznámka
+    .col-sm-9
+      textarea.form-control name="entry[note]" id="entry-note" rows="1" = entry.note
+
+  - unless Tag.count.zero?
+    .form-group
+      label.col-sm-2.control-label for="entry-tags" Štítky
+      .col-sm-9
+        - entry_tag_ids  = entry.new? ? [] : entry.tags_dataset.select_map(:id)
+        - params_tag_ids = params.dig(:entry, :tag_ids)&.map(&:to_i) || []
+        - tag_ids        = entry_tag_ids | params_tag_ids
+
+        select.js-selectize.form-control name="entry[tag_ids][]" id="entry-tags" multiple="multiple"
+          - Tag.ordered.each do |tag|
+            option value=tag.id selected=tag_ids.include?(tag.id) = tag.name
+
+  .form-group
+    .col-sm-offset-2.col-sm-9
+      input.btn.btn-primary> type="submit" value=(locals[:edit] ? 'Uložit' : 'Přidat')
+      a.btn.btn-default href="/entries" Storno

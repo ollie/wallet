@@ -1,0 +1,5 @@
+/data/*.json
+/data/*.dump
+/config/deploy
+/config/deploy.rb
+/todo.txt

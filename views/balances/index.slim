@@ -1,0 +1,11 @@
+p
+  a.btn.btn-primary href="/balances/new" Přidat
+
+.row
+  .col-sm-5
+    table.table.table-sm
+      - balances.each do |balance|
+        tr
+          td
+            a href="/balances/#{balance.id}/edit" = l(balance.date, format: :month_year)
+          td.text-right = formatted_amount(balance.amount)

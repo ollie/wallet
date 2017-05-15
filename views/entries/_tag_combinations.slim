@@ -1,0 +1,14 @@
+- groups = Tag.most_used_combinations
+
+- if groups.any?
+  ul.list-unstyled
+    - groups.each do |group|
+      li
+        a.js-tag-combination href="#"
+          - group.each do |tag|
+            span.label>(
+              class=('label-dark' if tag.dark?)
+              class=('label-light' if !tag.color || tag.light?)
+              style=("background-color: #{tag.color};" if tag.color)
+              data-tag-id=tag.id
+            ) = tag.name

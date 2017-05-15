@@ -1,0 +1,7 @@
+.row
+  .col-sm-6
+    == partial_slim 'tags/_form', tag: tag, url: "/tags/#{tag.id}/edit", edit: true
+
+  .col-sm-6
+    form action="/tags/#{tag.id}/delete" method="post"
+      input.btn.btn-danger type="submit" value="Smazat"

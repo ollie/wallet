@@ -1,0 +1,48 @@
+== partial_slim 'entries/_pagination'
+
+- if entries.any?
+
+  ul.nav.nav-tabs.nav-tabs-spaced
+    li role="presentation" class=('active' if sort_by != :date)
+      a href=qs(sort_by: nil) Podle data zaúčtování
+    li role="presentation" class=('active' if sort_by == :date)
+      a href=qs(sort_by: :date) Podle data zaplacení
+
+  .row
+    .col-sm-8
+      table.table.table-sm
+        tbody
+          - entries.groupped_by_days(sort_by: sort_by).each do |day, entries|
+            tr
+              th.active.text-right
+                = l(day)
+              th.active colspan="3"
+
+            - entries.each do |entry|
+              tr class=('warning' unless entry.accounted_on)
+                td.col-sm-2.text-right
+                  a href="/entries/#{entry.id}/edit" = formatted_amount(entry.amount)
+                td.col-sm-3
+                  - if entry.note
+                    = entry.note
+                td.col-sm-5
+                  - entry.tags.each do |tag|
+                    a.label(
+                      class=('label-dark' if tag.dark?)
+                      class=('label-light' if !tag.color || tag.light?)
+                      href="/tags/#{tag.id}#{qs(year: pagination_date.year, month: pagination_date.month)}"
+                      style=("background-color: #{tag.color};" if tag.color)
+                    ) = tag.name
+                td.col-sm-2.text-right
+                  small
+                    = l(entry.date)
+
+    - if locals[:stats]
+      == partial_slim 'entries/_stats', entries: entries
+
+  - if entries.count > 10
+    == partial_slim 'entries/_pagination'
+
+- else
+
+  .alert.alert-info Čistý jako lilie.

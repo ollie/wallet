@@ -1,0 +1,32 @@
+doctype html
+html lang="cs"
+  head
+    meta charset="utf-8"
+    title Wallet
+    link rel="icon" href="/images/favicon.png" sizes="32x32" type="image/png"
+    link rel="stylesheet" href="/css-vendor/bootstrap.min.css"
+    link rel="stylesheet" href="/css-vendor/selectize.bootstrap3.css"
+    link rel="stylesheet" href="/css-vendor/c3.min.css"
+    link rel="stylesheet" href="/css/app.css"
+    script src="/js-vendor/jquery-3.1.1.min.js"
+    script src="/js-vendor/jquery-ui.min.js"
+    script src="/js-vendor/bootstrap.min.js"
+    script src="/js-vendor/selectize.min.js"
+    script src="/js-vendor/d3.min.js"
+    script src="/js-vendor/c3.min.js"
+    script src="/js/app.js"
+    / script src="/coffee/app.coffee" type="text/coffeescript"
+    / script src="/compilers/coffee-script-1.12.3.min.js"
+  body
+    .container
+      nav.navbar.navbar-default.mt-1
+        a.navbar-brand href="/entries" $$
+        ul.nav.navbar-nav
+          li class=('active' if request.path =~ %r{^/entries})
+            a href="/entries" Položky
+          li class=('active' if request.path =~ %r{^/tags})
+            a href="/tags" Štítky
+          li class=('active' if request.path =~ %r{^/balances})
+            a href="/balances" Bilance
+
+      == yield

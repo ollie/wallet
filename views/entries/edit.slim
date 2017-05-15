@@ -1,0 +1,7 @@
+.row
+  .col-sm-6
+    == partial_slim 'entries/_form', entry: entry, url: "/entries/#{entry.id}/edit", edit: true
+
+  .col-sm-6
+    form action="/entries/#{entry.id}/delete" method="post"
+      input.btn.btn-danger type="submit" value="Smazat"

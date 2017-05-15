@@ -1,0 +1,33 @@
+form.form-horizontal action=url method="post"
+  .form-group class=('has-error' if balance.errors.on(:amount))
+    label.col-sm-2.control-label for="balance-amount" Částka
+    .col-sm-6
+      .input-group
+        input.form-control(
+          type="number"
+          step="0.01"
+          name="balance[amount]"
+          id="balance-amount"
+          autofocus="autofocus"
+          value=(format('%.2f', balance.amount) if balance.amount)
+        )
+        .input-group-addon Kč
+      - if balance.errors.on(:amount)
+        span.help-block = balance.errors.on(:amount).join(', ')
+
+  .form-group class=('has-error' if balance.errors.on(:year_month))
+    label.col-sm-2.control-label for="balance-year-month" Měsíc
+    .col-sm-6
+      input.form-control type="month" name="balance[year_month]" id="balance-year-month" value=balance.year_month
+      - if balance.errors.on(:year_month)
+        span.help-block = balance.errors.on(:year_month).join(', ')
+
+  .form-group
+    label.col-sm-2.control-label for="balance-note" Poznámka
+    .col-sm-6
+      textarea.form-control name="balance[note]" id="balance-note" rows="1" = balance.note
+
+  .form-group
+    .col-sm-offset-2.col-sm-9
+      input.btn.btn-primary> type="submit" value=(locals[:edit] ? 'Uložit' : 'Přidat')
+      a.btn.btn-default href="/balances" Storno
