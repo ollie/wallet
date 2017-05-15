@@ -1,4 +1,5 @@
 require 'logger'
+require 'yaml'
 
 # Various global and environment-specific settings.
 module Settings
@@ -39,12 +40,10 @@ module Settings
   #
   # @return [String]
   def database_url
-    @database_url ||=
-      if production?
-        'postgres://localhost/wallet_production'
-      else
-        'postgres://localhost/wallet_development'
-      end
+    @database_url ||= begin
+      config = YAML.load(File.read(root.join('config', 'database.yml'))).fetch(env)
+      "postgres://#{config['username']}:#{config['password']}@localhost/#{config['database']}"
+    end
   end
 
   # Web server URL.
