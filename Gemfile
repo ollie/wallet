@@ -8,13 +8,6 @@ gem 'sinatra', '>= 1.4', require: 'sinatra/base'
 # parts without becoming cryptic.
 gem 'slim'
 
-# Puma is a simple, fast, threaded, and highly concurrent HTTP 1.1 server for
-# Ruby/Rack applications. Puma is intended for use in both development and
-# production environments. In order to get the best throughput, it is highly
-# recommended that you use a Ruby implementation with real threads like Rubinius
-# or JRuby.
-gem 'puma'
-
 # Pg is the Ruby interface to the PostgreSQL. It works with PostgreSQL 8.4 and
 # later.
 gem 'pg'
@@ -53,6 +46,13 @@ group :development do
 
   # Passenger support for Capistrano 3.x.
   gem 'capistrano-passenger', require: false
+
+  # Puma is a simple, fast, threaded, and highly concurrent HTTP 1.1 server for
+  # Ruby/Rack applications. Puma is intended for use in both development and
+  # production environments. In order to get the best throughput, it is highly
+  # recommended that you use a Ruby implementation with real threads like Rubinius
+  # or JRuby.
+  gem 'puma', require: false
 
   # An IRB alternative and runtime developer console.
   gem 'pry', require: false
