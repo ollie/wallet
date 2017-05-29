@@ -29,6 +29,7 @@ module Settings
         logger:          (development? ? Logger.new($stdout) : nil),
         max_connections: ENV['POOL_SIZE'].to_i
       ).tap do |database|
+        database.extension(:connection_validator)
         database.extension(:pg_json)
         database.extension(:pg_array)
         database.extension(:pg_triggers)
