@@ -9,3 +9,7 @@ p
           td
             a href="/balances/#{balance.id}/edit" = l(balance.date, format: :month_year)
           td.text-right = formatted_amount(balance.amount)
+          td.text-center
+            input.js-balance-diff type="checkbox" value=balance.amount data-date=balance.date
+  .col-sm-5
+    #balance-diff
