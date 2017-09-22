@@ -8,6 +8,9 @@ p
         tr
           td
             a href="/balances/#{balance.id}/edit" = l(balance.date, format: :month_year)
+            - if balance.note && !balance.note.empty?
+              br
+              small = balance.note
           td.text-right = formatted_amount(balance.amount)
           td.text-center
             input.js-balance-diff type="checkbox" value=balance.amount data-date=balance.date
