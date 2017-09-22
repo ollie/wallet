@@ -40,7 +40,7 @@ a.label-dark:focus {
 /* Other */
 
 .js-sortable-handle {
-  cursor: move;
+  cursor: ns-resize;
   color: #bbb;
 }
 
