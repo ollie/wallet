@@ -55,7 +55,7 @@ class Tag < Sequel::Model
       groups = db.fetch(
         <<~END
           WITH combinations AS (
-            SELECT array_agg(tag_id) AS tag_ids
+            SELECT array_agg(tag_id ORDER BY tag_id) AS tag_ids
             FROM taggings
             GROUP BY entry_id
           )
