@@ -5,15 +5,20 @@ class App < Sinatra::Base
   set :slim, layout: :'layouts/application',
              pretty: true
 
-  # Just for now-ish.
-  ENCRYPTED_USERNAME = '158c9254e80847c80f60145818112cd4a4df7a33892510997b269a9190c7897b'.freeze
-  ENCRYPTED_PASSWORD = '739d03020398c68422a03b24b23a6d37d4bb71627341211f5e802b1c52727387'.freeze
+  configure do
+    config = YAML.safe_load(File.read("#{settings.root}/config/secrets.yml"))
+    config = config.fetch(ENV['RACK_ENV'])
+
+    set :login_encrypted_username, config.fetch('login_encrypted_username')
+    set :login_encrypted_password, config.fetch('login_encrypted_password')
+  end
 
   use Rack::Auth::Basic, 'Whee' do |username, password|
     encrypted_username = Digest::SHA256.hexdigest(username)
     encrypted_password = Digest::SHA256.hexdigest(password)
 
-    encrypted_username == ENCRYPTED_USERNAME && encrypted_password == ENCRYPTED_PASSWORD
+    encrypted_username == settings.login_encrypted_username &&
+      encrypted_password == settings.login_encrypted_password
   end
 
   helpers do
