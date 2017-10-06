@@ -8,4 +8,4 @@ task :environment do
   require_relative 'config/settings'
 end
 
-Dir['./tasks/*.rake'].each { |task| import task }
+Dir['./tasks/**/*.rake'].each { |task| import task }
