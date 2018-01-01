@@ -40,7 +40,7 @@ form.form-horizontal action=url method="post"
   .form-group class=('has-error' if entry.errors.on(:accounted_on))
     label.col-sm-2.control-label for="entry-accounted_on" Zaúčtováno
     .col-sm-6
-      input.form-control type="date" name="entry[accounted_on]" id="entry-accounted_on" value=entry.accounted_on
+      input.form-control type="date" name="entry[accounted_on]" id="entry-accounted_on" value=prefilled_date(entry.accounted_on)
       - if entry.errors.on(:accounted_on)
         span.help-block = entry.errors.on(:accounted_on).join(', ')
     .col-sm-2.form-control-static
@@ -50,7 +50,7 @@ form.form-horizontal action=url method="post"
   .form-group class=('has-error' if entry.errors.on(:date))
     label.col-sm-2.control-label for="entry-date" Zaplaceno
     .col-sm-6
-      input.form-control type="date" name="entry[date]" id="entry-date" value=entry.date
+      input.form-control type="date" name="entry[date]" id="entry-date" value=prefilled_date(entry.date)
       - if entry.errors.on(:date)
         span.help-block = entry.errors.on(:date).join(', ')
 
@@ -74,4 +74,4 @@ form.form-horizontal action=url method="post"
   .form-group
     .col-sm-offset-2.col-sm-9
       input.btn.btn-primary> type="submit" value=(locals[:edit] ? 'Uložit' : 'Přidat')
-      a.btn.btn-default href="/entries" Storno
+      a.btn.btn-default href="/entries#{qs(year: pagination_date.year, month: pagination_date.month)}" Storno

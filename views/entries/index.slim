@@ -1,6 +1,6 @@
 h1 = l(pagination_date, format: :month_year)
 
 p
-  a.btn.btn-primary href="/entries/new" Přidat
+  a.btn.btn-primary href="/entries/new#{qs(year: pagination_date.year, month: pagination_date.month)}" Přidat
 
 == partial_slim 'entries/_entries', entries: Entry.by_month(pagination_date, sort_by: sort_by), stats: true

@@ -70,6 +70,18 @@ class App < Sinatra::Base
       @next_month = next_month
     end
 
+    def prefilled_date(date)
+      return date if date
+
+      today = Date.today
+
+      if pagination_date.year == today.year && pagination_date.month == today.month
+        Date.today
+      elsif pagination_date < today
+        Date.new(pagination_date.year, pagination_date.month, -1)
+      end
+    end
+
     def formatted_amount(amount, plus: true, format: '%+.02f')
       format = '%.02f' unless plus
       format(format, amount).tap do |s|
