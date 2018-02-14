@@ -14,14 +14,13 @@
         tbody
           - entries.groupped_by_days(sort_by: sort_by).each do |day, entries|
             tr
-              th.active.text-right
+              th.active colspan="5"
                 = l(day)
-              th.active colspan="3"
 
             - entries.each do |entry|
               tr class=('warning' unless entry.accounted_on)
                 td.col-sm-2.text-right
-                  a href="/entries/#{entry.id}/edit" = formatted_amount(entry.amount)
+                  a href="/entries/#{entry.id}/edit" == formatted_amount(entry.amount)
                 td.col-sm-3
                   - if entry.note
                     = entry.note
@@ -35,7 +34,10 @@
                     ) = tag.name
                 td.col-sm-2.text-right
                   small
-                    = l(entry.date)
+                    == formatted_date(entry.date)
+                td.col-sm-2
+                  a href="/entries/new?entry[amount]=#{entry.amount}&entry[date]=#{next_month_date(entry.date)}&entry[accounted_on]=#{next_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}" title="Opakovat"
+                    span.glyphicon.glyphicon-repeat
 
     - if locals[:stats]
       == partial_slim 'entries/_stats', entries: entries

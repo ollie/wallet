@@ -13,30 +13,30 @@
   table.table.table-sm
     tr
       th Příjmy
-      td.text-right = formatted_amount(incomes)
+      td.text-right == formatted_amount(incomes)
     tr
       th Výdaje
-      td.text-right = formatted_amount(expenses)
+      td.text-right == formatted_amount(expenses)
     - if previous_balance
       tr
         th Začátek měsíce
-        td.text-right = formatted_amount(previous_balance.amount, plus: false)
+        td.text-right == formatted_amount(previous_balance.amount, plus: false)
     - if ending_balance
       tr
         th Konec měsíce
-        td.text-right = formatted_amount(ending_balance.amount, plus: false)
+        td.text-right == formatted_amount(ending_balance.amount, plus: false)
     - if balance
       tr
         th Bilance
         td.text-right
-          = "#{formatted_amount(balance, plus: false)} (#{formatted_amount(change)})"
+          == "#{formatted_amount(balance, plus: false)} (#{formatted_amount(change)})"
     - if balance_error && !balance_error.zero?
       - last_day = Date.new(pagination_date.year, pagination_date.month, -1)
       tr
         th Chyba
         td.text-right
           a href="/entries/new?entry[amount]=#{balance_error}&entry[date]=#{last_day}&entry[accounted_on]=#{last_day}&entry[note]=Chyba"
-            = formatted_amount(balance_error)
+            == formatted_amount(balance_error)
 
   - unless expenses.zero?
     #chart data-url="/entries/expenses.json#{qs(year: pagination_date.year, month: pagination_date.month)}"

@@ -44,7 +44,7 @@ form.form-horizontal action=url method="post"
       - if entry.errors.on(:accounted_on)
         span.help-block = entry.errors.on(:accounted_on).join(', ')
     .col-sm-2.form-control-static
-      a.js-copy-accounted-on href=""
+      a.js-copy-accounted-on href="" title="Zkopírovat datum"
         span.glyphicon.glyphicon-arrow-down
 
   .form-group class=('has-error' if entry.errors.on(:date))

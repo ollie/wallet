@@ -82,6 +82,23 @@ class App < Sinatra::Base
       end
     end
 
+    def next_month_date(date)
+      date.dup >> 1
+    end
+
+    def qs_tag_ids(entry)
+      tag_ids = entry.tags_dataset.select_map(:id)
+
+      return if tag_ids.empty?
+
+      ''.tap do |s|
+        s << '&'
+        s << tag_ids
+             .map { |tag_id| "entry[tag_ids][]=#{tag_id}" }
+             .join('&')
+      end
+    end
+
     def formatted_amount(amount, plus: true, format: '%+.02f')
       format = '%.02f' unless plus
       format(format, amount).tap do |s|
@@ -90,7 +107,12 @@ class App < Sinatra::Base
         s.tr!('.', ',')
         s.reverse!
         s << ' Kč'
+        s.gsub!(' ', '&nbsp;')
       end
+    end
+
+    def formatted_date(date)
+      l(date).gsub!(' ', '&nbsp;')
     end
 
     def sort_by
