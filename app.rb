@@ -82,8 +82,9 @@ class App < Sinatra::Base
       end
     end
 
-    def next_month_date(date)
-      date.dup >> 1
+    def this_month_date(date)
+      today = Date.today
+      Date.new(today.year, today.month, date.day)
     end
 
     def qs_tag_ids(entry)
