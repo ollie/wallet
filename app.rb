@@ -84,7 +84,11 @@ class App < Sinatra::Base
 
     def this_month_date(date)
       today = Date.today
-      Date.new(today.year, today.month, date.day)
+      begin
+        Date.new(today.year, today.month, date.day)
+      rescue ArgumentError
+        Date.new(today.year, today.month, -1)
+      end
     end
 
     def qs_tag_ids(entry)
