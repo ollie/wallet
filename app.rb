@@ -131,12 +131,20 @@ class App < Sinatra::Base
       params.merge!(hash.stringify_keys)
       params.scrub!
 
-      encoded_params =
-        params
-        .map { |k, v| "#{CGI.escape(k.to_s)}=#{CGI.escape(v.to_s)}" }
-        .join('&')
+      encoded_params = serialize_qs(params)
 
       "?#{encoded_params}"
+    end
+
+    def serialize_qs(params)
+      serialized_params = []
+
+      params.each do |key, value|
+        next if value.is_a?(Hash)
+        serialized_params << "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
+      end
+
+      serialized_params.join('&')
     end
   end
 
