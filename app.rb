@@ -19,7 +19,7 @@ class App < Sinatra::Base
 
     encrypted_username == settings.login_encrypted_username &&
       encrypted_password == settings.login_encrypted_password
-  end
+  end if Settings.production?
 
   helpers do
     def partial_slim(template, locals = {})
