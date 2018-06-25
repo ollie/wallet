@@ -332,7 +332,7 @@ class App < Sinatra::Base
     today = Date.today
 
     slim :'balances/new', locals: {
-      balance: Balance.new(year_month: "#{today.year}-#{today.month}")
+      balance: Balance.new(year_month: Date.today.strftime('%Y-%m'))
     }
   end
 
