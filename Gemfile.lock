@@ -34,7 +34,7 @@ GEM
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
     net-ssh (5.0.2)
-    oj (3.6.2)
+    oj (3.6.3)
     parallel (1.12.1)
     parser (2.5.1.0)
       ast (~> 2.4.0)
@@ -114,4 +114,4 @@ DEPENDENCIES
   slim
 
 BUNDLED WITH
-   1.16.1
+   1.16.2
