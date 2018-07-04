@@ -174,12 +174,12 @@ class App < Sinatra::Base
       end
     end
 
-    sorted_tags = {}
+    sorted_tags = []
 
     tags
       .map { |name, entries| [name, entries.sum * -1] }
       .sort { |(_, a_sum), (_, b_sum)| b_sum <=> a_sum }
-      .each { |name, sum| sorted_tags[name] = sum }
+      .each { |name, sum| sorted_tags << { name: name, sum: sum } }
 
     MultiJson.dump(sorted_tags)
   end
@@ -326,6 +326,11 @@ class App < Sinatra::Base
         balances: balances
       }
     end
+  end
+
+  get '/balances.json' do
+    balances = Balance.data_for_chart
+    MultiJson.dump(balances)
   end
 
   get '/balances/new' do

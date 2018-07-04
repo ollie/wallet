@@ -1,5 +1,6 @@
 require 'logger'
 require 'yaml'
+require 'bigdecimal/util'
 
 # Various global and environment-specific settings.
 module Settings

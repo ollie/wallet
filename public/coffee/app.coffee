@@ -1,3 +1,35 @@
+class HighchartsConfig
+  constructor: ->
+    Highcharts.setOptions
+      lang:
+        contextButtonTitle: 'Kontextové menu'
+        decimalPoint: ','
+        downloadCSV: 'Stáhnout CSV'
+        downloadJPEG: 'Stáhnout JPEG'
+        downloadPDF: 'Stáhnout PDF'
+        downloadPNG: 'Stáhnout PNG'
+        downloadSVG: 'Stáhnout SVG'
+        downloadXLS: 'Stáhnout XLS'
+        invalidDate: undefined
+        loading: 'Načítám…'
+        months: ['Leden' , 'Únor' , 'Březen' , 'Duben' , 'Květen' , 'Červen' , 'Červenec' , 'Srpen' , 'Září' , 'Říjen' , 'Listopad' , 'Prosinec']
+        noData: 'Žádná data k zobrazení'
+        numericSymbolMagnitude: 1000
+        numericSymbols: ['k' , 'M' , 'G' , 'T' , 'P' , 'E']
+        openInCloud: 'Otevřít v Highcharts Cloud'
+        printChart: 'Tisknout'
+        rangeSelectorFrom: 'Od'
+        rangeSelectorTo: 'Do'
+        rangeSelectorZoom: 'Zoom'
+        resetZoom: 'Vyresetovat zoom'
+        resetZoomTitle: 'Vyresetovat zoom na 1:1'
+        shortMonths: ['Led' , 'Úno' , 'Bře' , 'Dub' , 'Kvě' , 'Čvn' , 'Čvc' , 'Spr' , 'Zář' , 'Říj' , 'Lis' , 'Pro']
+        shortWeekdays: undefined
+        thousandsSep: ' '
+        weekdays: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota']
+
+
+
 class EntryForm
   constructor: ->
     @expenseButton    = $('.js-expense')
@@ -127,13 +159,29 @@ class ExpenseChart
     @init()
 
   init: ->
-    chart = c3.generate(
-      bindto: @element[0]
-      data:
-        type: 'bar'
-        url: @element.data('url')
-        mimeType: 'json'
-    )
+    $.getJSON @element.data('url'), (data) ->
+      data = data.map (item) ->
+        name: item.name
+        data: [Number(item.sum)]
+
+      options =
+        title: null
+        chart:
+          type: 'column'
+        xAxis:
+          categories: ['Výdaje']
+        yAxis:
+          title: null
+        tooltip:
+          valueSuffix: ' Kč'
+        credits:
+          enabled: false
+        # plotOptions:
+        #   series:
+        #     animation: 500
+        series: data
+
+      Highcharts.chart('chart', options)
 
 
 
@@ -203,8 +251,88 @@ class BalanceDiff
 
 
 
+class BalanceChart
+  constructor: ->
+    @element = $('#balances-chart')
+    return unless @element.length
+    @init()
+
+  init: ->
+    $.getJSON @element.data('url'), (data) ->
+      series =
+        total:
+          name: 'Celkem'
+          showInNavigator: true
+          color: '#7cb5ec'
+          lineWidth: 4
+          type: 'line'
+          index: 3
+          marker:
+            lineWidth: 4
+            radius: 6
+            lineColor: '#7cb5ec'
+            fillColor: 'white'
+          data: []
+
+        incomes:
+          name: 'Příjmy'
+          showInNavigator: false
+          color: '#108A00'
+          type: 'column'
+          index: 1
+          data: []
+
+        expenses:
+          name: 'Výdaje'
+          showInNavigator: false
+          color: '#C73C35'
+          type: 'column'
+          index: 2
+          data: []
+
+      for item in data
+        date     = Date.parse(item.date)
+        total    = Number(item.total)
+        incomes  = Number(item.incomes)
+        expenses = Number(item.expenses)
+
+        series.total.data.push([date, total])
+        series.incomes.data.push([date, incomes])
+        series.expenses.data.push([date, expenses])
+
+      options =
+        type: 'line'
+        series: [series.total, series.incomes, series.expenses]
+        # plotOptions:
+        #   series:
+        #     animation: 500
+        rangeSelector:
+          buttons: [
+            {
+              type: 'year'
+              count: 1
+              text: 'Rok'
+            },
+            {
+              type: 'all'
+              text: 'Vše'
+            }
+          ]
+          selected: 0
+          inputBoxWidth: 100
+          inputDateFormat: '%B %Y'
+          inputEditDateFormat: '%d. %m. %Y'
+        credits:
+          enabled: false
+
+      Highcharts.stockChart('balances-chart', options)
+
+
+
 $ ->
+  new HighchartsConfig
   new EntryForm
   new Tags
   new ExpenseChart
   new BalanceDiff
+  new BalanceChart
