@@ -68,10 +68,10 @@ GEM
       unicode-display_width (~> 1.0, >= 1.0.1)
     ruby-progressbar (1.9.0)
     ruby_dep (1.5.0)
-    sequel (5.9.0)
-    sequel_pg (1.9.0)
+    sequel (5.10.0)
+    sequel_pg (1.10.0)
       pg (>= 0.18.0)
-      sequel (>= 4.34.0)
+      sequel (>= 4.38.0)
     sequel_postgresql_triggers (1.4.0)
       sequel
     sinatra (2.0.3)
