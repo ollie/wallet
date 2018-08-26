@@ -36,8 +36,9 @@
                   small
                     == formatted_date(entry.date)
                 td.col-sm-2
-                  a href="/entries/new?entry[amount]=#{entry.amount}&entry[date]=#{this_month_date(entry.date)}&entry[accounted_on]=#{this_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}" title="Opakovat"
-                    span.glyphicon.glyphicon-repeat
+                  - if entry.accounted_on
+                    a href="/entries/new?entry[amount]=#{entry.amount}&entry[date]=#{this_month_date(entry.date)}&entry[accounted_on]=#{this_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}" title="Opakovat"
+                      span.glyphicon.glyphicon-repeat
 
     - if locals[:stats]
       == partial_slim 'entries/_stats', entries: entries
