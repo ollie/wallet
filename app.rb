@@ -1,6 +1,3 @@
-require_relative 'config/settings'
-
-# Main web application.
 class App < Sinatra::Base
   set :slim, layout: :'layouts/application',
              pretty: true
@@ -11,6 +8,11 @@ class App < Sinatra::Base
 
     set :login_encrypted_username, config.fetch('login_encrypted_username')
     set :login_encrypted_password, config.fetch('login_encrypted_password')
+
+    Settings.database
+    Settings.setup_i18n
+    Settings.load_files('lib/**')
+    Settings.load_files('models/**')
   end
 
   use Rack::Auth::Basic, 'Whee' do |username, password|
@@ -21,9 +23,42 @@ class App < Sinatra::Base
       encrypted_password == settings.login_encrypted_password
   end if Settings.production?
 
+  def self.Route(hash)
+    route_name = hash.keys.first
+    route_path = hash[route_name]
+
+    helpers do
+      define_method("#{route_name}_path") do |id = nil|
+        if route_path =~ /:id/
+          raise ArgumentError, "Missing :id parameter for route #{route_path}" unless id
+          route_path.gsub(':id', id.to_s)
+        else
+          route_path
+        end
+      end
+    end
+
+    route_path
+  end
+
   helpers do
     def partial_slim(template, locals = {})
       slim(template.to_sym, layout: false, locals: locals)
+    end
+
+    def title(text = nil, head: false)
+      return @title = text if text
+      return [@title, t('title')].compact.join(' – ') if head
+
+      @title
+    end
+
+    def icon(filename)
+      @@icon_cache ||= {}
+      @@icon_cache[filename] ||= begin
+        svg = Settings.root.join('public/svg/octicons', "#{filename}.svg").read
+        %(<span class="octicon">#{svg}</span>)
+      end
     end
 
     def t(key, options = nil)
@@ -149,22 +184,22 @@ class App < Sinatra::Base
   end
 
   get '/' do
-    redirect '/entries'
+    redirect entries_path
   end
 
   #########
   # Entries
   #########
 
-  get '/entries' do
+  get Route(entries: '/entries') do
     if Entry.count.zero?
-      redirect '/entries/new'
+      redirect new_entry_path
     else
       slim :'entries/index'
     end
   end
 
-  get '/entries/expenses.json' do
+  get Route(expenses: '/entries/expenses.json') do
     tags = {}
 
     Entry.expenses.by_month(pagination_date).eager(:tags).each do |entry|
@@ -184,7 +219,7 @@ class App < Sinatra::Base
     MultiJson.dump(sorted_tags)
   end
 
-  get '/entries/new' do
+  get Route(new_entry: '/entries/new') do
     entry = Entry.new
     entry.set_fields(params[:entry] || {}, [:amount, :date, :accounted_on, :note])
 
@@ -199,7 +234,7 @@ class App < Sinatra::Base
 
     if entry.valid?
       entry.save_and_handle_tags(params)
-      redirect(params[:back_url] || '/entries')
+      redirect(params[:back_url] || entries_path)
     else
       slim :'entries/new', locals: {
         entry: entry
@@ -207,7 +242,7 @@ class App < Sinatra::Base
     end
   end
 
-  get '/entries/:id/edit' do
+  get Route(edit_entry: '/entries/:id/edit') do
     slim :'entries/edit', locals: {
       entry: Entry.with_pk!(params[:id])
     }
@@ -219,7 +254,7 @@ class App < Sinatra::Base
 
     if entry.valid?
       entry.save_and_handle_tags(params)
-      redirect(params[:back_url] || '/entries')
+      redirect(params[:back_url] || entries_path)
     else
       slim :'entries/edit', locals: {
         entry: entry
@@ -227,21 +262,21 @@ class App < Sinatra::Base
     end
   end
 
-  post '/entries/:id/delete' do
+  post Route(delete_entry: '/entries/:id/delete') do
     entry = Entry.with_pk!(params[:id])
     entry.destroy
-    redirect '/entries'
+    redirect entries_path
   end
 
   ######
   # Tags
   ######
 
-  get '/tags' do
+  get Route(tags: '/tags') do
     tags = Tag.ordered
 
     if tags.count.zero?
-      redirect '/tags/new'
+      redirect new_tag_path
     else
       slim :'tags/index', locals: {
         tags: tags
@@ -249,7 +284,7 @@ class App < Sinatra::Base
     end
   end
 
-  get '/tags/new' do
+  get Route(new_tag: '/tags/new') do
     slim :'tags/new', locals: {
       tag: Tag.new
     }
@@ -261,7 +296,7 @@ class App < Sinatra::Base
 
     if tag.valid?
       tag.save
-      redirect '/tags'
+      redirect tags_path
     else
       slim :'tags/new', locals: {
         tag: tag
@@ -269,7 +304,7 @@ class App < Sinatra::Base
     end
   end
 
-  get '/tags/:id/edit' do
+  get Route(edit_tag: '/tags/:id/edit') do
     slim :'tags/edit', locals: {
       tag: Tag.with_pk!(params[:id])
     }
@@ -281,7 +316,7 @@ class App < Sinatra::Base
 
     if tag.valid?
       tag.save
-      redirect '/tags'
+      redirect tags_path
     else
       slim :'tags/edit', locals: {
         tag: tag
@@ -289,13 +324,13 @@ class App < Sinatra::Base
     end
   end
 
-  post '/tags/:id/delete' do
+  post Route(delete_tag: '/tags/:id/delete') do
     tag = Tag.with_pk!(params[:id])
     tag.destroy
-    redirect '/tags'
+    redirect tags_path
   end
 
-  post '/tags/update_positions' do
+  post Route(update_tags_positions: '/tags/update_positions') do
     positions = params[:positions]
 
     Tag.db.transaction do
@@ -306,7 +341,7 @@ class App < Sinatra::Base
     halt 201
   end
 
-  get '/tags/:id' do
+  get Route(tag: '/tags/:id') do
     slim :'tags/show', locals: {
       tag: Tag.with_pk!(params[:id])
     }
@@ -316,11 +351,11 @@ class App < Sinatra::Base
   # Balances
   ##########
 
-  get '/balances' do
+  get Route(balances: '/balances') do
     balances = Balance.ordered
 
     if balances.count.zero?
-      redirect '/balances/new'
+      redirect new_balance_path
     else
       slim :'balances/index', locals: {
         balances: balances
@@ -328,12 +363,12 @@ class App < Sinatra::Base
     end
   end
 
-  get '/balances.json' do
+  get Route(balances_json: '/balances.json') do
     balances = Balance.data_for_chart
     MultiJson.dump(balances)
   end
 
-  get '/balances/new' do
+  get Route(new_balance: '/balances/new') do
     today = Date.today
 
     slim :'balances/new', locals: {
@@ -347,7 +382,7 @@ class App < Sinatra::Base
 
     if balance.valid?
       balance.save
-      redirect '/balances'
+      redirect balances_path
     else
       slim :'balances/new', locals: {
         balance: balance
@@ -355,7 +390,7 @@ class App < Sinatra::Base
     end
   end
 
-  get '/balances/:id/edit' do
+  get Route(edit_balance: '/balances/:id/edit') do
     slim :'balances/edit', locals: {
       balance: Balance.with_pk!(params[:id])
     }
@@ -367,7 +402,7 @@ class App < Sinatra::Base
 
     if balance.valid?
       balance.save
-      redirect '/balances'
+      redirect balances_path
     else
       slim :'balances/edit', locals: {
         balance: balance
@@ -375,9 +410,9 @@ class App < Sinatra::Base
     end
   end
 
-  post '/balances/:id/delete' do
+  post Route(delete_balance: '/balances/:id/delete') do
     balance = Balance.with_pk!(params[:id])
     balance.destroy
-    redirect '/balances'
+    redirect balances_path
   end
 end

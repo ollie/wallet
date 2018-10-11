@@ -1,11 +1,15 @@
 require 'bundler/setup'
-ENV['RACK_ENV']  ||= 'development'
-ENV['POOL_SIZE'] ||= '1'
+require_relative 'config/settings'
 
-# Load settings, models and everything.
-task :environment do
-  Bundler.require(:default, ENV['RACK_ENV'])
-  require_relative 'config/settings'
+task :settings do
+  Bundler.require(:default, Settings.environment)
+  Settings.database
 end
 
-Dir['./tasks/**/*.rake'].each { |task| import task }
+task environment: :settings do
+  Settings.setup_i18n
+  Settings.load_files('lib/**')
+  Settings.load_files('models')
+end
+
+Dir['tasks/**/*.rake'].each { |task| import task }

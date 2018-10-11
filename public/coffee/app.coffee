@@ -1,6 +1,22 @@
+class Confirm
+  constructor: ->
+    $items = $('[data-confirm]')
+    $items.on('click', this._handleClick)
+
+  _handleClick: (e) =>
+    $item   = $(e.currentTarget)
+    message = $item.data('confirm')
+
+    if message && !confirm(message)
+      e.preventDefault()
+
+
+
 class HighchartsConfig
   constructor: ->
     Highcharts.setOptions
+      credits:
+        enabled: false
       lang:
         contextButtonTitle: 'Kontextové menu'
         decimalPoint: ','
@@ -174,8 +190,6 @@ class ExpenseChart
           title: null
         tooltip:
           valueSuffix: ' Kč'
-        credits:
-          enabled: false
         # plotOptions:
         #   series:
         #     animation: 500
@@ -330,6 +344,7 @@ class BalanceChart
 
 
 $ ->
+  new Confirm
   new HighchartsConfig
   new EntryForm
   new Tags

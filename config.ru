@@ -1,4 +1,7 @@
-require_relative 'init'
+require 'bundler'
+require_relative 'config/settings'
+Bundler.require(:default, :web, Settings.environment)
+require_relative 'app'
 
 if defined?(PhusionPassenger)
   PhusionPassenger.on_event(:starting_worker_process) do |forked|

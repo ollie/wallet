@@ -1,7 +1,6 @@
-# Database tasks
 namespace :db do
   desc 'Run database migrations'
-  task :migrate, [:version] => :environment do |_t, args|
+  task :migrate, [:version] => :settings do |_t, args|
     Sequel.extension(:migration)
 
     opts = {}
@@ -19,7 +18,7 @@ namespace :db do
   end
 
   desc 'Dump database schema'
-  task schema_dump: :environment do
+  task schema_dump: :settings do
     db_url      = Settings.database_url
     schema_path = 'db/schema.rb'
 

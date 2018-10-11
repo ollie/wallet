@@ -1,4 +1,3 @@
-# frozen_string_literal: true
 Sequel.migration do
   change do
     create_table(:balances) do
@@ -41,7 +40,7 @@ Sequel.migration do
       foreign_key :tag_id, :tags, null: false, key: [:id], on_delete: :cascade
       foreign_key :entry_id, :entries, null: false, key: [:id], on_delete: :cascade
 
-      primary_key [:tag_id, :entry_id]
+      primary_key %i[tag_id entry_id]
 
       index [:entry_id]
       index [:tag_id]

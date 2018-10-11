@@ -1,9 +1,12 @@
+# TODO: Test all error messages nad translate them.
 class Tag < Sequel::Model
   #########
   # Plugins
   #########
 
   plugin :validation_helpers
+  plugin :translated_validation_messages
+  plugin :defaults_setter
   plugin :eager_each
 
   ##############

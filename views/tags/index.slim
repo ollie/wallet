@@ -1,22 +1,24 @@
+- title 'Štítky'
+
 p
-  a.btn.btn-primary href="/tags/new" Přidat
+  a.btn.btn-primary href=new_tag_path Přidat
 
 .row
   .col-sm-3
-    ul.js-tags.list-group data-path="/tags/update_positions"
+    ul.js-tags.list-group data-path=update_tags_positions_path
       - tags.each do |tag|
         li.list-group-item.list-group-item-condensed data-id=tag.id data-position=tag.position
           .row
             .col-sm-2.text-center
               span.js-sortable-handle.glyphicon.glyphicon-menu-hamburger
             .col-sm-6.pl-0
-              a href="/tags/#{tag.id}/edit"
+              a href=edit_tag_path(tag.id)
                 = tag.name
             .col-sm-2.pr-0
               - if tag.primary
                 span.glyphicon.glyphicon-ok
             .col-sm-2.pl-0.text-right
-              a href="/tags/#{tag.id}"
+              a href=tag_path(tag.id)
                 span.badge(
                   class=('badge-light' if tag.light?)
                   style=("background-color: #{tag.color};" if tag.color)

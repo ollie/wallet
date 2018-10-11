@@ -1,7 +1,9 @@
+- title "Upravit štítek #{tag.name}"
+
 .row
   .col-sm-6
-    == partial_slim 'tags/_form', tag: tag, url: "/tags/#{tag.id}/edit", edit: true
+    == partial_slim 'tags/_form', tag: tag, url: edit_tag_path(tag.id), edit: true
 
   .col-sm-6
-    form action="/tags/#{tag.id}/delete" method="post"
+    form action=delete_tag_path(tag.id) method="post" data-confirm="Opravdu chcete smazat štítek?"
       input.btn.btn-danger type="submit" value="Smazat"

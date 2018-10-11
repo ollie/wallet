@@ -35,8 +35,8 @@
       tr
         th Chyba
         td.text-right
-          a href="/entries/new?entry[amount]=#{balance_error}&entry[date]=#{last_day}&entry[accounted_on]=#{last_day}&entry[note]=Chyba"
+          a href=(new_entry_path + "?entry[amount]=#{balance_error}&entry[date]=#{last_day}&entry[accounted_on]=#{last_day}&entry[note]=Chyba")
             == formatted_amount(balance_error)
 
   - unless expenses.zero?
-    #chart data-url="/entries/expenses.json#{qs(year: pagination_date.year, month: pagination_date.month)}"
+    #chart data-url=(expenses_path + qs(year: pagination_date.year, month: pagination_date.month))

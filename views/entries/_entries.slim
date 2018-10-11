@@ -20,7 +20,7 @@
             - entries.each do |entry|
               tr class=('warning' unless entry.accounted_on)
                 td.col-sm-2.text-right
-                  a href="/entries/#{entry.id}/edit" == formatted_amount(entry.amount)
+                  a href=edit_entry_path(entry.id) == formatted_amount(entry.amount)
                 td.col-sm-3
                   - if entry.note
                     = entry.note
@@ -29,7 +29,7 @@
                     a.label(
                       class=('label-dark' if tag.dark?)
                       class=('label-light' if !tag.color || tag.light?)
-                      href="/tags/#{tag.id}#{qs(year: pagination_date.year, month: pagination_date.month)}"
+                      href=(tag_path(tag.id) + qs(year: pagination_date.year, month: pagination_date.month))
                       style=("background-color: #{tag.color};" if tag.color)
                     ) = tag.name
                 td.col-sm-2.text-right
@@ -37,7 +37,7 @@
                     == formatted_date(entry.date)
                 td.col-sm-2
                   - if entry.accounted_on
-                    a href="/entries/new?entry[amount]=#{entry.amount}&entry[date]=#{this_month_date(entry.date)}&entry[accounted_on]=#{this_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}" title="Opakovat"
+                    a href=(new_entry_path + "?entry[amount]=#{entry.amount}&entry[date]=#{this_month_date(entry.date)}&entry[accounted_on]=#{this_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}") title="Opakovat"
                       span.glyphicon.glyphicon-repeat
 
     - if locals[:stats]

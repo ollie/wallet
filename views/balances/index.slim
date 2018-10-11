@@ -1,5 +1,7 @@
+- title 'Bilance'
+
 p
-  a.btn.btn-primary href="/balances/new" Přidat
+  a.btn.btn-primary href=new_balance_path Přidat
 
 .row
   .col-sm-5
@@ -7,7 +9,7 @@ p
       - balances.each do |balance|
         tr
           td
-            a href="/balances/#{balance.id}/edit" = l(balance.date, format: :month_year)
+            a href=edit_balance_path(balance.id) = l(balance.date, format: :month_year)
             - if balance.note && !balance.note.empty?
               br
               small = balance.note
@@ -17,4 +19,4 @@ p
   .col-sm-5
     #balance-diff
 
-#balances-chart data-url="/balances.json"
+#balances-chart data-url=balances_json_path

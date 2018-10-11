@@ -1,3 +1,3 @@
-h1 = "#{tag.name} za #{l(pagination_date, format: :month_year)}"
+h1 = title "#{tag.name} za #{l(pagination_date, format: :month_year)}"
 
 == partial_slim 'entries/_entries', entries: tag.entries_dataset.by_month(pagination_date, sort_by: sort_by)

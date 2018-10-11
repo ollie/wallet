@@ -1,7 +1,9 @@
+- title "Upravit bilanci #{l(balance.date, format: :month_year)}"
+
 .row
   .col-sm-6
-    == partial_slim 'balances/_form', balance: balance, url: "/balances/#{balance.id}/edit", edit: true
+    == partial_slim 'balances/_form', balance: balance, url: edit_balance_path(balance.id), edit: true
 
   .col-sm-6
-    form action="/balances/#{balance.id}/delete" method="post"
+    form action=delete_balance_path(balance.id) method="post" data-confirm="Opravdu chcete smazat položku?"
       input.btn.btn-danger type="submit" value="Smazat"

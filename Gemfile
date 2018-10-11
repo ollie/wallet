@@ -1,77 +1,31 @@
 source 'https://rubygems.org'
 
-# Sinatra is a DSL for quickly creating web applications in Ruby with minimal
-# effort.
-gem 'sinatra', '>= 1.4', require: 'sinatra/base'
-
-# Slim is a template language whose goal is reduce the syntax to the essential
-# parts without becoming cryptic.
-gem 'slim'
-
-# Pg is the Ruby interface to the PostgreSQL. It works with PostgreSQL 8.4 and
-# later.
+gem 'i18n'
+gem 'multi_json'
+gem 'oj'
 gem 'pg'
-
-# The Database Toolkit for Ruby.
 gem 'sequel'
-
-# sequel_pg overwrites the inner loop of the Sequel postgres adapter row
-# fetching code with a C version. The C version is significantly faster (2-6x)
-# than the pure ruby version that Sequel uses by default. sequel_pg also offers
-# optimized versions of some dataset methods, as well as adds support for using
-# PostgreSQL streaming.
 gem 'sequel_pg', require: 'sequel'
-
-# Database enforced timestamps, immutable columns, counter/sum caches, and touch
-# propogation.
 gem 'sequel_postgresql_triggers'
 
-# A common interface to multiple JSON libraries, including Oj, Yajl, the JSON
-# gem (with C-extensions), the pure-Ruby JSON gem, NSJSONSerialization, gson.rb,
-# JrJackson, and OkJson.
-gem 'multi_json'
+# Modes
 
-# The fastest JSON parser and object serializer.
-gem 'oj'
+group :web do
+  gem 'sinatra', require: 'sinatra/base'
+  # gem 'sinatra-flash'
+  gem 'slim'
+end
 
-# New wave Internationalization support for Ruby.
-gem 'i18n'
+# Environments
 
 group :development do
-  # rbenv integration for Capistrano.
-  gem 'capistrano-rbenv', require: false
-
-  # Bundler support for Capistrano 3.x.
   gem 'capistrano-bundler', require: false
-
-  # Passenger support for Capistrano 3.x.
   gem 'capistrano-passenger', require: false
-
-  # Puma is a simple, fast, threaded, and highly concurrent HTTP 1.1 server for
-  # Ruby/Rack applications. Puma is intended for use in both development and
-  # production environments. In order to get the best throughput, it is highly
-  # recommended that you use a Ruby implementation with real threads like Rubinius
-  # or JRuby.
-  gem 'puma', require: false
-
-  # An IRB alternative and runtime developer console.
-  gem 'pry', require: false
-
-  # Pry Doc is a Pry REPL plugin. It provides extended documentation support for
-  # the REPL by means of improving the `show-doc` and `show-source` commands.
-  # With help of the plugin the commands are be able to display the source code
-  # and the docs of Ruby methods and classes implemented in C. documentation.
-  gem 'pry-doc', require: false
-
-  # Combine 'pry' with 'byebug'. Adds 'step', 'next', 'finish', 'continue' and
-  # 'break' commands to control execution.
-  gem 'pry-byebug', require: false
-
-  # Automatic Ruby code style checking tool. Aims to enforce the community-
-  # driven Ruby Style Guide.
+  gem 'capistrano-rbenv', require: false
+  gem 'listen', require: false # assets
   gem 'rubocop', require: false
-
-  # The Listen gem listens to file modifications and notifies you about the
-  # changes. Works everywhere!
-  gem 'listen', require: false
+  gem 'pry', require: false
+  gem 'pry-byebug', require: false
+  gem 'pry-doc', require: false
+  gem 'puma', require: false
 end

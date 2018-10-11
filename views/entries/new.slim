@@ -1,5 +1,7 @@
+- title "Přidat položku do #{l(pagination_date, format: :month_year)}"
+
 .row
   .col-sm-6
-    == partial_slim 'entries/_form', entry: entry, url: '/entries/new'
+    == partial_slim 'entries/_form', entry: entry, url: new_entry_path
   .col-sm-6
     == partial_slim 'entries/_tag_combinations'

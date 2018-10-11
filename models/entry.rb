@@ -1,9 +1,11 @@
+# TODO: Test all error messages nad translate them.
 class Entry < Sequel::Model
   #########
   # Plugins
   #########
 
   plugin :validation_helpers
+  plugin :translated_validation_messages
   plugin :eager_each
 
   ##############

@@ -1,7 +1,9 @@
+- title "Upravit položku z #{l(pagination_date, format: :month_year)}"
+
 .row
   .col-sm-6
-    == partial_slim 'entries/_form', entry: entry, url: "/entries/#{entry.id}/edit", edit: true
+    == partial_slim 'entries/_form', entry: entry, url: edit_entry_path(entry.id), edit: true
 
   .col-sm-6
-    form action="/entries/#{entry.id}/delete" method="post"
+    form action=delete_entry_path(entry.id) method="post" data-confirm="Opravdu chcete smazat položku?"
       input.btn.btn-danger type="submit" value="Smazat"
