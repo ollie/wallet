@@ -9,13 +9,13 @@
     table.table
       - balances.each do |balance|
         tr
-          td
+          td.pl-0
             a href=edit_balance_path(balance.id) = l(balance.date, format: :month_year)
             - if balance.note && !balance.note.empty?
               br
               small = balance.note
           td.text-right == formatted_amount(balance.amount)
-          td.text-center
+          td.pr-0.text-center
             input.js-balance-diff type="checkbox" value=balance.amount data-date=balance.date
   .col-sm-5
     #balance-diff
