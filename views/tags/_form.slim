@@ -1,29 +1,46 @@
-form.form-horizontal action=url method="post"
-  .form-group class=('has-error' if tag.errors.on(:name))
-    label.col-sm-2.control-label for="tag-name" Název
+form action=url method="post"
+  .form-group.row
+    label.col-sm-2.col-form-label for="tag-name" Název
     .col-sm-5
-      input.form-control type="text" name="tag[name]" id="tag-name" autofocus="autofocus" value=tag.name
+      input.form-control(
+        type="text"
+        name="tag[name]"
+        id="tag-name"
+        value=tag.name
+        class=('is-invalid' if tag.errors.on(:name))
+        autofocus
+      )
       - if tag.errors.on(:name)
-        span.help-block = tag.errors.on(:name).join(', ')
+        .invalid-feedback = tag.errors.on(:name).join(', ')
 
-  .form-group class=('has-error' if tag.errors.on(:color))
-    label.col-sm-2.control-label for="tag-color" Barva
+  .form-group.row
+    label.col-sm-2.col-form-label for="tag-color" Barva
     .col-sm-2
-      input.form-control type="color" name="tag[color]" id="tag-color" value=tag.color
+      input.form-control(
+        type="color"
+        name="tag[color]"
+        id="tag-color"
+        value=tag.color
+        class=('is-invalid' if tag.errors.on(:color))
+      )
       - if tag.errors.on(:color)
-        span.help-block = tag.errors.on(:color).join(', ')
+        .invalid-feedback = tag.errors.on(:color).join(', ')
 
-  .form-group class=('has-error' if tag.errors.on(:primary))
-    .col-sm-offset-2.col-sm-10
-      .checkbox
-        label
-          input type="hidden" name="tag[primary]" value="0"
-          input type="checkbox" name="tag[primary]" id="tag-primary" value="1" checked=tag.primary
+  .form-group.row
+    .offset-sm-2.col-sm-10
+      .form-check
+        input type="hidden" name="tag[primary]" value="0"
+        input.form-check-input(
+          type="checkbox"
+          name="tag[primary]"
+          id="tag-primary"
+          value="1"
+          checked=tag.primary
+        )
+        label.form-check-label for="tag-primary"
           | Primární?
-      - if tag.errors.on(:primary)
-        span.help-block = tag.errors.on(:primary).join(', ')
 
-  .form-group
-    .col-sm-offset-2.col-sm-10
-      input.btn.btn-primary> type="submit" value=(locals[:edit] ? 'Uložit' : 'Přidat')
-      a.btn.btn-default href=tags_path Storno
+  .form-group.row
+    .offset-sm-2.col-sm-10
+      button.btn.btn-outline-primary> = (locals[:edit] ? 'Uložit' : 'Přidat')
+      a.btn.btn-outline-secondary href=tags_path Storno

@@ -1,6 +1,7 @@
-h1 = title l(pagination_date, format: :month_year)
-
-p
-  a.btn.btn-primary href=(new_entry_path + qs(year: pagination_date.year, month: pagination_date.month)) Přidat
+.row.mt-3
+  .col-sm-10
+    h1.mb-3 = title l(pagination_date, format: :month_year)
+  .col-sm-2.text-right
+    a.btn.btn-outline-primary.w-100.mb-3 href=(new_entry_path + qs(year: pagination_date.year, month: pagination_date.month)) Přidat
 
 == partial_slim 'entries/_entries', entries: Entry.by_month(pagination_date, sort_by: sort_by), stats: true

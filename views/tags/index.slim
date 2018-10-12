@@ -1,7 +1,8 @@
-- title 'Štítky'
-
-p
-  a.btn.btn-primary href=new_tag_path Přidat
+.row.mt-3
+  .col-sm-10
+    h1.mb-3 = title 'Štítky'
+  .col-sm-2.text-right
+    a.btn.btn-outline-primary.w-100.mb-3 href=new_tag_path Přidat
 
 .row
   .col-sm-3
@@ -10,16 +11,16 @@ p
         li.list-group-item.list-group-item-condensed data-id=tag.id data-position=tag.position
           .row
             .col-sm-2.text-center
-              span.js-sortable-handle.glyphicon.glyphicon-menu-hamburger
+              span.js-sortable-handle == icon(:grabber)
             .col-sm-6.pl-0
               a href=edit_tag_path(tag.id)
                 = tag.name
             .col-sm-2.pr-0
               - if tag.primary
-                span.glyphicon.glyphicon-ok
+                == icon(:check)
             .col-sm-2.pl-0.text-right
               a href=tag_path(tag.id)
-                span.badge(
+                span.badge.badge-secondary(
                   class=('badge-light' if tag.light?)
                   style=("background-color: #{tag.color};" if tag.color)
                 ) = tag.entries_count

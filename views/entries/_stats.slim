@@ -10,31 +10,31 @@
     - balance_error = ending_balance.amount - balance
 
 .col-sm-4
-  table.table.table-sm
+  table.table.smaller
     tr
-      th Příjmy
-      td.text-right == formatted_amount(incomes)
+      th.pl-0 Příjmy
+      td.pr-0.text-right == formatted_amount(incomes)
     tr
-      th Výdaje
-      td.text-right == formatted_amount(expenses)
+      th.pl-0 Výdaje
+      td.pr-0.text-right == formatted_amount(expenses)
     - if previous_balance
       tr
-        th Začátek měsíce
-        td.text-right == formatted_amount(previous_balance.amount, plus: false)
+        th.pl-0 Začátek měsíce
+        td.pr-0.text-right == formatted_amount(previous_balance.amount, plus: false)
     - if ending_balance
       tr
-        th Konec měsíce
-        td.text-right == formatted_amount(ending_balance.amount, plus: false)
+        th.pl-0 Konec měsíce
+        td.pr-0.text-right == formatted_amount(ending_balance.amount, plus: false)
     - if balance
       tr
-        th Bilance
-        td.text-right
+        th.pl-0 Bilance
+        td.pr-0.text-right
           == "#{formatted_amount(balance, plus: false)} (#{formatted_amount(change)})"
     - if balance_error && !balance_error.zero?
       - last_day = Date.new(pagination_date.year, pagination_date.month, -1)
       tr
-        th Chyba
-        td.text-right
+        th.pl-0 Chyba
+        td.pr-0.text-right
           a href=(new_entry_path + "?entry[amount]=#{balance_error}&entry[date]=#{last_day}&entry[accounted_on]=#{last_day}&entry[note]=Chyba")
             == formatted_amount(balance_error)
 

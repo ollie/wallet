@@ -2,43 +2,42 @@
 
 - if entries.any?
 
-  ul.nav.nav-tabs.nav-tabs-spaced
-    li role="presentation" class=('active' if sort_by != :date)
-      a href=qs(sort_by: nil) Podle data zaúčtování
-    li role="presentation" class=('active' if sort_by == :date)
-      a href=qs(sort_by: :date) Podle data zaplacení
+  ul.nav.nav-tabs.mb-3
+    li.nav-item
+      a.nav-link class=('active' if sort_by != :date) href=qs(sort_by: nil) Podle data zaúčtování
+    li.nav-item
+      a.nav-link class=('active' if sort_by == :date) href=qs(sort_by: :date) Podle data zaplacení
 
   .row
     .col-sm-8
-      table.table.table-sm
+      table.table.smaller
         tbody
           - entries.groupped_by_days(sort_by: sort_by).each do |day, entries|
             tr
-              th.active colspan="5"
+              th.table-active colspan="5"
                 = l(day)
 
             - entries.each do |entry|
-              tr class=('warning' unless entry.accounted_on)
-                td.col-sm-2.text-right
+              tr class=('table-warning' unless entry.accounted_on)
+                td.text-right
                   a href=edit_entry_path(entry.id) == formatted_amount(entry.amount)
-                td.col-sm-3
+                td
                   - if entry.note
                     = entry.note
-                td.col-sm-5
+                td
                   - entry.tags.each do |tag|
-                    a.label(
-                      class=('label-dark' if tag.dark?)
-                      class=('label-light' if !tag.color || tag.light?)
+                    a.badge.badge-secondary(
+                      class=('badge-light' if !tag.color || tag.light?)
                       href=(tag_path(tag.id) + qs(year: pagination_date.year, month: pagination_date.month))
                       style=("background-color: #{tag.color};" if tag.color)
                     ) = tag.name
-                td.col-sm-2.text-right
+                td.text-right
                   small
                     == formatted_date(entry.date)
-                td.col-sm-2
+                td
                   - if entry.accounted_on
                     a href=(new_entry_path + "?entry[amount]=#{entry.amount}&entry[date]=#{this_month_date(entry.date)}&entry[accounted_on]=#{this_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}") title="Opakovat"
-                      span.glyphicon.glyphicon-repeat
+                      == icon(:sync)
 
     - if locals[:stats]
       == partial_slim 'entries/_stats', entries: entries

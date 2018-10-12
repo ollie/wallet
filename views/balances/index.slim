@@ -1,11 +1,12 @@
-- title 'Bilance'
-
-p
-  a.btn.btn-primary href=new_balance_path Přidat
+.row.mt-3
+  .col-sm-10
+    h1.mb-3 = title 'Bilance'
+  .col-sm-2.text-right
+    a.btn.btn-outline-primary.w-100.mb-3 href=new_balance_path Přidat
 
 .row
   .col-sm-5
-    table.table.table-sm
+    table.table
       - balances.each do |balance|
         tr
           td
@@ -19,4 +20,4 @@ p
   .col-sm-5
     #balance-diff
 
-#balances-chart data-url=balances_json_path
+#balances-chart.mt-3 data-url=balances_json_path

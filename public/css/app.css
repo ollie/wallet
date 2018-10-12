@@ -1,40 +1,11 @@
 /* Bootstrap things */
 
-.mt-1 {
-  margin-top: 20px;
-}
-
-.pl-0 {
-  padding-left: 0;
-}
-
-.pr-0 {
-  padding-right: 0;
+.smaller {
+  font-size: 90%;
 }
 
 .list-group-item-condensed {
-  padding: 6px 14px;
-}
-
-.label-light,
-a.label-light:hover,
-a.label-light:focus {
-  background-color: #e3e3e3;
-  color: #444;
-}
-
-.label-dark,
-a.label-dark:hover,
-a.label-dark:focus {
-  color: white;
-}
-
-.badge-light {
-  color: #444;
-}
-
-.nav-tabs-spaced {
-  margin-bottom: 20px;
+  padding: 0.5rem 1rem;
 }
 
 /* Other */
@@ -42,16 +13,4 @@ a.label-dark:focus {
 .js-sortable-handle {
   cursor: ns-resize;
   color: #bbb;
-}
-
-input[type="color"] {
-  padding: 3px 6px;
-  height: 34px;
-}
-
-.color-square {
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-  vertical-align: middle;
 }

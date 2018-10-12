@@ -48,7 +48,10 @@ class HighchartsConfig
 
 class EntryForm
   constructor: ->
-    @expenseButton    = $('.js-expense')
+    @expenseButton = $('.js-expense')
+
+    return unless @expenseButton.length
+
     @incomeButton     = $('.js-income')
     @amount           = $('.js-amount')
     @accountedOnInput = $('#entry-accounted_on')
@@ -132,7 +135,10 @@ class EntryForm
 
 class Tags
   constructor: ->
-    $tags    = $('.js-tags')
+    $tags = $('.js-tags')
+
+    return unless $tags.length
+
     tagsHtml = $tags.html()
 
     $tags.sortable
@@ -171,7 +177,9 @@ class Tags
 class ExpenseChart
   constructor: ->
     @element = $('#chart')
+
     return unless @element.length
+
     @init()
 
   init: ->
@@ -202,6 +210,7 @@ class ExpenseChart
 class BalanceDiff
   constructor: ->
     @elements = $('.js-balance-diff')
+
     return unless @elements.length
 
     @diff  = $('#balance-diff')
@@ -268,7 +277,9 @@ class BalanceDiff
 class BalanceChart
   constructor: ->
     @element = $('#balances-chart')
+
     return unless @element.length
+
     @init()
 
   init: ->

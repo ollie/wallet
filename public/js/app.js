@@ -72,6 +72,9 @@
       this._handleIncomeButtonClick = bind(this._handleIncomeButtonClick, this);
       this._handleExpenseButtonClick = bind(this._handleExpenseButtonClick, this);
       this.expenseButton = $('.js-expense');
+      if (!this.expenseButton.length) {
+        return;
+      }
       this.incomeButton = $('.js-income');
       this.amount = $('.js-amount');
       this.accountedOnInput = $('#entry-accounted_on');
@@ -143,6 +146,9 @@
     function Tags() {
       var $tags, tagsHtml;
       $tags = $('.js-tags');
+      if (!$tags.length) {
+        return;
+      }
       tagsHtml = $tags.html();
       $tags.sortable({
         axis: 'y',
