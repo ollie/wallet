@@ -2,8 +2,8 @@ namespace :assets do
   desc 'Compile assets'
   task :compile do
     cd 'public' do
-      sh 'coffeebar -so     js/app.js     coffee/app.coffee'
-      # sh 'coffeebar -mso    js/app.min.js coffee/app.coffee' # Minified
+      sh 'coffeebar -so  js/app.js     coffee/app.coffee'
+      sh 'coffeebar -mso js/app.min.js coffee/app.coffee' # Minified
     end
   end
 
