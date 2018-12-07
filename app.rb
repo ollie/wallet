@@ -4,7 +4,7 @@ class App < Sinatra::Base
 
   configure do
     config = YAML.safe_load(File.read("#{settings.root}/config/secrets.yml"))
-    config = config.fetch(ENV['RACK_ENV'])
+    config = config.fetch(Settings.environment)
 
     set :login_encrypted_username, config.fetch('login_encrypted_username')
     set :login_encrypted_password, config.fetch('login_encrypted_password')
