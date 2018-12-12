@@ -22,22 +22,6 @@ class Balance < Sequel::Model
     validates_format(/\A\d{4}-\d{2}\z/, :year_month)
   end
 
-  #########################
-  # Public instance methods
-  #########################
-
-  def year
-    @year ||= date.year
-  end
-
-  def month
-    @month ||= date.month
-  end
-
-  def date
-    @date ||= Date.strptime(year_month, '%Y-%m')
-  end
-
   #################
   # Dataset methods
   #################
@@ -77,5 +61,21 @@ class Balance < Sequel::Model
       month = format('%02d', date.month)
       first(year_month: "#{date.year}-#{month}")
     end
+  end
+
+  #########################
+  # Public instance methods
+  #########################
+
+  def year
+    @year ||= date.year
+  end
+
+  def month
+    @month ||= date.month
+  end
+
+  def date
+    @date ||= Date.strptime(year_month, '%Y-%m')
   end
 end

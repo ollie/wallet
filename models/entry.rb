@@ -17,43 +17,6 @@ class Entry < Sequel::Model
     ds.where(primary: true)
   end
 
-  #############
-  # Validations
-  #############
-
-  def validate
-    super
-
-    validates_presence [
-      :amount,
-      :date
-    ]
-  end
-
-  #########################
-  # Public instance methods
-  #########################
-
-  def save_and_handle_tags(params)
-    save
-    setup_tags(params)
-  end
-
-  def setup_tags(params)
-    params_tag_ids = params.dig(:entry, :tag_ids)&.map(&:to_i) || []
-
-    if new?
-      params_tag_ids.each { |tag_id| add_tag(tag_id) }
-    else
-      entry_tag_ids     = tags_dataset.select_map(:id)
-      tag_ids_to_add    = params_tag_ids - entry_tag_ids
-      tag_ids_to_remove = entry_tag_ids - params_tag_ids
-
-      tag_ids_to_add.each    { |tag_id| add_tag(tag_id) }
-      tag_ids_to_remove.each { |tag_id| remove_tag(tag_id) }
-    end
-  end
-
   #################
   # Dataset methods
   #################
@@ -99,6 +62,43 @@ class Entry < Sequel::Model
 
     def expenses
       where { amount < 0 }
+    end
+  end
+
+  #############
+  # Validations
+  #############
+
+  def validate
+    super
+
+    validates_presence [
+      :amount,
+      :date
+    ]
+  end
+
+  #########################
+  # Public instance methods
+  #########################
+
+  def save_and_handle_tags(params)
+    save
+    setup_tags(params)
+  end
+
+  def setup_tags(params)
+    params_tag_ids = params.dig(:entry, :tag_ids)&.map(&:to_i) || []
+
+    if new?
+      params_tag_ids.each { |tag_id| add_tag(tag_id) }
+    else
+      entry_tag_ids     = tags_dataset.select_map(:id)
+      tag_ids_to_add    = params_tag_ids - entry_tag_ids
+      tag_ids_to_remove = entry_tag_ids - params_tag_ids
+
+      tag_ids_to_add.each    { |tag_id| add_tag(tag_id) }
+      tag_ids_to_remove.each { |tag_id| remove_tag(tag_id) }
     end
   end
 end

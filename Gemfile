@@ -4,6 +4,7 @@ gem 'i18n'
 gem 'multi_json'
 gem 'oj'
 gem 'pg'
+gem 'pry', require: false
 gem 'sequel'
 gem 'sequel_pg', require: 'sequel'
 gem 'sequel_postgresql_triggers'
@@ -23,9 +24,8 @@ group :development do
   gem 'capistrano-passenger', require: false
   gem 'capistrano-rbenv', require: false
   gem 'listen', require: false # assets
-  gem 'rubocop', require: false
-  gem 'pry', require: false
   gem 'pry-byebug', require: false
   gem 'pry-doc', require: false
   gem 'puma', require: false
+  gem 'rubocop', require: false
 end

@@ -15,6 +15,48 @@ class Tag < Sequel::Model
 
   many_to_many :entries, join_table: :taggings
 
+  ###############
+  # Class methods
+  ###############
+
+  class << self
+    def most_used_combinations
+      groups = db.fetch(
+        <<~END
+          WITH combinations AS (
+            SELECT array_agg(tag_id ORDER BY tag_id) AS tag_ids
+            FROM taggings
+            GROUP BY entry_id
+          )
+
+          SELECT tag_ids
+          FROM combinations
+          GROUP BY tag_ids
+          ORDER BY count(*) DESC
+        END
+      ).map { |item| item[:tag_ids] }
+
+      tag_ids = Set.new
+      groups.each { |group| group.each { |tag_id| tag_ids << tag_id } }
+      tags = Tag.where(id: tag_ids.to_a).all
+      index = {}
+      tags.each { |tag| index[tag.id] = tag }
+
+      groups = groups.map { |group| group.map { |tag_id| index[tag_id] } }
+      groups.each { |group| group.sort! { |a, b| a.position <=> b.position } }
+    end
+  end
+
+  #################
+  # Dataset methods
+  #################
+
+  dataset_module do
+    def ordered
+      order(:position)
+    end
+  end
+
   #############
   # Validations
   #############
@@ -49,38 +91,6 @@ class Tag < Sequel::Model
     super
   end
 
-  ###############
-  # Class methods
-  ###############
-
-  class << self
-    def most_used_combinations
-      groups = db.fetch(
-        <<~END
-          WITH combinations AS (
-            SELECT array_agg(tag_id ORDER BY tag_id) AS tag_ids
-            FROM taggings
-            GROUP BY entry_id
-          )
-
-          SELECT tag_ids
-          FROM combinations
-          GROUP BY tag_ids
-          ORDER BY count(*) DESC
-        END
-      ).map { |item| item[:tag_ids] }
-
-      tag_ids = Set.new
-      groups.each { |group| group.each { |tag_id| tag_ids << tag_id } }
-      tags = Tag.where(id: tag_ids.to_a).all
-      index = {}
-      tags.each { |tag| index[tag.id] = tag }
-
-      groups = groups.map { |group| group.map { |tag_id| index[tag_id] } }
-      groups.each { |group| group.sort! { |a, b| a.position <=> b.position } }
-    end
-  end
-
   #########################
   # Public instance methods
   #########################
@@ -96,15 +106,5 @@ class Tag < Sequel::Model
     return @is_light if defined?(@is_light)
     return @is_light = false unless color
     @is_light = !dark?
-  end
-
-  #################
-  # Dataset methods
-  #################
-
-  dataset_module do
-    def ordered
-      order(:position)
-    end
   end
 end
