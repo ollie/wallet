@@ -5,6 +5,7 @@ gem 'multi_json'
 gem 'oj'
 gem 'pg'
 gem 'pry', require: false
+gem 'rake', require: false
 gem 'sequel'
 gem 'sequel_pg', require: 'sequel'
 gem 'sequel_postgresql_triggers'
