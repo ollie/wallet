@@ -1,5 +1,5 @@
 doctype html
-html lang="cs"
+html.h-100 lang="cs"
   head
     meta charset="utf-8"
     meta name="viewport" content="width=device-width, initial-scale=1"
@@ -19,7 +19,8 @@ html lang="cs"
     - else
       script src="/coffee/app.coffee" type="text/coffeescript"
       script src="/compilers/coffeescript-2.3.2.min.js"
-  body
-    .container.pt-3.pb-5
-      == partial_slim 'layouts/_menu'
-      == yield
+  body.h-100
+    .container-fluid.h-100.py-3
+      .d-flex.justify-content-center.align-items-center.h-100
+        div style="width: 25rem; padding-bottom: 15rem;"
+          == yield
