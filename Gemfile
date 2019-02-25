@@ -14,7 +14,6 @@ gem 'sequel_postgresql_triggers'
 
 group :web do
   gem 'sinatra', require: 'sinatra/base'
-  # gem 'sinatra-flash'
   gem 'slim'
 end
 
