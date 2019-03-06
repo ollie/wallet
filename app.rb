@@ -54,7 +54,11 @@ class App < Sinatra::Base
     end
 
     def l(key, options = nil)
-      I18n.l(key, options)
+      if options
+        I18n.l(key, **options)
+      else
+        I18n.l(key)
+      end
     end
 
     def pagination_date

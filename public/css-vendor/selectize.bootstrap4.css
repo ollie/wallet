@@ -137,8 +137,8 @@
     background: #fff;
     cursor: default; }
   .selectize-dropdown .active {
-    background-color: #007bff;
-    color: #fff; }
+    background-color: #f8f9fa;
+    color: #16181b; }
     .selectize-dropdown .active.create {
       color: #16181b; }
   .selectize-dropdown .create {
@@ -312,7 +312,7 @@
   height: 0;
   margin: 0.5rem 0;
   overflow: hidden;
-  border-top: 1px solid #e5e5e5;
+  border-top: 1px solid #e9ecef;
   margin-left: -0.75rem;
   margin-right: -0.75rem; }
 
@@ -328,6 +328,9 @@
 .selectize-input {
   min-height: calc(2.25rem + 2px);
   transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out; }
+  @media screen and (prefers-reduced-motion: reduce) {
+    .selectize-input {
+      transition: none; } }
   .selectize-input.dropdown-active {
     -webkit-border-radius: 0.25rem;
     -moz-border-radius: 0.25rem;
@@ -347,6 +350,13 @@
     border-color: #bd2130;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #eb8c95;
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 6px #eb8c95; }
+
+.selectize-control.form-control-sm .selectize-input.has-items {
+  min-height: calc(1.8125rem + 2px) !important;
+  height: calc(1.8125rem + 2px) !important;
+  padding: 0.25rem 0.5rem !important;
+  font-size: 0.875rem;
+  line-height: 1.5; }
 
 .selectize-control.multi .selectize-input.has-items {
   padding-left: calc(0.75rem - 3px);
