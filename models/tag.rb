@@ -21,28 +21,31 @@ class Tag < Sequel::Model
 
   class << self
     def most_used_combinations
-      groups = db.fetch(
-        <<~END
-          WITH combinations AS (
-            SELECT array_agg(tag_id ORDER BY tag_id) AS tag_ids
-            FROM taggings
-            GROUP BY entry_id
-          )
+      nakup   = Tag.first(name: 'Nákup')
+      kavarna = Tag.first(name: 'Kavárna')
+      auto    = Tag.first(name: 'Auto')
+      leky    = Tag.first(name: 'Léky')
+      benzin  = Tag.first(name: 'Benzín')
 
-          SELECT tag_ids
-          FROM combinations
-          GROUP BY tag_ids
-          ORDER BY count(*) DESC
-        END
-      ).map { |item| item[:tag_ids] }
+      kartou = Tag.first(name: 'Kartou')
+      csob   = Tag.first(name: 'ČSOB')
+      kb     = Tag.first(name: 'KB')
+      cash   = Tag.first(name: 'Cash')
 
-      tag_ids = Set.new
-      groups.each { |group| group.each { |tag_id| tag_ids << tag_id } }
-      tags = Tag.where(id: tag_ids.to_a).all
-      index = {}
-      tags.each { |tag| index[tag.id] = tag }
+      groups = [
+        [nakup, kartou, csob],
+        [nakup, kartou, kb],
+        [kavarna, kartou, csob],
+        [kavarna, kartou, kb],
+        [leky, kartou, csob],
+        [leky, kartou, kb],
+        [auto, benzin, kartou, kb],
+        [auto, cash]
+      ].map do |group|
+        next if group.any?(&:nil?)
+        group
+      end.compact
 
-      groups = groups.map { |group| group.map { |tag_id| index[tag_id] } }
       groups.each { |group| group.sort! { |a, b| a.position <=> b.position } }
     end
   end

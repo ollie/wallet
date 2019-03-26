@@ -16,13 +16,20 @@ class App < Sinatra::Base
     route_path = hash[route_name]
 
     helpers do
-      define_method("#{route_name}_path") do |id = nil|
-        if route_path =~ /:id/
-          raise ArgumentError, "Missing :id parameter for route #{route_path}" unless id
-          route_path.gsub(':id', id.to_s)
-        else
-          route_path
-        end
+      define_method("#{route_name}_path") do |*args|
+        id        = args.first if args.first && !args.first.is_a?(Hash)
+        qs_params = args.last  if args.last.is_a?(Hash)
+
+        path =
+          if route_path =~ /:id/
+            raise ArgumentError, "Missing :id parameter for route #{route_path}" unless id
+            route_path.gsub(':id', id.to_s)
+          else
+            route_path
+          end
+
+        path += qs(qs_params) if qs_params
+        path
       end
     end
 
@@ -118,6 +125,15 @@ class App < Sinatra::Base
       end
     end
 
+    def entry_year_month_qs_params(entry)
+      date = entry.accounted_on || pagination_date
+
+      {
+        year: date.year,
+        month: date.month
+      }
+    end
+
     def qs_tag_ids(entry)
       tag_ids = entry.tags_dataset.select_map(:id)
 
@@ -160,7 +176,11 @@ class App < Sinatra::Base
 
       encoded_params = serialize_qs(params)
 
-      "?#{encoded_params}"
+      if encoded_params.empty?
+        ''
+      else
+        "?#{encoded_params}"
+      end
     end
 
     def serialize_qs(params)
@@ -261,7 +281,7 @@ class App < Sinatra::Base
 
     if entry.valid?
       entry.save_and_handle_tags(params)
-      redirect(params[:back_url] || entries_path)
+      redirect(entries_path(entry_year_month_qs_params(entry)))
     else
       slim :'entries/new', locals: {
         entry: entry
@@ -281,7 +301,7 @@ class App < Sinatra::Base
 
     if entry.valid?
       entry.save_and_handle_tags(params)
-      redirect(params[:back_url] || entries_path)
+      redirect(entries_path(entry_year_month_qs_params(entry)))
     else
       slim :'entries/edit', locals: {
         entry: entry
@@ -292,7 +312,7 @@ class App < Sinatra::Base
   post Route(delete_entry: '/entries/:id/delete') do
     entry = Entry.with_pk!(params[:id])
     entry.destroy
-    redirect entries_path
+    redirect entries_path(entry_year_month_qs_params(entry))
   end
 
   ######

@@ -28,7 +28,7 @@
                   - entry.tags.each do |tag|
                     a.badge.badge-secondary(
                       class=('badge-light' if !tag.color || tag.light?)
-                      href=(tag_path(tag.id) + qs(year: pagination_date.year, month: pagination_date.month))
+                      href=(tag_path(tag.id, year: pagination_date.year, month: pagination_date.month))
                       style=("background-color: #{tag.color};" if tag.color)
                     ) = tag.name
                 td.text-right

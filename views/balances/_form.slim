@@ -40,6 +40,6 @@ form action=url method="post"
       ) = balance.note
 
   .form-group.row
-    .offset-sm-3.col-sm-9
-      button.btn.btn-outline-primary> = (locals[:edit] ? 'Uložit' : 'Přidat')
+    .offset-sm-2.col-sm-10
+      button.btn.btn-outline-primary> = balance.new? ? 'Přidat' : 'Uložit'
       a.btn.btn-outline-secondary href=balances_path Storno

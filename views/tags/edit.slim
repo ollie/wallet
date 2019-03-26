@@ -2,7 +2,7 @@ h1.mt-3.mb-3 = title "Upravit štítek #{tag.name}"
 
 .row
   .col-sm-6
-    == partial_slim 'tags/_form', tag: tag, url: edit_tag_path(tag.id), edit: true
+    == partial_slim 'tags/_form', tag: tag, url: edit_tag_path(tag.id)
 
   .col-sm-6.text-right
     form action=delete_tag_path(tag.id) method="post" data-confirm="Opravdu chcete smazat štítek?"

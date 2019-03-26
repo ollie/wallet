@@ -1,8 +1,11 @@
 h1.mt-3.mb-3 = title "Upravit bilanci #{l(balance.date, format: :month_year)}"
 
+- unless balance.date.year == Date.today.year && balance.date.month == Date.today.month
+  .alert.alert-warning Pozor, starší záznam.
+
 .row
   .col-sm-6
-    == partial_slim 'balances/_form', balance: balance, url: edit_balance_path(balance.id), edit: true
+    == partial_slim 'balances/_form', balance: balance, url: edit_balance_path(balance.id)
 
   .col-sm-6.text-right
     form action=delete_balance_path(balance.id) method="post" data-confirm="Opravdu chcete smazat položku?"
