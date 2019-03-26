@@ -39,6 +39,21 @@
                     a href=(new_entry_path + "?entry[amount]=#{entry.amount}&entry[date]=#{this_month_date(entry.date)}&entry[accounted_on]=#{this_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}") title="Opakovat"
                       == icon(:sync)
 
+          - incomes  = entries.incomes_sum
+          - expenses = entries.expenses_sum
+          - incomes_and_expenses = !incomes.zero? && !expenses.zero?
+          - unless incomes.zero? && expenses.zero?
+            tr
+              - unless incomes.zero?
+                th.table-active colspan=(incomes_and_expenses ? '2' : '4')
+                  = 'Příjmy '
+                  == formatted_amount(incomes)
+              - unless expenses.zero?
+                th.table-active colspan=(incomes_and_expenses ? '2' : '4')
+                  = 'Výdaje '
+                  == formatted_amount(expenses)
+              th.table-active
+
     - if locals[:stats]
       == partial_slim 'entries/_stats', entries: entries
 

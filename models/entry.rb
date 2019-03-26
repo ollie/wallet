@@ -63,6 +63,14 @@ class Entry < Sequel::Model
     def expenses
       where { amount < 0 }
     end
+
+    def incomes_sum
+      incomes.sum(:amount) || 0
+    end
+
+    def expenses_sum
+      expenses.sum(:amount) || 0
+    end
   end
 
   #############

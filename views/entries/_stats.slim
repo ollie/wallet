@@ -1,7 +1,7 @@
 - previous_balance = Balance.by_date(previous_month)
 - ending_balance   = Balance.by_date(pagination_date)
-- incomes  = entries.incomes.sum(:amount) || 0
-- expenses = entries.expenses.sum(:amount) || 0
+- incomes  = entries.incomes_sum
+- expenses = entries.expenses_sum
 - change   = incomes + expenses
 
 - if previous_balance
