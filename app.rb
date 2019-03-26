@@ -315,6 +315,14 @@ class App < Sinatra::Base
     redirect entries_path(entry_year_month_qs_params(entry))
   end
 
+  ##########
+  # Calendar
+  ##########
+
+  get Route(calendar: '/calendar') do
+    slim :'calendar/index'
+  end
+
   ######
   # Tags
   ######
