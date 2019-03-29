@@ -81,5 +81,5 @@ form action=url method="post"
 
   .form-group.row
     .offset-sm-2.col-sm-9
-      button.btn.btn-outline-primary> = entry.new? ? 'Přidat' : 'Uložit'
+      button.btn.btn-outline-primary> = locals[:edit] ? 'Uložit' : 'Přidat'
       a.btn.btn-outline-secondary href=entries_path(entry_year_month_qs_params(entry)) Storno

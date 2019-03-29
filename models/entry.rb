@@ -90,6 +90,24 @@ class Entry < Sequel::Model
   # Public instance methods
   #########################
 
+  def prepare_for_duplication
+    today = Date.today
+
+    self.date =
+      begin
+        Date.new(today.year, today.month, date.day)
+      rescue ArgumentError
+        Date.new(today.year, today.month, -1)
+      end
+
+    self.accounted_on =
+      begin
+        Date.new(today.year, today.month, accounted_on.day)
+      rescue ArgumentError
+        Date.new(today.year, today.month, -1)
+      end
+  end
+
   def save_and_handle_tags(params)
     save
     setup_tags(params)

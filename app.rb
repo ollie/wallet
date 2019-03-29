@@ -11,189 +11,9 @@ class App < Sinatra::Base
   set :sessions, expire_after: 2.days
   set :session_secret, Settings.secrets.session_secret
 
-  def self.Route(hash)
-    route_name = hash.keys.first
-    route_path = hash[route_name]
-
-    helpers do
-      define_method("#{route_name}_path") do |*args|
-        id        = args.first if args.first && !args.first.is_a?(Hash)
-        qs_params = args.last  if args.last.is_a?(Hash)
-
-        path =
-          if route_path =~ /:id/
-            raise ArgumentError, "Missing :id parameter for route #{route_path}" unless id
-            route_path.gsub(':id', id.to_s)
-          else
-            route_path
-          end
-
-        path += qs(qs_params) if qs_params
-        path
-      end
-    end
-
-    route_path
-  end
-
-  helpers do
-    def partial_slim(template, locals = {})
-      slim(template.to_sym, layout: false, locals: locals)
-    end
-
-    def title(text = nil, head: false)
-      return @title = text if text
-      return [@title, t('title')].compact.join(' – ') if head
-
-      @title
-    end
-
-    def icon(filename)
-      @@icon_cache ||= {}
-      @@icon_cache[filename] ||= begin
-        svg = Settings.root.join('public/svg/octicons', "#{filename}.svg").read
-        %(<span class="octicon">#{svg}</span>)
-      end
-    end
-
-    def t(key, options = nil)
-      I18n.t(key, options)
-    end
-
-    def l(key, options = nil)
-      if options
-        I18n.l(key, **options)
-      else
-        I18n.l(key)
-      end
-    end
-
-    def pagination_date
-      @pagination_date ||= begin
-        year  = params[:year]&.to_i  || Date.today.year
-        month = params[:month]&.to_i || Date.today.month
-
-        Date.new(year, month)
-      end
-    end
-
-    def previous_month
-      @previous_month ||= begin
-        if pagination_date.month == 1
-          Date.new(pagination_date.year - 1, 12)
-        else
-          Date.new(pagination_date.year, pagination_date.month - 1)
-        end
-      end
-    end
-
-    def next_month
-      return @next_month if defined?(@next_month)
-
-      @next_month = nil
-      today = Date.today
-
-      return @next_month if pagination_date.year > today.year || pagination_date.year == today.year && pagination_date.month >= today.month
-
-      next_month = if pagination_date.month == 12
-                     Date.new(pagination_date.year + 1, 1)
-                   else
-                     Date.new(pagination_date.year, pagination_date.month + 1)
-                   end
-
-      @next_month = next_month
-    end
-
-    def prefilled_date(date)
-      return date if date
-
-      today = Date.today
-
-      if pagination_date.year == today.year && pagination_date.month == today.month
-        Date.today
-      elsif pagination_date < today
-        Date.new(pagination_date.year, pagination_date.month, -1)
-      end
-    end
-
-    def this_month_date(date)
-      today = Date.today
-      begin
-        Date.new(today.year, today.month, date.day)
-      rescue ArgumentError
-        Date.new(today.year, today.month, -1)
-      end
-    end
-
-    def entry_year_month_qs_params(entry)
-      date = entry.accounted_on || pagination_date
-
-      {
-        year: date.year,
-        month: date.month
-      }
-    end
-
-    def qs_tag_ids(entry)
-      tag_ids = entry.tags_dataset.select_map(:id)
-
-      return if tag_ids.empty?
-
-      ''.tap do |s|
-        s << '&'
-        s << tag_ids
-             .map { |tag_id| "entry[tag_ids][]=#{tag_id}" }
-             .join('&')
-      end
-    end
-
-    def formatted_amount(amount, plus: true, format: '%+.02f')
-      format = '%.02f' unless plus
-      format(format, amount).tap do |s|
-        s.reverse!
-        s.gsub!(/(\d{3})(\d)/, '\1 \2')
-        s.tr!('.', ',')
-        s.reverse!
-        s << ' Kč'
-        s.gsub!(' ', '&nbsp;')
-      end
-    end
-
-    def formatted_date(date)
-      l(date).gsub!(' ', '&nbsp;')
-    end
-
-    def sort_by
-      sort_by = params[:sort_by]
-      return if sort_by.nil? || sort_by.empty?
-      sort_by.to_sym
-    end
-
-    def qs(hash)
-      params = self.params.except('captures', 'splat', 'id')
-      params.merge!(hash.stringify_keys)
-      params.scrub!
-
-      encoded_params = serialize_qs(params)
-
-      if encoded_params.empty?
-        ''
-      else
-        "?#{encoded_params}"
-      end
-    end
-
-    def serialize_qs(params)
-      serialized_params = []
-
-      params.each do |key, value|
-        next if value.is_a?(Hash)
-        serialized_params << "#{CGI.escape(key.to_s)}=#{CGI.escape(value.to_s)}"
-      end
-
-      serialized_params.join('&')
-    end
-  end
+  register Sinatra::Routing
+  helpers Sinatra::CommonHelpers
+  helpers Sinatra::AppHelpers
 
   #######
   # Hooks
@@ -292,6 +112,15 @@ class App < Sinatra::Base
   get Route(edit_entry: '/entries/:id/edit') do
     slim :'entries/edit', locals: {
       entry: Entry.with_pk!(params[:id])
+    }
+  end
+
+  get Route(duplicate_entry: '/entries/:id/duplicate') do
+    entry = Entry.with_pk!(params[:id])
+    entry.prepare_for_duplication
+
+    slim :'entries/new', locals: {
+      entry: entry
     }
   end
 

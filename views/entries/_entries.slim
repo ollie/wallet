@@ -36,7 +36,7 @@
                     == formatted_date(entry.date)
                 td
                   - if entry.accounted_on
-                    a href=(new_entry_path + "?entry[amount]=#{entry.amount}&entry[date]=#{this_month_date(entry.date)}&entry[accounted_on]=#{this_month_date(entry.accounted_on)}&entry[note]=#{entry.note}#{qs_tag_ids(entry)}") title="Opakovat"
+                    a href=duplicate_entry_path(entry.id) title="Opakovat"
                       == icon(:sync)
 
           - incomes  = entries.incomes_sum
