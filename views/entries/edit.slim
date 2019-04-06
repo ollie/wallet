@@ -1,6 +1,7 @@
 h1.mt-3.mb-3 = title "Upravit položku z #{l(pagination_date, format: :month_year)}"
 
-.alert.alert-warning Pozor, existující záznam.
+- if entry.accounted_on
+  .alert.alert-warning Pozor, existující záznam.
 
 .row
   .col-sm-6
