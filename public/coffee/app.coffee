@@ -183,7 +183,7 @@ class ExpenseChart
     @init()
 
   init: ->
-    $.getJSON @element.data('url'), (data) ->
+    $.getJSON @element.data('url'), (data) =>
       data = data.map (item) ->
         name: item.name
         data: [Number(item.sum)]
@@ -203,7 +203,7 @@ class ExpenseChart
         #     animation: 500
         series: data
 
-      Highcharts.chart('chart', options)
+      Highcharts.chart(@element.attr('id'), options)
 
 
 
