@@ -39,4 +39,4 @@
             == formatted_amount(balance_error)
 
   - unless expenses.zero?
-    #chart data-url=(expenses_path(year: pagination_date.year, month: pagination_date.month))
+    #chart data-url=expenses_json_path(year: pagination_date.year, month: pagination_date.month)

@@ -1,4 +1,4 @@
-# TODO: Test all error messages nad translate them.
+# TODO: Test all error messages and translate them.
 class Entry < Sequel::Model
   #########
   # Plugins
@@ -29,7 +29,7 @@ class Entry < Sequel::Model
       to   = Date.new(date.year, date.month, -1)
 
       ds = if date.year == Date.today.year && date.month == Date.today.month
-             where(Sequel.lit('(:column BETWEEN :from AND :to OR :column IS NULL)', column: sort_by, from: from, to: to))
+             where(Sequel.lit(':column BETWEEN :from AND :to OR :column IS NULL', column: sort_by, from: from, to: to))
            else
              where(sort_by => from..to)
            end

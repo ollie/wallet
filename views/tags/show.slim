@@ -1,3 +1,5 @@
 h1.mt-3.mb-3 = title "#{tag.name} za #{l(pagination_date, format: :month_year)}"
 
 == partial_slim 'entries/_entries', entries: tag.entries_dataset.by_month(pagination_date, sort_by: sort_by)
+
+#tag-entries-chart.mt-3 data-url=tag_entries_json_path(tag.id, year: pagination_date.year, month: pagination_date.month)

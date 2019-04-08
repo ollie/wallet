@@ -48,6 +48,58 @@ class Tag < Sequel::Model
 
       groups.each { |group| group.sort! { |a, b| a.position <=> b.position } }
     end
+
+    def data_for_chart(tag_id:, date:, sort_by:)
+      sort_by ||= :accounted_on
+
+      ds = Tag.with_pk!(tag_id).entries_dataset
+      to = Date.new(date.year, date.month, -1)
+      ds = if date.year == Date.today.year && date.month == Date.today.month
+             ds.where(Sequel.lit(':column <= :to OR :column IS NULL', column: sort_by, to: to))
+           else
+             ds.where(Sequel.lit(':column <= :to', column: sort_by, to: to))
+           end
+      ds = ds.select(Sequel.lit('sum(amount)').as(:amount), Sequel.lit("date_trunc('month', :column)::date", column: sort_by).as(:year_month))
+
+      incomes  = ds.where(Sequel.lit('amount >= 0')).group(:year_month).order(:year_month).all
+      expenses = ds.where(Sequel.lit('amount < 0')).group(:year_month).order(:year_month).all
+
+      start_date = [(incomes.first && incomes.first[:year_month]), (expenses.first && expenses.first[:year_month])].compact.min
+
+      return [] unless start_date
+
+      end_date = Date.new(date.year, date.month, 1)
+
+      date = start_date
+
+      [].tap do |data|
+        loop do
+          item = {
+            date: date
+          }
+
+          item[:incomes] =
+            if incomes.first && incomes.first[:year_month] == date
+              incomes.shift[:amount]
+            else
+              0.to_d
+            end
+
+          item[:expenses] =
+            if expenses.first && expenses.first[:year_month] == date
+             -expenses.shift[:amount]
+            else
+              0.to_d
+            end
+
+          data << item
+
+          break if date == end_date
+
+          date = date.next_month
+        end
+      end
+    end
   end
 
   #################

@@ -66,7 +66,7 @@ class App < Sinatra::Base
     end
   end
 
-  get Route(expenses: '/entries/expenses.json') do
+  get Route(expenses_json: '/entries/expenses.json') do
     tags = {}
 
     Entry.expenses.by_month(pagination_date).eager(:tags).each do |entry|
@@ -231,6 +231,11 @@ class App < Sinatra::Base
     }
   end
 
+  get Route(tag_entries_json: '/tags/:id/entries.json') do
+    data = Tag.data_for_chart(tag_id: params[:id], date: pagination_date, sort_by: sort_by)
+    MultiJson.dump(data)
+  end
+
   ##########
   # Balances
   ##########
@@ -253,8 +258,6 @@ class App < Sinatra::Base
   end
 
   get Route(new_balance: '/balances/new') do
-    today = Date.today
-
     slim :'balances/new', locals: {
       balance: Balance.new(year_month: Date.today.strftime('%Y-%m'))
     }
