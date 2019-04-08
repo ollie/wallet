@@ -473,7 +473,7 @@
                   text: 'Vše'
                 }
               ],
-              selected: 1,
+              selected: 0,
               inputBoxWidth: 100,
               inputDateFormat: '%B %Y',
               inputEditDateFormat: '%d. %m. %Y'
