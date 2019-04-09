@@ -43,4 +43,4 @@ form action=url method="post"
   .form-group.row
     .offset-sm-2.col-sm-10
       button.btn.btn-outline-primary> = tag.new? ? 'Přidat' : 'Uložit'
-      a.btn.btn-outline-secondary href=tags_path Storno
+      a.btn.btn-outline-secondary href=tag_path(tag.id) Storno

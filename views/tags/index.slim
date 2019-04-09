@@ -13,14 +13,13 @@
             .col-sm-2.text-center
               span.js-sortable-handle == icon(:grabber)
             .col-sm-6.pl-0
-              a href=edit_tag_path(tag.id)
+              a href=tag_path(tag.id)
                 = tag.name
             .col-sm-2.pr-0
               - if tag.primary
                 == icon(:check)
             .col-sm-2.pl-0.text-right
-              a href=tag_path(tag.id)
-                span.badge.badge-secondary(
-                  class=('badge-light' if tag.light?)
-                  style=("background-color: #{tag.color};" if tag.color)
-                ) = tag.entries_count
+              span.badge.badge-secondary(
+                class=('badge-light' if tag.light?)
+                style=("background-color: #{tag.color};" if tag.color)
+              ) = tag.entries_count

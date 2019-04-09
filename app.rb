@@ -200,7 +200,7 @@ class App < Sinatra::Base
 
     if tag.valid?
       tag.save
-      redirect tags_path
+      redirect tag_path(tag.id)
     else
       slim :'tags/edit', locals: {
         tag: tag

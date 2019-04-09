@@ -1,4 +1,8 @@
-h1.mt-3.mb-3 = title "#{tag.name} za #{l(pagination_date, format: :month_year)}"
+.row.mt-3
+  .col-sm-10
+    h1.mb-3 = title "#{tag.name} za #{l(pagination_date, format: :month_year)}"
+  .col-sm-2.text-right
+    a.btn.btn-outline-primary.w-100.mb-3 href=edit_tag_path(tag.id) Upravit
 
 == partial_slim 'entries/_entries', entries: tag.entries_dataset.by_month(pagination_date, sort_by: sort_by)
 
