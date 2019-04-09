@@ -71,34 +71,54 @@ class Tag < Sequel::Model
       end_date = Date.new(date.year, date.month, 1)
 
       date = start_date
+      data = []
 
-      [].tap do |data|
-        loop do
-          item = {
-            date: date
-          }
+      loop do
+        item_incomes =
+          if incomes.first && incomes.first[:year_month] == date
+            incomes.shift[:amount]
+          else
+            0.to_d
+          end
 
-          item[:incomes] =
-            if incomes.first && incomes.first[:year_month] == date
-              incomes.shift[:amount]
-            else
-              0.to_d
-            end
+        item_expenses =
+          if expenses.first && expenses.first[:year_month] == date
+           expenses.shift[:amount]
+          else
+            0.to_d
+          end
 
-          item[:expenses] =
-            if expenses.first && expenses.first[:year_month] == date
-             -expenses.shift[:amount]
-            else
-              0.to_d
-            end
+        item_total = item_incomes + item_expenses
 
-          data << item
+        item = {
+          date:     date,
+          total:    item_total,
+          incomes:  item_incomes,
+          expenses: -item_expenses
+        }
 
-          break if date == end_date
+        data << item
 
-          date = date.next_month
+        break if date == end_date
+
+        date = date.next_month
+      end
+
+      if data.all? { |i| i[:incomes] == 0 }
+        data.each do |i|
+          i.delete(:total)
+          i.delete(:incomes)
         end
       end
+
+      if data.all? { |i| i[:expenses] == 0 }
+        data.each do |i|
+          i.delete(:total)
+          i.delete(:expenses)
+        end
+      end
+
+      data
     end
   end
 

@@ -364,6 +364,9 @@
           series.expenses.data.push([date, expenses]);
         }
         options = {
+          chart: {
+            height: 500
+          },
           type: 'line',
           series: [series.total, series.incomes, series.expenses],
           // plotOptions:
@@ -407,19 +410,34 @@
 
     init() {
       return $.getJSON(this.element.data('url'), (data) => {
-        var date, expenses, incomes, item, j, len, options, series;
+        var date, expenses, incomes, item, j, len, options, series, total;
         series = {
-          incomes: {
-            name: 'Příjmy',
+          total: {
+            name: 'Celkem',
             showInNavigator: true,
-            color: '#108A00',
+            color: '#fedd44',
             lineWidth: 4,
             type: 'line',
             index: 1,
             marker: {
               lineWidth: 4,
               radius: 6,
-              lineColor: '#7cb5ec',
+              lineColor: '#fedd44',
+              fillColor: 'white'
+            },
+            data: []
+          },
+          incomes: {
+            name: 'Příjmy',
+            showInNavigator: true,
+            color: '#108A00',
+            lineWidth: 4,
+            type: 'line',
+            index: 2,
+            marker: {
+              lineWidth: 4,
+              radius: 6,
+              lineColor: '#108A00',
               fillColor: 'white'
             },
             data: []
@@ -430,11 +448,11 @@
             color: '#C73C35',
             lineWidth: 4,
             type: 'line',
-            index: 2,
+            index: 3,
             marker: {
               lineWidth: 4,
               radius: 6,
-              lineColor: '#7cb5ec',
+              lineColor: '#C73C35',
               fillColor: 'white'
             },
             data: []
@@ -443,14 +461,19 @@
         for (j = 0, len = data.length; j < len; j++) {
           item = data[j];
           date = Date.parse(item.date);
+          total = Number(item.total);
           incomes = Number(item.incomes);
           expenses = Number(item.expenses);
+          series.total.data.push([date, total]);
           series.incomes.data.push([date, incomes]);
           series.expenses.data.push([date, expenses]);
         }
         options = {
+          chart: {
+            height: 500
+          },
           type: 'line',
-          series: [series.incomes, series.expenses],
+          series: [series.total, series.incomes, series.expenses],
           // plotOptions:
           //   series:
           //     animation: 500
