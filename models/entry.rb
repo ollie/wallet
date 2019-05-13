@@ -95,14 +95,14 @@ class Entry < Sequel::Model
 
     self.date =
       begin
-        Date.new(today.year, today.month, date.day)
+        today
       rescue ArgumentError
         Date.new(today.year, today.month, -1)
       end
 
     self.accounted_on =
       begin
-        Date.new(today.year, today.month, accounted_on.day)
+        today
       rescue ArgumentError
         Date.new(today.year, today.month, -1)
       end
