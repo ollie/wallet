@@ -42,7 +42,7 @@ module Sinatra
       today = Date.today
 
       if pagination_date.year == today.year && pagination_date.month == today.month
-        Date.today
+        nil
       elsif pagination_date < today
         Date.new(pagination_date.year, pagination_date.month, -1)
       end
