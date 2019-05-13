@@ -35,9 +35,9 @@ class Entry < Sequel::Model
            end
 
       if sort_by == :date
-        ds.order(Sequel.desc(:date), Sequel.desc(:accounted_on), Sequel.desc(:id))
+        ds.order(Sequel.desc(:date), Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:id))
       else
-        ds.order(Sequel.desc(:accounted_on), Sequel.desc(:date), Sequel.desc(:id))
+        ds.order(Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:date), Sequel.desc(:id))
       end
     end
 
