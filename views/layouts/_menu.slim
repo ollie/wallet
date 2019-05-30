@@ -10,9 +10,9 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
     ul.navbar-nav.mr-auto
       li.nav-item class=('active' if request.path =~ %r{^#{entries_path}})
         a.nav-link href=entries_path Položky
+      li.nav-item class=('active' if request.path =~ %r{^#{balances_path}})
+        a.nav-link href=balances_path Bilance
       li.nav-item class=('active' if request.path =~ %r{^#{calendar_path}})
         a.nav-link href=calendar_path Kalendář
       li.nav-item class=('active' if request.path =~ %r{^#{tags_path}})
         a.nav-link href=tags_path Štítky
-      li.nav-item class=('active' if request.path =~ %r{^#{balances_path}})
-        a.nav-link href=balances_path Bilance

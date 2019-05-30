@@ -32,12 +32,15 @@ form action=url method="post"
 
   .form-group.row
     label.col-sm-2.col-form-label for="balance-note" Poznámka
-    .col-sm-10
+    .col-sm-8
       textarea.form-control(
         name="balance[note]"
         id="balance-note"
         rows="1"
       ) = balance.note
+    .col-sm-2.pl-0
+      a.js-bilances-sum.btn.btn-light href="" title="Sečíst"
+        == icon('plus')
 
   .form-group.row
     .offset-sm-2.col-sm-10
