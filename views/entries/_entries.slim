@@ -4,9 +4,9 @@
 
   ul.nav.nav-tabs.mb-3
     li.nav-item
-      a.nav-link class=('active' if sort_by != :date) href=qs(sort_by: nil) Podle data zaúčtování
+      a.nav-link class=('active' if sort_by != :date) href=path_with_qs(sort_by: nil) Podle data zaúčtování
     li.nav-item
-      a.nav-link class=('active' if sort_by == :date) href=qs(sort_by: :date) Podle data zaplacení
+      a.nav-link class=('active' if sort_by == :date) href=path_with_qs(sort_by: :date) Podle data zaplacení
 
   .row
     .col-sm-8
