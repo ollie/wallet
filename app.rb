@@ -2,8 +2,6 @@ class App < Sinatra::Base
   configure do
     Settings.database
     Settings.setup_i18n
-    Settings.load_files('lib/**')
-    Settings.load_files('models/**')
   end
 
   set :slim, layout: :'layouts/application',
@@ -20,6 +18,8 @@ class App < Sinatra::Base
   #######
 
   before do
+    Settings.autoloader.reload if Settings.development?
+
     pass if request.path == new_session_path
     pass if Login.valid?(session[:encrypted_username], session[:encrypted_password])
 

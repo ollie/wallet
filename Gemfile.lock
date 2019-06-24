@@ -86,6 +86,7 @@ GEM
     tilt (2.0.9)
     unicode-display_width (1.6.0)
     yard (0.9.19)
+    zeitwerk (2.1.6)
 
 PLATFORMS
   ruby
@@ -110,6 +111,7 @@ DEPENDENCIES
   sequel_postgresql_triggers
   sinatra
   slim
+  zeitwerk
 
 BUNDLED WITH
    1.17.3

@@ -9,6 +9,7 @@ gem 'rake', require: false
 gem 'sequel'
 gem 'sequel_pg', require: 'sequel'
 gem 'sequel_postgresql_triggers'
+gem 'zeitwerk'
 
 # Modes
 
