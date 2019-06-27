@@ -64,7 +64,7 @@
       this._handleExpenseButtonClick = this._handleExpenseButtonClick.bind(this);
       this._handleIncomeButtonClick = this._handleIncomeButtonClick.bind(this);
       this._handleAmountInput = this._handleAmountInput.bind(this);
-      this._handleCopyAccountedOn = this._handleCopyAccountedOn.bind(this);
+      this._handleCopyDateClick = this._handleCopyDateClick.bind(this);
       this._handleTagCombinationClick = this._handleTagCombinationClick.bind(this);
       this.expenseButton = $('.js-expense');
       if (!this.expenseButton.length) {
@@ -74,12 +74,12 @@
       this.amount = $('.js-amount');
       this.accountedOnInput = $('#entry-accounted_on');
       this.dateInput = $('#entry-date');
-      this.copyAccountedOn = $('.js-copy-accounted-on');
+      this.copyDate = $('.js-copy-date');
       this.tagCombinations = $('.js-tag-combination');
       this.expenseButton.on('click', this._handleExpenseButtonClick);
       this.incomeButton.on('click', this._handleIncomeButtonClick);
       this.amount.on('input', this._handleAmountInput);
-      this.copyAccountedOn.on('click', this._handleCopyAccountedOn);
+      this.copyDate.on('click', this._handleCopyDateClick);
       this.tagCombinations.on('click', this._handleTagCombinationClick);
       this.select = $('.js-selectize').selectize();
     }
@@ -118,9 +118,9 @@
       }
     }
 
-    _handleCopyAccountedOn(e) {
+    _handleCopyDateClick(e) {
       e.preventDefault();
-      return this.dateInput.val(this.accountedOnInput.val()).focus();
+      return this.accountedOnInput.val(this.dateInput.val()).focus();
     }
 
     _handleTagCombinationClick(e) {

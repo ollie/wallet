@@ -30,22 +30,6 @@ form action=url method="post"
           .invalid-feedback = entry.errors.on(:amount).join(', ')
 
   .form-group.row
-    label.col-sm-2.col-form-label for="entry-accounted_on" Zaúčtováno
-    .col-sm-6
-      input.form-control(
-        type="date"
-        name="entry[accounted_on]"
-        id="entry-accounted_on"
-        value=prefilled_date(entry.accounted_on)
-        class=('is-invalid' if entry.errors.on(:accounted_on))
-      )
-      - if entry.errors.on(:accounted_on)
-        .invalid-feedback = entry.errors.on(:accounted_on).join(', ')
-    .col-sm-2.pl-0
-      a.js-copy-accounted-on.btn.btn-light href="" title="Zkopírovat datum"
-        == icon('arrow-down')
-
-  .form-group.row
     label.col-sm-2.col-form-label for="entry-date" Zaplaceno
     .col-sm-6
       input.form-control(
@@ -57,6 +41,22 @@ form action=url method="post"
       )
       - if entry.errors.on(:date)
         .invalid-feedback = entry.errors.on(:date).join(', ')
+    .col-sm-2.pl-0
+      a.js-copy-date.btn.btn-light href="" title="Zkopírovat datum"
+        == icon('arrow-down')
+
+  .form-group.row
+    label.col-sm-2.col-form-label for="entry-accounted_on" Zaúčtováno
+    .col-sm-6
+      input.form-control(
+        type="date"
+        name="entry[accounted_on]"
+        id="entry-accounted_on"
+        value=prefilled_date(entry.accounted_on)
+        class=('is-invalid' if entry.errors.on(:accounted_on))
+      )
+      - if entry.errors.on(:accounted_on)
+        .invalid-feedback = entry.errors.on(:accounted_on).join(', ')
 
   .form-group.row
     label.col-sm-2.col-form-label for="entry-note" Poznámka

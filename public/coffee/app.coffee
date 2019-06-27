@@ -56,13 +56,13 @@ class EntryForm
     @amount           = $('.js-amount')
     @accountedOnInput = $('#entry-accounted_on')
     @dateInput        = $('#entry-date')
-    @copyAccountedOn  = $('.js-copy-accounted-on')
+    @copyDate         = $('.js-copy-date')
     @tagCombinations  = $('.js-tag-combination')
 
     @expenseButton.on('click', @_handleExpenseButtonClick)
     @incomeButton.on('click', @_handleIncomeButtonClick)
     @amount.on('input', @_handleAmountInput)
-    @copyAccountedOn.on('click', @_handleCopyAccountedOn)
+    @copyDate.on('click', @_handleCopyDateClick)
     @tagCombinations.on('click', @_handleTagCombinationClick)
 
     @select = $('.js-selectize').selectize()
@@ -112,11 +112,11 @@ class EntryForm
     (@amount.data('type') == 'income' && number < 0)
       @amount.val(-value)
 
-  _handleCopyAccountedOn: (e) =>
+  _handleCopyDateClick: (e) =>
     e.preventDefault()
 
-    @dateInput
-      .val(@accountedOnInput.val())
+    @accountedOnInput
+      .val(@dateInput.val())
       .focus()
 
   _handleTagCombinationClick: (e) =>
