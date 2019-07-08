@@ -16,3 +16,5 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
         a.nav-link href=calendar_path Kalendář
       li.nav-item class=('active' if request.path =~ %r{^#{tags_path}})
         a.nav-link href=tags_path Štítky
+      li.nav-item class=('active' if request.path =~ %r{^#{search_path}})
+        a.nav-link href=search_path Vyhledávání

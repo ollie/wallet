@@ -1,0 +1,40 @@
+.row
+  .col-sm-8
+    table.table.smaller
+      tbody
+        - entries.groupped_by_days(sort_by: sort_by).each do |day, entries|
+          tr
+            th.table-active colspan="4"
+              = l(day)
+
+          - entries.each do |entry|
+            tr class=('table-warning' unless entry.accounted_on)
+              td.text-right
+                a href=edit_entry_path(entry.id) == formatted_amount(entry.amount)
+              td
+                - if entry.note
+                  = entry.note
+              td
+                - entry.tags.each do |tag|
+                  a.badge.badge-secondary(
+                    class=('badge-light' if !tag.color || tag.light?)
+                    href=(tag_path(tag.id, year: pagination_date.year, month: pagination_date.month))
+                    style=("background-color: #{tag.color};" if tag.color)
+                  ) = tag.name
+              td.text-right
+                small
+                  == formatted_date(entry.date)
+
+        - incomes  = entries.incomes_sum
+        - expenses = entries.expenses_sum
+        - incomes_and_expenses = !incomes.zero? && !expenses.zero?
+        - unless incomes.zero? && expenses.zero?
+          tr
+            - unless incomes.zero?
+              th.table-active colspan=(incomes_and_expenses ? '2' : '4')
+                = 'Příjmy '
+                == formatted_amount(incomes)
+            - unless expenses.zero?
+              th.table-active colspan=(incomes_and_expenses ? '2' : '4')
+                = 'Výdaje '
+                == formatted_amount(expenses)

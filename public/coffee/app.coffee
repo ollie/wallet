@@ -57,12 +57,14 @@ class EntryForm
     @accountedOnInput = $('#entry-accounted_on')
     @dateInput        = $('#entry-date')
     @copyDate         = $('.js-copy-date')
+    @todayDate        = $('.js-today-date')
     @tagCombinations  = $('.js-tag-combination')
 
     @expenseButton.on('click', @_handleExpenseButtonClick)
     @incomeButton.on('click', @_handleIncomeButtonClick)
     @amount.on('input', @_handleAmountInput)
     @copyDate.on('click', @_handleCopyDateClick)
+    @todayDate.on('click', @_handleTodayDateClick)
     @tagCombinations.on('click', @_handleTagCombinationClick)
 
     @select = $('.js-selectize').selectize()
@@ -112,11 +114,24 @@ class EntryForm
     (@amount.data('type') == 'income' && number < 0)
       @amount.val(-value)
 
-  _handleCopyDateClick: (e) =>
-    e.preventDefault()
+  _handleCopyDateClick: =>
+    date = @dateInput.val()
+
+    unless date
+      @dateInput.focus()
+      return
 
     @accountedOnInput
-      .val(@dateInput.val())
+      .val(date)
+      .focus()
+
+  _handleTodayDateClick: =>
+    today = new Date
+    today = today.toISOString().substr(0, 10)
+
+    @dateInput.val(today)
+    @accountedOnInput
+      .val(today)
       .focus()
 
   _handleTagCombinationClick: (e) =>

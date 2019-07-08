@@ -302,4 +302,20 @@ class App < Sinatra::Base
     balance.destroy
     redirect balances_path
   end
+
+  ########
+  # Search
+  ########
+
+  get Route(search: '/search') do
+    slim :'search/new', locals: {
+      search: Search.new
+    }
+  end
+
+  get Route(search_results: '/search/results') do
+    slim :'search/results', locals: {
+      search: Search.new(params[:q])
+    }
+  end
 end
