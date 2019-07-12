@@ -28,11 +28,7 @@ class Entry < Sequel::Model
       from = Date.new(date.year, date.month, 1)
       to   = Date.new(date.year, date.month, -1)
 
-      ds = if date.year == Date.today.year && date.month == Date.today.month
-             where(Sequel.lit(':column BETWEEN :from AND :to OR :column IS NULL', column: sort_by, from: from, to: to))
-           else
-             where(sort_by => from..to)
-           end
+      ds = where(Sequel.lit('COALESCE(:column, current_date) BETWEEN :from AND :to', column: sort_by, from: from, to: to))
 
       if sort_by == :date
         ds.order(Sequel.desc(:date), Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:id))

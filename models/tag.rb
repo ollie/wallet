@@ -60,12 +60,8 @@ class Tag < Sequel::Model
 
       ds = Tag.with_pk!(tag_id).entries_dataset
       to = Date.new(date.year, date.month, -1)
-      ds = if date.year == Date.today.year && date.month == Date.today.month
-             ds.where(Sequel.lit(':column <= :to OR :column IS NULL', column: sort_by, to: to))
-           else
-             ds.where(Sequel.lit(':column <= :to', column: sort_by, to: to))
-           end
-      ds = ds.select(Sequel.lit('sum(amount)').as(:amount), Sequel.lit("date_trunc('month', :column)::date", column: sort_by).as(:year_month))
+      ds.where(Sequel.lit('COALESCE(:column, current_date) <= :to', column: sort_by, to: to))
+      ds = ds.select(Sequel.lit('sum(amount)').as(:amount), Sequel.lit("date_trunc('month', COALESCE(:column, current_date))::date", column: sort_by).as(:year_month))
 
       incomes  = ds.where(Sequel.lit('amount >= 0')).group(:year_month).order(:year_month).all
       expenses = ds.where(Sequel.lit('amount < 0')).group(:year_month).order(:year_month).all
