@@ -4,6 +4,8 @@
   .col-sm-2.text-right
     a.btn.btn-outline-primary.w-100.mb-3 href=new_balance_path Přidat
 
+#balances-chart.mb-3 style="height: 500px;" data-url=balances_json_path
+
 .row
   .col-sm-6
     table.table
@@ -19,5 +21,3 @@
             input.js-balance-diff type="checkbox" value=balance.amount data-date=balance.date
   .col-sm-5
     #balance-diff
-
-#balances-chart.mt-3 data-url=balances_json_path

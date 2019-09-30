@@ -220,7 +220,8 @@
         options = {
           title: null,
           chart: {
-            type: 'column'
+            type: 'column',
+            spacing: [5, 0, 5, 0]
           },
           xAxis: {
             categories: ['Výdaje']
@@ -381,7 +382,8 @@
         }
         options = {
           chart: {
-            height: 500
+            height: 500,
+            spacing: [5, 0, 5, 0]
           },
           type: 'line',
           series: [series.total, series.incomes, series.expenses],
@@ -486,7 +488,8 @@
         }
         options = {
           chart: {
-            height: 500
+            height: 500,
+            spacing: [5, 0, 5, 0]
           },
           type: 'line',
           series: [series.total, series.incomes, series.expenses],

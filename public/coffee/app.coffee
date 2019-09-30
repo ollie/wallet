@@ -207,6 +207,7 @@ class ExpenseChart
         title: null
         chart:
           type: 'column'
+          spacing: [5, 0, 5, 0]
         xAxis:
           categories: ['Výdaje']
         yAxis:
@@ -343,6 +344,7 @@ class BalanceChart
       options =
         chart:
           height: 500
+          spacing: [5, 0, 5, 0]
         type: 'line'
         series: [series.total, series.incomes, series.expenses]
         # plotOptions:
@@ -437,6 +439,7 @@ class TagEntriesChart
       options =
         chart:
           height: 500
+          spacing: [5, 0, 5, 0]
         type: 'line'
         series: [series.total, series.incomes, series.expenses]
         # plotOptions:

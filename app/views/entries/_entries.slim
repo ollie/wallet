@@ -9,7 +9,10 @@
       a.nav-link class=('active' if sort_by == :date) href=path_with_qs(sort_by: :date) Podle data zaplacení
 
   .row
-    .col-sm-8
+    - if locals[:stats]
+      == partial_slim 'entries/_stats', entries: entries
+
+    .col-sm-8.order-sm-first
       table.table.smaller
         tbody
           - entries.groupped_by_days(sort_by: sort_by).each do |day, entries|
@@ -53,9 +56,6 @@
                   = 'Výdaje '
                   == formatted_amount(expenses)
               th.table-active
-
-    - if locals[:stats]
-      == partial_slim 'entries/_stats', entries: entries
 
   - if entries.count > 10
     == partial_slim 'entries/_pagination'
