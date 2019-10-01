@@ -51,11 +51,11 @@
                   == formatted_amount(expenses)
               th.table-active
 
-  - if locals[:stats]
-    == partial_slim 'entries/_stats_graph', entries: entries
-
   - if entries.count > 10
     == partial_slim 'entries/_pagination'
+
+  - if locals[:stats]
+    == partial_slim 'entries/_stats_graph', entries: entries
 
 - else
 

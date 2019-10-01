@@ -223,6 +223,71 @@ class ExpenseChart
 
 
 
+class BurndownChart
+  constructor: ->
+    @element = $('#burndown-chart')
+
+    return unless @element.length
+
+    @init()
+
+  init: ->
+    $.getJSON @element.data('url'), (data) =>
+      series =
+        name: 'Celkem'
+        showInNavigator: true
+        color: '#7cb5ec'
+        lineWidth: 4
+        type: 'line'
+        index: 3
+        marker:
+          lineWidth: 4
+          radius: 6
+          lineColor: '#7cb5ec'
+          fillColor: 'white'
+        data: []
+
+      for item in data
+        date = Date.parse(item.date)
+        balance = if item.balance == null
+          null
+        else
+          Number(item.balance)
+
+        series.data.push([date, balance])
+
+      options =
+        chart:
+          height: 500
+          spacing: [5, 0, 5, 0]
+        type: 'line'
+        series: [series]
+        # plotOptions:
+        #   series:
+        #     animation: 500
+        rangeSelector:
+          buttons: [
+            {
+              type: 'week'
+              count: 1
+              text: 'Týden'
+            },
+            {
+              type: 'all'
+              text: 'Vše'
+            }
+          ]
+          selected: 1
+          inputBoxWidth: 100
+          inputDateFormat: '%B %Y'
+          inputEditDateFormat: '%d. %m. %Y'
+        credits:
+          enabled: false
+
+      Highcharts.stockChart(@element.attr('id'), options)
+
+
+
 class BalanceDiff
   constructor: ->
     @elements = $('.js-balance-diff')
@@ -511,6 +576,7 @@ $ ->
   new EntryForm
   new Tags
   new ExpenseChart
+  new BurndownChart
   new BalanceDiff
   new BalanceChart
   new TagEntriesChart

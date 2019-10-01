@@ -68,6 +68,7 @@ class App < Sinatra::Base
   end
 
   get Route(expenses_json: '/entries/expenses.json') do
+    # TODO: Extract this out.
     tags = {}
 
     Entry.expenses.by_month(pagination_date).eager(:tags).each do |entry|
@@ -85,6 +86,48 @@ class App < Sinatra::Base
       .each { |name, sum| sorted_tags << { name: name, sum: sum } }
 
     MultiJson.dump(sorted_tags)
+  end
+
+  get Route(burndown_json: '/entries/burndown.json') do
+    # TODO: Extract this out.
+    # TODO: balance can be nil.
+    previous_balance = Balance.by_date(previous_month).amount
+
+    # TODO: Use SQL for this.
+    expenses = Entry.by_month(pagination_date).all
+    expenses_by_day = {}
+    expenses.each do |expense|
+      expenses_by_day[expense.accounted_on] ||= 0
+      expenses_by_day[expense.accounted_on] += expense.amount
+    end
+
+    first_day_of_month = Date.new(pagination_date.year, pagination_date.month, 1)
+    last_day_of_month  = Date.new(pagination_date.year, pagination_date.month, -1)
+    days_in_month      = first_day_of_month..last_day_of_month
+
+    data = [
+      {
+        date:    (first_day_of_month - 1),
+        balance: previous_balance
+      }
+    ]
+
+    today = Date.today
+
+    days_in_month.each do |day|
+      balance =
+        if day <= today
+          expense = expenses_by_day[day] || 0
+          previous_balance += expense
+        end
+
+      data << {
+        date:    day,
+        balance: balance
+      }
+    end
+
+    MultiJson.dump(data)
   end
 
   get Route(new_entry: '/entries/new') do
