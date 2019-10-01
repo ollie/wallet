@@ -2,7 +2,7 @@
   .col-sm-8
     table.table.smaller
       tbody
-        - entries.groupped_by_days(sort_by: sort_by).each do |day, entries|
+        - entries.groupped_by_days.each do |day, entries|
           tr
             th.table-active colspan="4"
               = l(day)

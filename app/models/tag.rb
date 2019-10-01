@@ -55,13 +55,11 @@ class Tag < Sequel::Model
       groups.each { |group| group.sort! { |a, b| a.position <=> b.position } }
     end
 
-    def data_for_chart(tag_id:, date:, sort_by:)
-      sort_by ||= :accounted_on
-
+    def data_for_chart(tag_id:, date:)
       ds = Tag.with_pk!(tag_id).entries_dataset
       to = Date.new(date.year, date.month, -1)
-      ds.where(Sequel.lit('COALESCE(:column, current_date) <= :to', column: sort_by, to: to))
-      ds = ds.select(Sequel.lit('sum(amount)').as(:amount), Sequel.lit("date_trunc('month', COALESCE(:column, current_date))::date", column: sort_by).as(:year_month))
+      ds.where(Sequel.lit('COALESCE(accounted_on, current_date) <= :to', to: to))
+      ds = ds.select(Sequel.lit('sum(amount)').as(:amount), Sequel.lit("date_trunc('month', COALESCE(accounted_on, current_date))::date").as(:year_month))
 
       incomes  = ds.where(Sequel.lit('amount >= 0')).group(:year_month).order(:year_month).all
       expenses = ds.where(Sequel.lit('amount < 0')).group(:year_month).order(:year_month).all

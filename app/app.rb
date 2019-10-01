@@ -233,7 +233,7 @@ class App < Sinatra::Base
   end
 
   get Route(tag_entries_json: '/tags/:id/entries.json') do
-    data = Tag.data_for_chart(tag_id: params[:id], date: pagination_date, sort_by: sort_by)
+    data = Tag.data_for_chart(tag_id: params[:id], date: pagination_date)
     MultiJson.dump(data)
   end
 

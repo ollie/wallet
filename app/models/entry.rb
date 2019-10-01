@@ -22,29 +22,18 @@ class Entry < Sequel::Model
   #################
 
   dataset_module do
-    def by_month(date, sort_by: nil)
-      sort_by ||= :accounted_on
-
+    def by_month(date)
       from = Date.new(date.year, date.month, 1)
       to   = Date.new(date.year, date.month, -1)
 
-      ds = where(Sequel.lit('COALESCE(:column, current_date) BETWEEN :from AND :to', column: sort_by, from: from, to: to))
-
-      if sort_by == :date
-        ds.order(Sequel.desc(:date), Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:id))
-      else
-        ds.order(Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:date), Sequel.desc(:id))
-      end
+      ds = where(Sequel.lit('COALESCE(accounted_on, current_date) BETWEEN :from AND :to', from: from, to: to))
+      ds.order(Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:date), Sequel.desc(:id))
     end
 
-    def groupped_by_days(sort_by: nil)
+    def groupped_by_days
       {}.tap do |days|
         eager(:tags).each do |entry|
-          date = if sort_by == :date
-                   entry.date
-                 else
-                   entry.accounted_on || Date.today
-                 end
+          date = entry.accounted_on || Date.today
 
           day = days[date] ||= []
           day << entry

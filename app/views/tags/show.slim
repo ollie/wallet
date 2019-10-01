@@ -6,4 +6,4 @@
 
 #tag-entries-chart.mb-3 style="height: 500px;" data-url=tag_entries_json_path(tag.id, year: pagination_date.year, month: pagination_date.month)
 
-== partial_slim 'entries/_entries', entries: tag.entries_dataset.by_month(pagination_date, sort_by: sort_by)
+== partial_slim 'entries/_entries', entries: tag.entries_dataset.by_month(pagination_date)

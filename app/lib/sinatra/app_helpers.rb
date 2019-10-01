@@ -72,11 +72,5 @@ module Sinatra
     def formatted_date(date)
       l(date).gsub!(' ', '&nbsp;')
     end
-
-    def sort_by
-      sort_by = params[:sort_by]
-      return if sort_by.nil? || sort_by.empty?
-      sort_by.to_sym
-    end
   end
 end
