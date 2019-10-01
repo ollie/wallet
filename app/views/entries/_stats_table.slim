@@ -37,6 +37,3 @@
         td.pr-0.text-right
           a href=(new_entry_path('entry[amount]' => balance_error, 'entry[date]' => last_day, 'entry[accounted_on]' => last_day, 'entry[note]' => 'Chyba'))
             == formatted_amount(balance_error)
-
-  - unless expenses.zero?
-    #chart data-url=expenses_json_path(year: pagination_date.year, month: pagination_date.month)

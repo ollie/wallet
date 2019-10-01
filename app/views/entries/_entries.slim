@@ -2,15 +2,9 @@
 
 - if entries.any?
 
-  ul.nav.nav-tabs.mb-3
-    li.nav-item
-      a.nav-link class=('active' if sort_by != :date) href=path_with_qs(sort_by: nil) Podle data zaúčtování
-    li.nav-item
-      a.nav-link class=('active' if sort_by == :date) href=path_with_qs(sort_by: :date) Podle data zaplacení
-
   .row
     - if locals[:stats]
-      == partial_slim 'entries/_stats', entries: entries
+      == partial_slim 'entries/_stats_table', entries: entries
 
     .col-sm-8.order-sm-first
       table.table.smaller
@@ -56,6 +50,9 @@
                   = 'Výdaje '
                   == formatted_amount(expenses)
               th.table-active
+
+  - if locals[:stats]
+    == partial_slim 'entries/_stats_graph', entries: entries
 
   - if entries.count > 10
     == partial_slim 'entries/_pagination'
