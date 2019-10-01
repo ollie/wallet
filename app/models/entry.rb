@@ -65,9 +65,9 @@ class Entry < Sequel::Model
   def validate
     super
 
-    validates_presence [
-      :amount,
-      :date
+    validates_presence %i[
+      amount
+      date
     ]
   end
 

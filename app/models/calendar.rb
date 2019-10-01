@@ -16,7 +16,7 @@ module Calendar
               to    = Date.new(year, month, -1)
 
               {
-                date: from,
+                date:          from,
                 entries_count: Entry.where(accounted_on: from..to).count
               }
             end

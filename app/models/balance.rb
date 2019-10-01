@@ -14,9 +14,9 @@ class Balance < Sequel::Model
   def validate
     super
 
-    validates_presence [
-      :amount,
-      :year_month
+    validates_presence %i[
+      amount
+      year_month
     ]
 
     validates_format(/\A\d{4}-\d{2}\z/, :year_month)
@@ -58,7 +58,7 @@ class Balance < Sequel::Model
     end
 
     def by_date(date)
-      month = format('%02d', date.month)
+      month = date.strftime('%m')
       first(year_month: "#{date.year}-#{month}")
     end
   end

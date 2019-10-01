@@ -49,6 +49,7 @@ class Tag < Sequel::Model
         [auto, cash]
       ].map do |group|
         next if group.any?(&:nil?)
+
         group
       end.compact
 
@@ -83,7 +84,7 @@ class Tag < Sequel::Model
 
         item_expenses =
           if expenses.first && expenses.first[:year_month] == date
-           expenses.shift[:amount]
+            expenses.shift[:amount]
           else
             0.to_d
           end
@@ -173,6 +174,7 @@ class Tag < Sequel::Model
   def dark?
     return @is_dark if defined?(@is_dark)
     return @is_dark = false unless color
+
     parts = color.delete('#').scan(/.{2}/).map { |s| s.to_i(16) }
     @is_dark = parts.reduce(:+) < 255 * 2
   end
@@ -180,6 +182,7 @@ class Tag < Sequel::Model
   def light?
     return @is_light if defined?(@is_light)
     return @is_light = false unless color
+
     @is_light = !dark?
   end
 end

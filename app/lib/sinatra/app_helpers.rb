@@ -52,7 +52,7 @@ module Sinatra
       date = entry.accounted_on || pagination_date
 
       {
-        year: date.year,
+        year:  date.year,
         month: date.month
       }
     end

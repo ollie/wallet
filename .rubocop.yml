@@ -1,0 +1,47 @@
+Style/AsciiComments:
+  Exclude:
+    - 'tasks/data_manipulation/*.rake'
+
+Layout/AlignHash:
+  EnforcedColonStyle: table
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/IfUnlessModifier:
+  Enabled: false
+
+Style/ModuleFunction:
+  Enabled: false
+
+Style/NumericPredicate:
+  Enabled: false
+
+# Variable
+
+Metrics/AbcSize:
+  Max: 64
+
+Metrics/BlockLength:
+  Max: 38
+
+Metrics/ClassLength:
+  Max: 239
+
+Metrics/CyclomaticComplexity:
+  Max: 11
+
+Metrics/MethodLength:
+  Max: 48
+
+Metrics/PerceivedComplexity:
+  Max: 13
+
+Metrics/LineLength:
+  Max: 221

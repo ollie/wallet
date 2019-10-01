@@ -1,7 +1,7 @@
 Sequel.migration do
   change do
     create_table :taggings do
-      primary_key [:tag_id, :entry_id]
+      primary_key %i[tag_id entry_id]
 
       foreign_key :tag_id,   :tags,    on_delete: :cascade
       foreign_key :entry_id, :entries, on_delete: :cascade

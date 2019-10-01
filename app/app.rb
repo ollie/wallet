@@ -89,7 +89,7 @@ class App < Sinatra::Base
 
   get Route(new_entry: '/entries/new') do
     entry = Entry.new
-    entry.set_fields(params[:entry] || {}, [:amount, :date, :accounted_on, :note])
+    entry.set_fields(params[:entry] || {}, %i[amount date accounted_on note])
 
     slim :'entries/new', locals: {
       entry: entry
@@ -98,7 +98,7 @@ class App < Sinatra::Base
 
   post '/entries/new' do
     entry = Entry.new
-    entry.set_fields(params[:entry], [:amount, :date, :accounted_on, :note])
+    entry.set_fields(params[:entry], %i[amount date accounted_on note])
 
     if entry.valid?
       entry.save_and_handle_tags(params)
@@ -127,7 +127,7 @@ class App < Sinatra::Base
 
   post '/entries/:id/edit' do
     entry = Entry.with_pk!(params[:id])
-    entry.set_fields(params[:entry], [:amount, :date, :accounted_on, :note])
+    entry.set_fields(params[:entry], %i[amount date accounted_on note])
 
     if entry.valid?
       entry.save_and_handle_tags(params)
@@ -177,7 +177,7 @@ class App < Sinatra::Base
 
   post '/tags/new' do
     tag = Tag.new
-    tag.set_fields(params[:tag], [:name, :color, :primary])
+    tag.set_fields(params[:tag], %i[name color primary])
 
     if tag.valid?
       tag.save
@@ -197,7 +197,7 @@ class App < Sinatra::Base
 
   post '/tags/:id/edit' do
     tag = Tag.with_pk!(params[:id])
-    tag.set_fields(params[:tag], [:name, :color, :primary])
+    tag.set_fields(params[:tag], %i[name color primary])
 
     if tag.valid?
       tag.save
@@ -266,7 +266,7 @@ class App < Sinatra::Base
 
   post '/balances/new' do
     balance = Balance.new
-    balance.set_fields(params[:balance], [:amount, :year_month, :note])
+    balance.set_fields(params[:balance], %i[amount year_month note])
 
     if balance.valid?
       balance.save
@@ -286,7 +286,7 @@ class App < Sinatra::Base
 
   post '/balances/:id/edit' do
     balance = Balance.with_pk!(params[:id])
-    balance.set_fields(params[:balance], [:amount, :year_month, :note])
+    balance.set_fields(params[:balance], %i[amount year_month note])
 
     if balance.valid?
       balance.save
