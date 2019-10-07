@@ -96,6 +96,7 @@ class App < Sinatra::Base
     # TODO: Use SQL for this.
     expenses = Entry.by_month(pagination_date).all
     expenses_by_day = {}
+    expenses_by_day[nil] = 0 # Pending entries
     expenses.each do |expense|
       expenses_by_day[expense.accounted_on] ||= 0
       expenses_by_day[expense.accounted_on] += expense.amount
@@ -117,7 +118,8 @@ class App < Sinatra::Base
     days_in_month.each do |day|
       balance =
         if day <= today
-          expense = expenses_by_day[day] || 0
+          expense  = expenses_by_day[day] || 0
+          expense += expenses_by_day[nil] if day == today
           previous_balance += expense
         end
 
