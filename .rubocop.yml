@@ -3,7 +3,9 @@ Style/AsciiComments:
     - 'tasks/data_manipulation/*.rake'
 
 Layout/AlignHash:
-  EnforcedColonStyle: table
+  EnforcedColonStyle:
+    - key
+    - table
 
 Style/ClassAndModuleChildren:
   Enabled: false
