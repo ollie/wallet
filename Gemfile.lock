@@ -47,7 +47,7 @@ GEM
     pry-doc (1.0.0)
       pry (~> 0.11)
       yard (~> 0.9.11)
-    puma (4.2.0)
+    puma (4.2.1)
       nio4r (~> 2.0)
     rack (2.0.7)
     rack-protection (2.0.7)
@@ -86,7 +86,7 @@ GEM
     tilt (2.0.10)
     unicode-display_width (1.6.0)
     yard (0.9.20)
-    zeitwerk (2.1.10)
+    zeitwerk (2.2.0)
 
 PLATFORMS
   ruby
