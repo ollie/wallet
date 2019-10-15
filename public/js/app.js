@@ -254,27 +254,46 @@
 
     init() {
       return $.getJSON(this.element.data('url'), (data) => {
-        var balance, date, item, j, len, options, series;
+        var balance, date, item, j, len, options, series, target_balance;
         series = {
-          name: 'Celkem',
-          showInNavigator: true,
-          color: '#7cb5ec',
-          lineWidth: 4,
-          type: 'line',
-          index: 3,
-          marker: {
+          actual: {
+            name: 'Celkem',
+            showInNavigator: true,
+            color: '#7cb5ec',
             lineWidth: 4,
-            radius: 6,
-            lineColor: '#7cb5ec',
-            fillColor: 'white'
+            type: 'line',
+            index: 2,
+            marker: {
+              lineWidth: 4,
+              radius: 6,
+              lineColor: '#7cb5ec',
+              fillColor: 'white'
+            },
+            data: []
           },
-          data: []
+          target: {
+            name: 'Cíl',
+            showInNavigator: false,
+            color: '#fedd44',
+            lineWidth: 2,
+            type: 'line',
+            index: 1,
+            marker: {
+              lineWidth: 4,
+              radius: 6,
+              lineColor: '#fedd44',
+              fillColor: 'white'
+            },
+            data: []
+          }
         };
         for (j = 0, len = data.length; j < len; j++) {
           item = data[j];
           date = Date.parse(item.date);
           balance = item.balance === null ? null : Number(item.balance);
-          series.data.push([date, balance]);
+          target_balance = item.target_balance === null ? null : Number(item.target_balance);
+          series.actual.data.push([date, balance]);
+          series.target.data.push([date, target_balance]);
         }
         options = {
           chart: {
@@ -282,7 +301,7 @@
             spacing: [5, 0, 5, 0]
           },
           type: 'line',
-          series: [series],
+          series: [series.actual, series.target],
           // plotOptions:
           //   series:
           //     animation: 500

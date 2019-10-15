@@ -5,6 +5,7 @@ Sequel.migration do
       column :amount, 'numeric(11,2)', null: false
       column :year_month, 'character varying(7)', null: false
       column :note, 'character varying(255)'
+      column :target_amount, 'numeric(11,2)'
 
       index [:year_month], unique: true
     end

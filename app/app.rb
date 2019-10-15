@@ -254,7 +254,7 @@ class App < Sinatra::Base
 
   post '/balances/new' do
     balance = Balance.new
-    balance.set_fields(params[:balance], %i[amount year_month note])
+    balance.set_fields(params[:balance], %i[amount target_amount year_month note])
 
     if balance.valid?
       balance.save
@@ -274,7 +274,7 @@ class App < Sinatra::Base
 
   post '/balances/:id/edit' do
     balance = Balance.with_pk!(params[:id])
-    balance.set_fields(params[:balance], %i[amount year_month note])
+    balance.set_fields(params[:balance], %i[amount target_amount year_month note])
 
     if balance.valid?
       balance.save
