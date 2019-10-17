@@ -199,6 +199,8 @@ class ExpenseChart
 
   init: ->
     $.getJSON @element.data('url'), (data) =>
+      return unless data.length
+
       data = data.map (item) ->
         name: item.name
         data: [Number(item.sum)]
@@ -233,6 +235,8 @@ class BurndownChart
 
   init: ->
     $.getJSON @element.data('url'), (data) =>
+      return unless data.length
+
       series =
         actual:
           name: 'Celkem'

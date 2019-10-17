@@ -4,7 +4,7 @@ class BurndownGraph
   def initialize(date, previous_month_date)
     self.last_day_of_previous_month = Date.new(previous_month_date.year, previous_month_date.month, -1)
     self.last_day_of_this_month     = Date.new(date.year, date.month, -1)
-    self.previous_month_balance     = Balance.by_date(last_day_of_previous_month).amount
+    self.previous_month_balance     = Balance.by_date(last_day_of_previous_month)&.amount
     self.target_balance             = Balance.by_date(date)&.target_amount
 
     self.from = Date.new(date.year, date.month, 1)
@@ -12,6 +12,8 @@ class BurndownGraph
   end
 
   def data
+    return [] unless previous_month_balance
+
     today   = Date.today
     data    = { last_day_of_previous_month => { balance: previous_month_balance } }
     balance = previous_month_balance.dup

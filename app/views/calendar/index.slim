@@ -1,14 +1,21 @@
 h1.mt-3.mb-3 = title 'Kalendář'
 
-- Calendar.years.each do |year, rows|
-  h2.mt-2.mb-2 = year
+- years = Calendar.years
 
-  - rows.each do |months|
-    .row
-      - months.each do |month|
-        .col-2.mb-4
-          a.d-block.border.p-4.text-center class=('bg-light' if month[:date].year == Date.today.year && Date.today.month == month[:date].month) href=entries_path(year: year, month: month[:date].month)
-            = l(month[:date], format: :month)
-            - unless month[:entries_count].zero?
-              = " (#{month[:entries_count]})"
-  .clearfix
+- if years.any?
+
+  - years.each do |year, rows|
+    h2.mt-2.mb-2 = year
+
+    - rows.each do |months|
+      .row
+        - months.each do |month|
+          .col-2.mb-4
+            a.d-block.border.p-4.text-center class=('bg-light' if month[:date].year == Date.today.year && Date.today.month == month[:date].month) href=entries_path(year: year, month: month[:date].month)
+              = l(month[:date], format: :month)
+              - unless month[:entries_count].zero?
+                = " (#{month[:entries_count]})"
+    .clearfix
+- else
+
+  .alert.alert-info Čistý jako lilie.

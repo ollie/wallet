@@ -211,6 +211,9 @@
     init() {
       return $.getJSON(this.element.data('url'), (data) => {
         var options;
+        if (!data.length) {
+          return;
+        }
         data = data.map(function(item) {
           return {
             name: item.name,
@@ -255,6 +258,9 @@
     init() {
       return $.getJSON(this.element.data('url'), (data) => {
         var balance, date, item, j, len, options, series, target_balance;
+        if (!data.length) {
+          return;
+        }
         series = {
           actual: {
             name: 'Celkem',
