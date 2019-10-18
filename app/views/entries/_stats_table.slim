@@ -9,6 +9,14 @@
   - if ending_balance
     - balance_error = ending_balance.amount - balance
 
+- if ending_balance&.target_amount
+  - remaining_balance = balance - ending_balance.target_amount
+  - remaining_change  = ending_balance.target_amount - previous_balance.amount
+  - if this_month?(pagination_date)
+    - today = Date.today
+    - days_till_end_of_month = (Date.new(today.year, today.month, -1) - today + 1).to_i
+    - remaining_per_day = remaining_balance / days_till_end_of_month
+
 .col-sm-4.order-sm-last
   table.table.smaller
     tr
@@ -37,3 +45,13 @@
         td.pr-0.text-right
           a href=(new_entry_path('entry[amount]' => balance_error, 'entry[date]' => last_day, 'entry[accounted_on]' => last_day, 'entry[note]' => 'Chyba'))
             == formatted_amount(balance_error)
+    - if ending_balance&.target_amount
+      tr.text-black-50
+        th.pl-0 Cílová bilance
+        td.pr-0.text-right
+          == "#{formatted_amount(ending_balance.target_amount, plus: false)} (#{formatted_amount(remaining_change)})"
+      - if this_month?(pagination_date) && remaining_balance >= 0
+        tr.text-black-50
+          th.pl-0 Zbývá
+          td.pr-0.text-right
+            == "#{formatted_amount(remaining_balance, plus: false)} (#{formatted_amount(remaining_per_day, plus: false)}/d)"

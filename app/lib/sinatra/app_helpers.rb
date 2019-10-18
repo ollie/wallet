@@ -23,9 +23,8 @@ module Sinatra
       return @next_month if defined?(@next_month)
 
       @next_month = nil
-      today = Date.today
 
-      return @next_month if pagination_date.year > today.year || pagination_date.year == today.year && pagination_date.month >= today.month
+      return @next_month if this_or_future_month?(pagination_date)
 
       next_month = if pagination_date.month == 12
                      Date.new(pagination_date.year + 1, 1)
@@ -34,6 +33,16 @@ module Sinatra
                    end
 
       @next_month = next_month
+    end
+
+    def this_or_future_month?(date)
+      today = Date.today
+      date.year > today.year || date.year == today.year && date.month >= today.month
+    end
+
+    def this_month?(date)
+      today = Date.today
+      date.year == today.year && date.month == today.month
     end
 
     def prefilled_date(date)
@@ -60,10 +69,8 @@ module Sinatra
     def formatted_amount(amount, plus: true, format: '%+.02f')
       format = '%.02f' unless plus
       format(format, amount).tap do |s|
-        s.reverse!
-        s.gsub!(/(\d{3})(\d)/, '\1 \2')
+        s.gsub!(/(\d)(?=(\d{3})+(?!\d))/, '\1 ')
         s.tr!('.', ',')
-        s.reverse!
         s << ' Kč'
         s.gsub!(' ', '&nbsp;')
       end
