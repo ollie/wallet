@@ -1,7 +1,9 @@
+- previous_balance = Balance.by_date(previous_month(balance.date))
+
 form action=url method="post"
   .form-group.row
     label.col-sm-2.col-form-label for="balance-amount" Částka
-    .col-sm-5
+    .col-sm-6
       .input-group
         input.form-control(
           type="number"
@@ -19,7 +21,7 @@ form action=url method="post"
 
   .form-group.row
     label.col-sm-2.col-form-label for="balance-amount" Cíl
-    .col-sm-5
+    .col-sm-6
       .input-group
         input.form-control(
           type="number"
@@ -33,10 +35,13 @@ form action=url method="post"
           span.input-group-text Kč
         - if balance.errors.on(:target_amount)
           .invalid-feedback = balance.errors.on(:target_amount).join(', ')
+        - if previous_balance
+          .form-text.small.w-100
+            == "Předchozí bilance: #{formatted_amount(previous_balance.amount, plus: false)}"
 
   .form-group.row
     label.col-sm-2.col-form-label for="balance-year-month" Měsíc
-    .col-sm-5
+    .col-sm-6
       input.form-control(
         type="month"
         name="balance[year_month]"

@@ -9,12 +9,12 @@ module Sinatra
       end
     end
 
-    def previous_month
+    def previous_month(from_date = pagination_date)
       @previous_month ||= begin
-        if pagination_date.month == 1
-          Date.new(pagination_date.year - 1, 12)
+        if from_date.month == 1
+          Date.new(from_date.year - 1, 12)
         else
-          Date.new(pagination_date.year, pagination_date.month - 1)
+          Date.new(from_date.year, from_date.month - 1)
         end
       end
     end
