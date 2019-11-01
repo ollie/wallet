@@ -1,5 +1,5 @@
 class BurndownGraph
-  attr_accessor :last_day_of_previous_month, :last_day_of_this_month, :previous_month_balance, :target_balance, :from, :to
+  attr_accessor :last_day_of_previous_month, :last_day_of_this_month, :previous_month_balance, :target_balance, :today, :from, :to, :current_month
 
   def initialize(date, previous_month_date)
     self.last_day_of_previous_month = Date.new(previous_month_date.year, previous_month_date.month, -1)
@@ -7,20 +7,25 @@ class BurndownGraph
     self.previous_month_balance     = Balance.by_date(last_day_of_previous_month)&.amount
     self.target_balance             = Balance.by_date(date)&.target_amount
 
-    self.from = Date.new(date.year, date.month, 1)
-    self.to   = Date.new(date.year, date.month, -1)
+    self.today = Date.today
+    self.from  = Date.new(date.year, date.month, 1)
+    self.to    = Date.new(date.year, date.month, -1)
+
+    start_of_month     = Date.new(today.year, today.month, 1)
+    self.current_month = from == start_of_month
   end
 
   def data
     return [] unless previous_month_balance
 
-    today   = Date.today
     data    = { last_day_of_previous_month => { balance: previous_month_balance } }
     balance = previous_month_balance.dup
 
+    last_item_date = expenses.keys.last if current_month
+
     (from..to).each do |day|
-      if day <= today
-        amount   = expenses[day] || 0
+      if current_month && last_item_date && day <= last_item_date || day < today
+        amount = expenses[day] || 0
         balance += amount
 
         data[day] = { balance: balance }
