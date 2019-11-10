@@ -66,12 +66,12 @@ class App < Sinatra::Base
   end
 
   get Route(expenses_json: '/entries/expenses.json') do
-    data = ExpensesByTagGraph.new(pagination_date).data
+    data = Charts::ExpensesByTagChart.new(pagination_date).data
     MultiJson.dump(data)
   end
 
   get Route(burndown_json: '/entries/burndown.json') do
-    data = BurndownGraph.new(pagination_date, previous_month).data
+    data = Charts::BurndownChart.new(pagination_date, previous_month).data
     MultiJson.dump(data)
   end
 
@@ -221,7 +221,7 @@ class App < Sinatra::Base
   end
 
   get Route(tag_entries_json: '/tags/:id/entries.json') do
-    data = Tag.data_for_chart(tag_id: params[:id], date: pagination_date)
+    data = Charts::TagEntriesChart.new(tag_id: params[:id], date: pagination_date).data
     MultiJson.dump(data)
   end
 
@@ -242,7 +242,7 @@ class App < Sinatra::Base
   end
 
   get Route(balances_json: '/balances.json') do
-    balances = Balance.data_for_chart
+    balances = Charts::BalancesChart.new.data
     MultiJson.dump(balances)
   end
 

@@ -2,3 +2,4 @@ cs:
   sequel:
     errors:
       presence: je povinná položka
+      unique: již existuje

@@ -10,11 +10,9 @@ class Search
       phrases = query.split('|').map(&:strip).reject(&:empty?)
 
       if phrases.any?
-        ds = Entry.order(Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:date), Sequel.desc(:id))
-        ds = ds.where(Sequel.ilike(:note, *phrases.map { |phrase| "%#{phrase}%" }))
-        ds
+        GroupsList.search(phrases)
       else
-        []
+        GroupsList.new
       end
     end
   end

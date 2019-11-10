@@ -17,47 +17,6 @@ class Entry < Sequel::Model
     ds.where(primary: true)
   end
 
-  #################
-  # Dataset methods
-  #################
-
-  dataset_module do
-    def by_month(date)
-      from = Date.new(date.year, date.month, 1)
-      to   = Date.new(date.year, date.month, -1)
-
-      ds = where(Sequel.lit('COALESCE(accounted_on, current_date) BETWEEN :from AND :to', from: from, to: to))
-      ds.order(Sequel.desc(Sequel.lit('COALESCE(accounted_on, current_date)')), Sequel.desc(:date), Sequel.desc(:id))
-    end
-
-    def groupped_by_days
-      {}.tap do |days|
-        eager(:tags).each do |entry|
-          date = entry.accounted_on || Date.today
-
-          day = days[date] ||= []
-          day << entry
-        end
-      end
-    end
-
-    def incomes
-      where { amount > 0 }
-    end
-
-    def expenses
-      where { amount < 0 }
-    end
-
-    def incomes_sum
-      incomes.sum(:amount) || 0
-    end
-
-    def expenses_sum
-      expenses.sum(:amount) || 0
-    end
-  end
-
   #############
   # Validations
   #############

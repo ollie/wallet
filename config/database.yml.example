@@ -1,6 +1,9 @@
 development:
   database: TODO
 
+test:
+  database: TODO
+
 production:
   database: TODO
   username: TODO

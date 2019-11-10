@@ -1,14 +1,17 @@
 .row
-  .col-sm-8
+  .col-sm-8.order-sm-first
     table.table.smaller
       tbody
-        - entries.groupped_by_days.each do |day, entries|
+        - groups_list.groups.each do |day, group|
           tr
-            th.table-active colspan="4"
+            th.table-active colspan="2"
               = l(day)
+            th.table-active.text-right.font-weight-normal colspan="2"
+              small
+                == formatted_amount(group.total)
 
-          - entries.each do |entry|
-            tr class=('table-warning' unless entry.accounted_on)
+          - group.entries.each do |entry|
+            tr class=('table-warning' unless entry.pending)
               td.text-right
                 a href=edit_entry_path(entry.id) == formatted_amount(entry.amount)
               td
@@ -25,16 +28,14 @@
                 small
                   == formatted_date(entry.date)
 
-        - incomes  = entries.incomes_sum
-        - expenses = entries.expenses_sum
-        - incomes_and_expenses = !incomes.zero? && !expenses.zero?
-        - unless incomes.zero? && expenses.zero?
+        - incomes_and_expenses = !groups_list.incomes.zero? && !groups_list.expenses.zero?
+        - unless groups_list.incomes.zero? && groups_list.expenses.zero?
           tr
-            - unless incomes.zero?
+            - unless groups_list.incomes.zero?
               th.table-active colspan=(incomes_and_expenses ? '2' : '4')
                 = 'Příjmy '
-                == formatted_amount(incomes)
-            - unless expenses.zero?
+                == formatted_amount(groups_list.incomes)
+            - unless groups_list.expenses.zero?
               th.table-active colspan=(incomes_and_expenses ? '2' : '4')
                 = 'Výdaje '
-                == formatted_amount(expenses)
+                == formatted_amount(groups_list.expenses)

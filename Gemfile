@@ -30,3 +30,10 @@ group :development do
   gem 'puma', require: false
   gem 'rubocop', require: false
 end
+
+group :test do
+  gem 'database_cleaner'
+  gem 'rack-test'
+  gem 'rspec'
+  gem 'simplecov'
+end

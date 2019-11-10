@@ -3,4 +3,5 @@
 /log
 /config/deploy
 /config/deploy.rb
+/coverage
 /tasks/data_manipulation

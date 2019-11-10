@@ -21,6 +21,8 @@ module Sequel::Plugins::TranslatedValidationMessages
       case type
       when :presence
         { message: -> { I18n.t('sequel.errors.presence') } }
+      when :unique
+        { message: -> { I18n.t('sequel.errors.unique') } }
       else
         super
       end
