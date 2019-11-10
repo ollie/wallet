@@ -118,7 +118,7 @@ class GroupsList
          )
     ds = ds.where(Sequel.function(:coalesce, :accounted_on, Sequel.lit('current_date')) => from..to) if date
     ds = ds.where(Sequel.ilike(:note, *phrases.map { |phrase| "%#{phrase}%" })) if phrases && phrases.any?
-    ds = ds.where(Sequel[:tags][:id] => tag.id) if tag
+    ds = ds.where(Sequel.lit('EXISTS (SELECT 1 FROM taggings WHERE taggings.entry_id = entries.id AND taggings.tag_id = ?)', tag.id)) if tag
     ds
   end
 end
