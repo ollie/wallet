@@ -3,3 +3,8 @@
   /*vertical-align: text-top;*/
   fill: currentColor;
 }
+
+.octicon-big svg {
+  width: 100px;
+  height: auto;
+}
