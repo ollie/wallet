@@ -396,11 +396,25 @@ class BalanceChart
           color: '#7cb5ec'
           lineWidth: 4
           type: 'line'
-          index: 3
+          index: 4
           marker:
             lineWidth: 4
             radius: 6
             lineColor: '#7cb5ec'
+            fillColor: 'white'
+          data: []
+
+        target:
+          name: 'Cíl'
+          showInNavigator: true
+          color: '#fedd44'
+          lineWidth: 4
+          type: 'line'
+          index: 3
+          marker:
+            lineWidth: 4
+            radius: 6
+            lineColor: '#fedd44'
             fillColor: 'white'
           data: []
 
@@ -423,10 +437,12 @@ class BalanceChart
       for item in data
         date     = Date.parse(item.date)
         total    = Number(item.total)
+        target   = Number(item.target) unless item.target == null
         incomes  = Number(item.incomes)
         expenses = Number(item.expenses)
 
         series.total.data.push([date, total])
+        series.target.data.push([date, target])
         series.incomes.data.push([date, incomes])
         series.expenses.data.push([date, expenses])
 
@@ -435,7 +451,7 @@ class BalanceChart
           height: 500
           spacing: [5, 0, 5, 0]
         type: 'line'
-        series: [series.total, series.incomes, series.expenses]
+        series: [series.total, series.target, series.incomes, series.expenses]
         # plotOptions:
         #   series:
         #     animation: 500
