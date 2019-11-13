@@ -6,7 +6,7 @@
 
 .row
   .col-sm-3
-    ul.js-tags.list-group data-path=update_tags_positions_path
+    ul.js-tags-sort.list-group data-js-component="TagsSort" data-path=update_tags_positions_path
       - tags.each do |tag|
         li.list-group-item.list-group-item-condensed data-id=tag.id data-position=tag.position
           .row

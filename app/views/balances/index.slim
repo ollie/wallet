@@ -4,13 +4,13 @@
   .col-sm-2.text-right
     a.btn.btn-outline-primary.w-100.mb-3 href=new_balance_path Přidat
 
-#balances-chart.mb-3 style="height: 500px;" data-url=balances_json_path
+#balances-chart.mb-3 style="height: 500px;" data-js-component="BalanceChart" data-url=balances_json_path
   .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
     span.octicon-big == icon(:graph)
 
 .row
   .col-sm-6
-    table.table
+    table.table data-js-component="BalanceDiff"
       - balances.each do |balance|
         tr
           td.pl-0

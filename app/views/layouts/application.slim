@@ -15,9 +15,31 @@ html lang="cs"
     script src=version_asset('/js-vendor/selectize-0.12.6.min.js')
     script src=version_asset('/js-vendor/highstock-7.0.3.min.js')
     - if Settings.production?
+      script src=version_asset('/js/balance_chart.js')
+      script src=version_asset('/js/balance_diff.js')
+      script src=version_asset('/js/balance_form.js')
+      script src=version_asset('/js/burndown_chart.js')
+      script src=version_asset('/js/confirm.js')
+      script src=version_asset('/js/entry_form.js')
+      script src=version_asset('/js/expenses_chart.js')
+      script src=version_asset('/js/highcharts_config.js')
+      script src=version_asset('/js/tag_entries_chart.js')
+      script src=version_asset('/js/tags_sort.js')
+
       script src=version_asset('/js/app.js')
     - else
-      script src=version_asset('/coffee/app.coffee') type="text/coffeescript"
+      script type="text/coffeescript" src=version_asset('/coffee/balance_chart.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/balance_diff.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/balance_form.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/burndown_chart.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/confirm.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/entry_form.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/expenses_chart.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/highcharts_config.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/tag_entries_chart.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/tags_sort.coffee')
+
+      script type="text/coffeescript" src=version_asset('/coffee/app.coffee')
       script src=version_asset('/compilers/coffeescript-2.4.1.min.js')
   body
     .container.pt-3.pb-5

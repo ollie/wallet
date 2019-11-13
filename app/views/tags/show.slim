@@ -4,7 +4,7 @@
   .col-sm-2.text-right
     a.btn.btn-outline-primary.w-100.mb-3 href=edit_tag_path(tag.id) Upravit
 
-#tag-entries-chart.mb-3 style="height: 500px;" data-url=tag_entries_json_path(tag.id, year: pagination_date.year, month: pagination_date.month)
+#tag-entries-chart.mb-3 style="height: 500px;" data-js-component="TagEntriesChart" data-url=tag_entries_json_path(tag.id, year: pagination_date.year, month: pagination_date.month)
   .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
     span.octicon-big == icon(:graph)
 
