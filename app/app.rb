@@ -230,7 +230,7 @@ class App < Sinatra::Base
   ##########
 
   get Route(balances: '/balances') do
-    balances = Balance.ordered
+    balances = Balance.ordered.paginate(params[:page], per_page: 12)
 
     if balances.count.zero?
       redirect new_balance_path
@@ -304,7 +304,7 @@ class App < Sinatra::Base
 
   get Route(search_results: '/search/results') do
     slim :'search/results', locals: {
-      search: Search.new(params[:q])
+      search: Search.new(query: params[:q], page: params[:page])
     }
   end
 end

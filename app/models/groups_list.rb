@@ -1,5 +1,5 @@
 class GroupsList
-  attr_accessor :groups, :count, :incomes, :expenses
+  attr_accessor :groups, :count, :incomes, :expenses, :dataset
 
   class << self
     def by_month(date)
@@ -18,9 +18,11 @@ class GroupsList
       end
     end
 
-    def search(phrases)
+    def search(phrases, page)
       new.tap do |groups_list|
-        data(phrases: phrases).each do |entry|
+        ds = data(phrases: phrases, page: page, per_page: 20)
+        groups_list.dataset = ds
+        ds.each do |entry|
           add_entry(groups_list, entry)
         end
       end
@@ -94,7 +96,7 @@ class GroupsList
     end
   end
 
-  def self.data(date: nil, tag: nil, phrases: nil)
+  def self.data(date: nil, tag: nil, phrases: nil, page: nil, per_page: nil)
     if date
       from = Date.new(date.year, date.month, 1)
       to   = Date.new(date.year, date.month, -1)
@@ -119,6 +121,7 @@ class GroupsList
     ds = ds.where(Sequel.function(:coalesce, :accounted_on, Sequel.lit('current_date')) => from..to) if date
     ds = ds.where(Sequel.ilike(:note, *phrases.map { |phrase| "%#{phrase}%" })) if phrases && phrases.any?
     ds = ds.where(Sequel.lit('EXISTS (SELECT 1 FROM taggings WHERE taggings.entry_id = entries.id AND taggings.tag_id = ?)', tag.id)) if tag
+    ds = ds.extension(:pagination).paginate(page, per_page) if page
     ds
   end
 end

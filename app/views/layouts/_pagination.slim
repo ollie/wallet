@@ -1,0 +1,24 @@
+- if dataset.page_count > 1
+  nav
+    ul.pagination.justify-content-center
+      - pagination_pages(dataset).each do |page, active|
+        - if page == :prev
+          li.page-item
+            a.page-link href=path_with_qs(page: (dataset.prev_page unless dataset.prev_page == 1))
+              = '← Předchozí'
+        - elsif page == :next
+          li.page-item
+            a.page-link href=path_with_qs(page: dataset.next_page)
+              = 'Další →'
+        - elsif page == :separator
+          li.page-item.disabled
+            span.page-link
+              | …
+        - elsif active
+          li.page-item.active
+            span.page-link
+              = page
+        - else
+          li.page-item
+            a.page-link href=path_with_qs(page: page)
+              = page

@@ -4,6 +4,7 @@ class Balance < Sequel::Model
   # Plugins
   #########
 
+  plugin :paginate
   plugin :validation_helpers
   plugin :translated_validation_messages
 

@@ -21,5 +21,7 @@
           td.text-right == formatted_amount(balance.amount, plus: false)
           td.pr-0.text-center
             input.js-balance-diff type="checkbox" value=balance.amount data-date=balance.date
+
+    == partial_slim 'layouts/_pagination', dataset: balances
   .col-sm-5
     #balance-diff

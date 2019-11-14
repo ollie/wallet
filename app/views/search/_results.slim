@@ -39,3 +39,5 @@
               th.table-active colspan=(incomes_and_expenses ? '2' : '4')
                 = 'Výdaje '
                 == formatted_amount(groups_list.expenses)
+
+    == partial_slim 'layouts/_pagination', dataset: groups_list.dataset
