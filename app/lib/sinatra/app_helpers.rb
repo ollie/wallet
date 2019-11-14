@@ -82,8 +82,8 @@ module Sinatra
 
     def pagination_pages(dataset)
       pages        = []
-      outer_window = 2
-      inner_window = 3
+      outer_window = 1
+      inner_window = 2
 
       inner_window_start = dataset.current_page - inner_window
       inner_window_start = 1 if inner_window_start < 1
