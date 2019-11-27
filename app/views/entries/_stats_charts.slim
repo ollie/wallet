@@ -1,8 +1,9 @@
-- unless groups_list.expenses.zero?
+- if !Tag.count.zero? && !groups_list.expenses.zero?
   #expenses-chart.my-3 style="height: 400px;" data-js-component="ExpensesChart" data-url=expenses_json_path(year: pagination_date.year, month: pagination_date.month)
     .w-100.h-100.border.text-center style="line-height: 400px; color: #dee2e6;"
       span.octicon-big == icon(:graph)
 
-#burndown-chart.my-3 style="height: 500px;" data-js-component="BurndownChart" data-url=burndown_json_path(year: pagination_date.year, month: pagination_date.month)
-  .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
-    span.octicon-big == icon(:graph)
+- if Balance.by_date(previous_month)
+  #burndown-chart.my-3 style="height: 500px;" data-js-component="BurndownChart" data-url=burndown_json_path(year: pagination_date.year, month: pagination_date.month)
+    .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
+      span.octicon-big == icon(:graph)

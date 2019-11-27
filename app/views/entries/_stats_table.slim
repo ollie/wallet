@@ -5,7 +5,7 @@
 - if previous_balance
   - balance = previous_balance.amount + change
   - if ending_balance
-    - balance_error = ending_balance.amount - balance
+    - balance_error = balance - ending_balance.amount
 
 - if balance && ending_balance&.target_amount
   - remaining_balance = balance - ending_balance.target_amount
@@ -16,40 +16,56 @@
     - remaining_per_day = remaining_balance / days_till_end_of_month
 
 .col-sm-4.order-sm-last
-  table.table.smaller
-    tr
-      th.pl-0 Příjmy
-      td.pr-0.text-right == formatted_amount(groups_list.incomes)
-    tr
-      th.pl-0 Výdaje
-      td.pr-0.text-right == formatted_amount(groups_list.expenses)
-    - if previous_balance
-      tr
-        th.pl-0 Začátek měsíce
-        td.pr-0.text-right == formatted_amount(previous_balance.amount, plus: false)
-    - if ending_balance
-      tr
-        th.pl-0 Konec měsíce
-        td.pr-0.text-right == formatted_amount(ending_balance.amount, plus: false)
-    - if balance
-      tr
-        th.pl-0 Bilance
-        td.pr-0.text-right
-          == "#{formatted_amount(balance, plus: false)} (#{formatted_amount(change)})"
-    - if balance_error && !balance_error.zero?
-      - last_day = Date.new(pagination_date.year, pagination_date.month, -1)
-      tr
-        th.pl-0 Chyba
-        td.pr-0.text-right
-          a href=(new_entry_path('entry[amount]' => balance_error, 'entry[date]' => last_day, 'entry[accounted_on]' => last_day, 'entry[note]' => 'Chyba'))
-            == formatted_amount(balance_error)
-    - if balance && ending_balance&.target_amount
-      tr.text-black-50
-        th.pl-0 Cílová bilance
-        td.pr-0.text-right
-          == "#{formatted_amount(ending_balance.target_amount, plus: false)} (#{formatted_amount(remaining_change)})"
-      - if this_month?(pagination_date) && remaining_balance >= 0
-        tr.text-black-50
-          th.pl-0 Zbývá
+  p.d-sm-none
+    button.btn.btn-outline-secondary.btn-block type="button" data-toggle="collapse" data-target="#stats-table" Statistiky
+
+  .d-sm-block.collapse#stats-table
+    table.table.smaller
+      - if previous_balance
+        tr
+          th.pl-0 Začátek měsíce
           td.pr-0.text-right
-            == "#{formatted_amount(remaining_balance, plus: false)} (#{formatted_amount(remaining_per_day, plus: false)}/d)"
+            a href=edit_balance_path(previous_balance.id)
+              == formatted_amount(previous_balance.amount, plus: false)
+      tr
+        th.pl-0 Příjmy
+        td.pr-0.text-right == formatted_amount(groups_list.incomes)
+      tr
+        th.pl-0 Výdaje
+        td.pr-0.text-right == formatted_amount(groups_list.expenses)
+      tr
+        th.pl-0 Změna
+        td.pr-0.text-right == formatted_amount(change)
+      - if balance && ((!this_month?(pagination_date) && ending_balance && balance != ending_balance.amount) || (this_month?(pagination_date)))
+        tr
+          th.pl-0 Bilance
+          td.pr-0.text-right == formatted_amount(balance, plus: false)
+      - if ending_balance && (!this_month?(pagination_date) || (this_month?(pagination_date) && balance != ending_balance.amount))
+        tr
+          th.pl-0
+            - if this_month?(pagination_date)
+              | Podle banky
+            - else
+              | Konec měsíce
+          td.pr-0.text-right
+            a href=edit_balance_path(ending_balance.id)
+              == formatted_amount(ending_balance.amount, plus: false)
+      - if balance_error && !balance_error.zero?
+        - last_day = Date.new(pagination_date.year, pagination_date.month, -1)
+        tr
+          th.pl-0 Rozdíl
+          td.pr-0.text-right == formatted_amount(balance_error, plus: false)
+      - if balance && ending_balance&.target_amount
+        tr.text-black-50
+          th.pl-0 Cíl
+          td.pr-0.text-right == formatted_amount(ending_balance.target_amount, plus: false)
+        tr.text-black-50
+          th.pl-0 Cílová změna
+          td.pr-0.text-right == formatted_amount(remaining_change)
+        - if this_month?(pagination_date) && remaining_balance >= 0
+          tr.text-black-50
+            th.pl-0 Ještě zbývá
+            td.pr-0.text-right == formatted_amount(remaining_balance, plus: false)
+          tr.text-black-50
+            th.pl-0 = "Na den (#{days_till_end_of_month})"
+            td.pr-0.text-right == "#{formatted_amount(remaining_per_day, plus: false)}/d"
