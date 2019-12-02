@@ -17,7 +17,11 @@
 
 .col-sm-4.order-sm-last
   p.d-sm-none
-    button.btn.btn-outline-secondary.btn-block type="button" data-toggle="collapse" data-target="#stats-table" Statistiky
+    button.btn.btn-outline-secondary.btn-block type="button" data-toggle="collapse" data-target="#stats-table"
+      | Statistiky
+      - if balance_error && !balance_error.zero?
+        span.text-danger<
+          == icon(:alert)
 
   .d-sm-block.collapse#stats-table
     table.table.smaller
@@ -54,7 +58,7 @@
         - last_day = Date.new(pagination_date.year, pagination_date.month, -1)
         tr
           th.pl-0 Rozdíl
-          td.pr-0.text-right == formatted_amount(balance_error, plus: false)
+          td.pr-0.text-right.text-danger == formatted_amount(balance_error, plus: false)
       - if balance && ending_balance&.target_amount
         tr.text-black-50
           th.pl-0 Cíl
