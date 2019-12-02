@@ -37,7 +37,7 @@ GEM
       net-ssh (>= 2.6.5, < 6.0.0)
     net-ssh (5.2.0)
     nio4r (2.5.2)
-    oj (3.9.2)
+    oj (3.10.0)
     parallel (1.19.1)
     parser (2.6.5.0)
       ast (~> 2.4.0)
@@ -76,7 +76,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.0)
-    rubocop (0.76.0)
+    rubocop (0.77.0)
       jaro_winkler (~> 1.5.1)
       parallel (~> 1.10)
       parser (>= 2.6)
@@ -84,7 +84,7 @@ GEM
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 1.7)
     ruby-progressbar (1.10.1)
-    sequel (5.26.0)
+    sequel (5.27.0)
     sequel_pg (1.12.2)
       pg (>= 0.18.0)
       sequel (>= 4.38.0)
@@ -110,7 +110,7 @@ GEM
     tilt (2.0.10)
     unicode-display_width (1.6.0)
     yard (0.9.20)
-    zeitwerk (2.2.1)
+    zeitwerk (2.2.2)
 
 PLATFORMS
   ruby
