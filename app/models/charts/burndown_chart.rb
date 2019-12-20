@@ -25,7 +25,7 @@ module Charts
       last_item_date = expenses.keys.last if current_month
 
       (from..to).each do |day|
-        if current_month && last_item_date && day <= last_item_date || day < today
+        if current_month && last_item_date && day <= last_item_date || day <= today
           amount = expenses[day] || 0
           balance += amount
 
