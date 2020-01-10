@@ -304,7 +304,7 @@ class App < Sinatra::Base
 
   get Route(search_results: '/search/results') do
     slim :'search/results', locals: {
-      search: Search.new(query: params[:q], page: params[:page])
+      search: Search.new(query: params[:q], date_from: params[:date_from], date_to: params[:date_to], page: params[:page])
     }
   end
 end

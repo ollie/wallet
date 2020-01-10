@@ -1,9 +1,32 @@
-form.form-inline action=search_results_path method="get"
-  label.my-1.mr-2 for="search-query" Dotaz
-  input.form-control.my-1.mr-sm-2(
-    name="q"
-    id="search-query"
-    autofocus=(true if request.path == search_path)
-    value=search.query
-  )
-  button.btn.btn-outline-primary.my-1 Hledat
+form action=search_results_path method="get"
+  .form-group.row
+    label.col-sm-2.col-form-label for="date-from" Od
+    .col-sm-6
+      input.form-control(
+        type="date"
+        name="date_from"
+        id="date-from"
+        value=search.date_from
+      )
+  .form-group.row
+    label.col-sm-2.col-form-label for="date-to" Do
+    .col-sm-6
+      input.form-control(
+        type="date"
+        name="date_to"
+        id="date-to"
+        value=search.date_to
+      )
+  .form-group.row
+    label.col-sm-2.col-form-label for="search-query" Dotaz
+    .col-sm-6
+      input.form-control(
+        name="q"
+        id="search-query"
+        autofocus=(true if request.path == search_path)
+        value=search.query
+      )
+
+  .form-group.row
+    .offset-sm-2.col-sm-9
+      button.btn.btn-outline-primary Hledat

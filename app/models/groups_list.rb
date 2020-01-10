@@ -18,9 +18,9 @@ class GroupsList
       end
     end
 
-    def search(phrases, page)
+    def search(phrases, date_from, date_to, page)
       new.tap do |groups_list|
-        ds = data(phrases: phrases, page: page, per_page: 20)
+        ds = data(phrases: phrases, date_from: date_from, date_to: date_to, page: page, per_page: 20)
         groups_list.dataset = ds
         ds.each do |entry|
           add_entry(groups_list, entry)
@@ -96,7 +96,7 @@ class GroupsList
     end
   end
 
-  def self.data(date: nil, tag: nil, phrases: nil, page: nil, per_page: nil)
+  def self.data(date: nil, tag: nil, phrases: nil, date_from: nil, date_to: nil, page: nil, per_page: nil)
     if date
       from = Date.new(date.year, date.month, 1)
       to   = Date.new(date.year, date.month, -1)
@@ -119,6 +119,8 @@ class GroupsList
            Sequel[:entries][:id].desc
          )
     ds = ds.where(Sequel.function(:coalesce, :accounted_on, Sequel.lit('current_date')) => from..to) if date
+    ds = ds.where(Sequel.lit('COALESCE(accounted_on, current_date) >= ?', date_from)) if date_from
+    ds = ds.where(Sequel.lit('COALESCE(accounted_on, current_date) <= ?', date_to))   if date_to
     ds = ds.where(Sequel.ilike(:note, *phrases.map { |phrase| "%#{phrase}%" })) if phrases && phrases.any?
     ds = ds.where(Sequel.lit('EXISTS (SELECT 1 FROM taggings WHERE taggings.entry_id = entries.id AND taggings.tag_id = ?)', tag.id)) if tag
     ds = ds.extension(:pagination).paginate(page, per_page) if page

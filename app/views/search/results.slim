@@ -1,7 +1,8 @@
 h1.mt-3.mb-3 = title 'Vyhledávání'
 
-.mb-4
-  == partial_slim 'search/_form', search: search
+.row.mb-4
+  .col-sm-6
+    == partial_slim 'search/_form', search: search
 
 - if search.results.groups.any?
   == partial_slim 'search/_results', groups_list: search.results
