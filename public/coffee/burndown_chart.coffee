@@ -40,8 +40,12 @@ class @BurndownChart
             fillColor: 'white'
           data: []
 
+      plotLines = []
+
       for item in data
-        date = Date.parse(item.date)
+        date      = new Date(item.date)
+        timestamp = date.getTime()
+
         balance = if item.balance == null
           null
         else
@@ -51,14 +55,20 @@ class @BurndownChart
         else
           Number(item.target_balance)
 
-        series.actual.data.push([date, balance])
-        series.target.data.push([date, target_balance])
+        if date.getDate() == 1
+          monthName = Highcharts.getOptions().lang.months[date.getMonth()]
+          plotLines.push(@_createPlotLine(timestamp, monthName))
+
+        series.actual.data.push([timestamp, balance])
+        series.target.data.push([timestamp, target_balance])
 
       options =
         chart:
           height: 500
           spacing: [5, 0, 5, 0]
         type: 'line'
+        xAxis:
+          plotLines: plotLines
         series: [series.actual, series.target]
         # plotOptions:
         #   series:
@@ -83,3 +93,14 @@ class @BurndownChart
           enabled: false
 
       Highcharts.stockChart(@element.attr('id'), options)
+
+  _createPlotLine: (value, text) ->
+    {
+      color: '#e6e6e6'
+      value: value
+      width: 1
+      label:
+        text: text
+        style:
+          color: '#cccccc'
+    }

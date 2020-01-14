@@ -52,21 +52,35 @@ class @TagEntriesChart
             fillColor: 'white'
           data: []
 
+      plotLines = []
+      yearTmp   = null
+
       for item in data
-        date     = Date.parse(item.date)
+        date      = new Date(item.date)
+        year      = date.getFullYear()
+        yearTmp  ?= year
+        timestamp = date.getTime()
+
         total    = Number(item.total)
         incomes  = Number(item.incomes)
         expenses = Number(item.expenses)
 
-        series.total.data.push([date, total])
-        series.incomes.data.push([date, incomes])
-        series.expenses.data.push([date, expenses])
+        if year != yearTmp
+          plotLineTimestamp = Date.UTC(year, 0, 1)
+          plotLines.push(@_createPlotLine(plotLineTimestamp, year))
+          yearTmp = year
+
+        series.total.data.push([timestamp, total])
+        series.incomes.data.push([timestamp, incomes])
+        series.expenses.data.push([timestamp, expenses])
 
       options =
         chart:
           height: 500
           spacing: [5, 0, 5, 0]
         type: 'line'
+        xAxis:
+          plotLines: plotLines
         series: [series.total, series.incomes, series.expenses]
         # plotOptions:
         #   series:
@@ -91,3 +105,14 @@ class @TagEntriesChart
           enabled: false
 
       Highcharts.stockChart(@element.attr('id'), options)
+
+  _createPlotLine: (value, text) ->
+    {
+      color: '#e6e6e6'
+      value: value
+      width: 1
+      label:
+        text: text
+        style:
+          color: '#cccccc'
+    }

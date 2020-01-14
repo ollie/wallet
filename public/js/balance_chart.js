@@ -12,7 +12,7 @@
 
     init() {
       return $.getJSON(this.element.data('url'), (data) => {
-        var date, expenses, i, incomes, item, len, options, series, target, total;
+        var date, expenses, i, incomes, item, len, options, plotLineTimestamp, plotLines, series, target, timestamp, total, year, yearTmp;
         series = {
           total: {
             name: 'Celkem',
@@ -61,19 +61,31 @@
             data: []
           }
         };
+        plotLines = [];
+        yearTmp = null;
         for (i = 0, len = data.length; i < len; i++) {
           item = data[i];
-          date = Date.parse(item.date);
+          date = new Date(item.date);
+          year = date.getFullYear();
+          if (yearTmp == null) {
+            yearTmp = year;
+          }
+          timestamp = date.getTime();
           total = Number(item.total);
           if (item.target !== null) {
             target = Number(item.target);
           }
           incomes = Number(item.incomes);
           expenses = Number(item.expenses);
-          series.total.data.push([date, total]);
-          series.target.data.push([date, target]);
-          series.incomes.data.push([date, incomes]);
-          series.expenses.data.push([date, expenses]);
+          if (year !== yearTmp) {
+            plotLineTimestamp = Date.UTC(year, 0, 1);
+            plotLines.push(this._createPlotLine(plotLineTimestamp, year));
+            yearTmp = year;
+          }
+          series.total.data.push([timestamp, total]);
+          series.target.data.push([timestamp, target]);
+          series.incomes.data.push([timestamp, incomes]);
+          series.expenses.data.push([timestamp, expenses]);
         }
         options = {
           chart: {
@@ -81,6 +93,9 @@
             spacing: [5, 0, 5, 0]
           },
           type: 'line',
+          xAxis: {
+            plotLines: plotLines
+          },
           series: [series.total, series.target, series.incomes, series.expenses],
           // plotOptions:
           //   series:
@@ -108,6 +123,20 @@
         };
         return Highcharts.stockChart(this.element.attr('id'), options);
       });
+    }
+
+    _createPlotLine(value, text) {
+      return {
+        color: '#e6e6e6',
+        value: value,
+        width: 1,
+        label: {
+          text: text,
+          style: {
+            color: '#cccccc'
+          }
+        }
+      };
     }
 
   };

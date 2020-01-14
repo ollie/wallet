@@ -12,7 +12,7 @@
 
     init() {
       return $.getJSON(this.element.data('url'), (data) => {
-        var balance, date, i, item, len, options, series, target_balance;
+        var balance, date, i, item, len, monthName, options, plotLines, series, target_balance, timestamp;
         if (!data.length) {
           return;
         }
@@ -48,13 +48,19 @@
             data: []
           }
         };
+        plotLines = [];
         for (i = 0, len = data.length; i < len; i++) {
           item = data[i];
-          date = Date.parse(item.date);
+          date = new Date(item.date);
+          timestamp = date.getTime();
           balance = item.balance === null ? null : Number(item.balance);
           target_balance = item.target_balance === null ? null : Number(item.target_balance);
-          series.actual.data.push([date, balance]);
-          series.target.data.push([date, target_balance]);
+          if (date.getDate() === 1) {
+            monthName = Highcharts.getOptions().lang.months[date.getMonth()];
+            plotLines.push(this._createPlotLine(timestamp, monthName));
+          }
+          series.actual.data.push([timestamp, balance]);
+          series.target.data.push([timestamp, target_balance]);
         }
         options = {
           chart: {
@@ -62,6 +68,9 @@
             spacing: [5, 0, 5, 0]
           },
           type: 'line',
+          xAxis: {
+            plotLines: plotLines
+          },
           series: [series.actual, series.target],
           // plotOptions:
           //   series:
@@ -89,6 +98,20 @@
         };
         return Highcharts.stockChart(this.element.attr('id'), options);
       });
+    }
+
+    _createPlotLine(value, text) {
+      return {
+        color: '#e6e6e6',
+        value: value,
+        width: 1,
+        label: {
+          text: text,
+          style: {
+            color: '#cccccc'
+          }
+        }
+      };
     }
 
   };
