@@ -18,7 +18,7 @@ class @BurndownChart
           color: '#7cb5ec'
           lineWidth: 4
           type: 'line'
-          index: 2
+          index: 3
           marker:
             lineWidth: 4
             radius: 6
@@ -26,17 +26,31 @@ class @BurndownChart
             fillColor: 'white'
           data: []
 
+        unaccounted:
+          name: 'Celkem (+ nezaúčtované)'
+          showInNavigator: false
+          color: '#f1c40f'
+          lineWidth: 4
+          type: 'line'
+          index: 2
+          marker:
+            lineWidth: 4
+            radius: 6
+            lineColor: '#f1c40f'
+            fillColor: 'white'
+          data: []
+
         target:
           name: 'Cíl'
           showInNavigator: false
-          color: '#fedd44'
-          lineWidth: 2
+          color: '#dddddd'
+          lineWidth: 4
           type: 'line'
           index: 1
           marker:
             lineWidth: 4
             radius: 6
-            lineColor: '#fedd44'
+            lineColor: '#dddddd'
             fillColor: 'white'
           data: []
 
@@ -46,20 +60,21 @@ class @BurndownChart
         date      = new Date(item.date)
         timestamp = date.getTime()
 
-        balance = if item.balance == null
-          null
-        else
-          Number(item.balance)
-        target_balance = if item.target_balance == null
-          null
-        else
-          Number(item.target_balance)
+        balance = null
+        balance = Number(item.balance) unless item.balance == null
+
+        target_balance = null
+        target_balance = Number(item.target_balance) unless item.target_balance == null
+
+        balance_with_unaccounted = null
+        balance_with_unaccounted = Number(item.balance_with_unaccounted) unless item.balance_with_unaccounted == null
 
         if date.getDate() == 1
           monthName = Highcharts.getOptions().lang.months[date.getMonth()]
           plotLines.push(@_createPlotLine(timestamp, monthName))
 
         series.actual.data.push([timestamp, balance])
+        series.unaccounted.data.push([timestamp, balance_with_unaccounted]) unless balance_with_unaccounted == null
         series.target.data.push([timestamp, target_balance])
 
       options =
@@ -69,7 +84,7 @@ class @BurndownChart
         type: 'line'
         xAxis:
           plotLines: plotLines
-        series: [series.actual, series.target]
+        series: [series.actual, series.unaccounted, series.target]
         # plotOptions:
         #   series:
         #     animation: 500

@@ -26,10 +26,19 @@ module Charts
 
       (from..to).each do |day|
         if current_month && last_item_date && day <= last_item_date || day <= today
-          amount = expenses[day] || 0
+          amount   = expenses[day] || 0
           balance += amount
 
-          data[day] = { balance: balance }
+          balance_with_unaccounted =
+            if day == today - 1
+              balance
+            elsif day == today
+              balance + (unaccounted_expenses[day] || 0)
+            else
+              nil
+            end
+
+          data[day] = { balance: balance, balance_with_unaccounted: balance_with_unaccounted }
         else
           data[day] = { balance: nil } # Draw all days in current month
         end
@@ -38,7 +47,7 @@ module Charts
       fill_in_target_balances(data) if target_balance
 
       data.map do |day, hash|
-        { date: day, balance: hash.fetch(:balance), target_balance: hash[:target_balance] }
+        { date: day, balance: hash.fetch(:balance), balance_with_unaccounted: hash[:balance_with_unaccounted], target_balance: hash[:target_balance] }
       end
     end
 
@@ -48,8 +57,20 @@ module Charts
       @expenses ||= {}.tap do |hash|
         Settings
           .database[:entries]
+          .select(Sequel.lit('accounted_on AS date, sum(amount) AS amount'))
+          .where(Sequel.lit('accounted_on BETWEEN :from AND :to', from: from, to: to))
+          .group(:accounted_on)
+          .order(:accounted_on)
+          .each { |item| hash[item.fetch(:date)] = item.fetch(:amount) }
+      end
+    end
+
+    def unaccounted_expenses
+      @unaccounted_expenses ||= {}.tap do |hash|
+        Settings
+          .database[:entries]
           .select(Sequel.lit('COALESCE(accounted_on, current_date) AS date, sum(amount) AS amount'))
-          .where(Sequel.lit('COALESCE(accounted_on, current_date) BETWEEN :from AND :to', from: from, to: to))
+          .where(accounted_on: nil)
           .group(Sequel.lit('COALESCE(accounted_on, current_date)'))
           .order(Sequel.lit('COALESCE(accounted_on, current_date)'))
           .each { |item| hash[item.fetch(:date)] = item.fetch(:amount) }
