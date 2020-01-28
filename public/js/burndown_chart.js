@@ -12,7 +12,7 @@
 
     init() {
       return $.getJSON(this.element.data('url'), (data) => {
-        var balance, balance_with_unaccounted, date, i, item, len, monthName, options, plotLines, series, target_balance, timestamp;
+        var balance, balanceWithUnaccounted, date, i, item, len, monthName, options, plotLines, series, targetBalance, timestamp;
         if (!data.length) {
           return;
         }
@@ -33,7 +33,7 @@
             data: []
           },
           unaccounted: {
-            name: 'Celkem (+ nezaúčtované)',
+            name: 'Nezaúčtované',
             showInNavigator: false,
             color: '#f1c40f',
             lineWidth: 4,
@@ -72,23 +72,23 @@
           if (item.balance !== null) {
             balance = Number(item.balance);
           }
-          target_balance = null;
+          targetBalance = null;
           if (item.target_balance !== null) {
-            target_balance = Number(item.target_balance);
+            targetBalance = Number(item.target_balance);
           }
-          balance_with_unaccounted = null;
+          balanceWithUnaccounted = null;
           if (item.balance_with_unaccounted !== null) {
-            balance_with_unaccounted = Number(item.balance_with_unaccounted);
+            balanceWithUnaccounted = Number(item.balance_with_unaccounted);
           }
           if (date.getDate() === 1) {
             monthName = Highcharts.getOptions().lang.months[date.getMonth()];
             plotLines.push(this._createPlotLine(timestamp, monthName));
           }
           series.actual.data.push([timestamp, balance]);
-          if (balance_with_unaccounted !== null) {
-            series.unaccounted.data.push([timestamp, balance_with_unaccounted]);
+          if (balanceWithUnaccounted !== null) {
+            series.unaccounted.data.push([timestamp, balanceWithUnaccounted]);
           }
-          series.target.data.push([timestamp, target_balance]);
+          series.target.data.push([timestamp, targetBalance]);
         }
         options = {
           chart: {

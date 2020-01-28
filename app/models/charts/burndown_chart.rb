@@ -23,6 +23,7 @@ module Charts
       balance = previous_month_balance.dup
 
       last_item_date = expenses.keys.last if current_month
+      show_unaccounted = false
 
       (from..to).each do |day|
         if current_month && last_item_date && day <= last_item_date || day <= today
@@ -33,7 +34,9 @@ module Charts
             if day == today - 1
               balance
             elsif day == today
-              balance + (unaccounted_expenses[day] || 0)
+              new_balance = balance + (unaccounted_expenses[day] || 0)
+              show_unaccounted = true if new_balance != balance
+              new_balance
             else
               nil
             end
@@ -47,7 +50,12 @@ module Charts
       fill_in_target_balances(data) if target_balance
 
       data.map do |day, hash|
-        { date: day, balance: hash.fetch(:balance), balance_with_unaccounted: hash[:balance_with_unaccounted], target_balance: hash[:target_balance] }
+        {
+          date: day,
+          balance: hash.fetch(:balance),
+          balance_with_unaccounted: (hash[:balance_with_unaccounted] if show_unaccounted),
+          target_balance: hash[:target_balance]
+        }
       end
     end
 

@@ -27,7 +27,7 @@ class @BurndownChart
           data: []
 
         unaccounted:
-          name: 'Celkem (+ nezaúčtované)'
+          name: 'Nezaúčtované'
           showInNavigator: false
           color: '#f1c40f'
           lineWidth: 4
@@ -63,19 +63,19 @@ class @BurndownChart
         balance = null
         balance = Number(item.balance) unless item.balance == null
 
-        target_balance = null
-        target_balance = Number(item.target_balance) unless item.target_balance == null
+        targetBalance = null
+        targetBalance = Number(item.target_balance) unless item.target_balance == null
 
-        balance_with_unaccounted = null
-        balance_with_unaccounted = Number(item.balance_with_unaccounted) unless item.balance_with_unaccounted == null
+        balanceWithUnaccounted = null
+        balanceWithUnaccounted = Number(item.balance_with_unaccounted) unless item.balance_with_unaccounted == null
 
         if date.getDate() == 1
           monthName = Highcharts.getOptions().lang.months[date.getMonth()]
           plotLines.push(@_createPlotLine(timestamp, monthName))
 
         series.actual.data.push([timestamp, balance])
-        series.unaccounted.data.push([timestamp, balance_with_unaccounted]) unless balance_with_unaccounted == null
-        series.target.data.push([timestamp, target_balance])
+        series.unaccounted.data.push([timestamp, balanceWithUnaccounted]) unless balanceWithUnaccounted == null
+        series.target.data.push([timestamp, targetBalance])
 
       options =
         chart:
