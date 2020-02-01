@@ -19,7 +19,13 @@ module Charts
     def data
       return [] unless previous_month_balance
 
-      data    = { last_day_of_previous_month => { balance: previous_month_balance } }
+      data = {
+        last_day_of_previous_month => {
+          balance: previous_month_balance,
+          balance_with_unaccounted: previous_month_balance # Fixes first day of month not showing a line from last day of prev. month.
+        }
+      }
+
       balance = previous_month_balance.dup
 
       last_item_date = expenses.keys.last if current_month
@@ -35,7 +41,16 @@ module Charts
               balance
             elsif day == today
               new_balance = balance + (unaccounted_expenses[day] || 0)
-              show_unaccounted = true if new_balance != balance
+
+              if new_balance != balance
+                show_unaccounted = true
+
+                # Removes first-day-of-month fix if we are in 2nd and on.
+                if day.day != 1
+                  data[last_day_of_previous_month][:balance_with_unaccounted] = nil
+                end
+              end
+
               new_balance
             else
               nil
@@ -90,6 +105,8 @@ module Charts
 
       highest_balance_day = highest_balance_item.first
       highest_balance     = highest_balance_item.last.fetch(:balance)
+
+      return if highest_balance < target_balance
 
       days_range = highest_balance_day..to
       target_balance_decrease = (highest_balance - target_balance) / (days_range.last - days_range.first).to_i
