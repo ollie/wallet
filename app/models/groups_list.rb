@@ -83,7 +83,7 @@ class GroupsList
     end
 
     def color_for_text_or_icon
-      if icon
+      if icon.present?
         '#ffffff'
       else
         color
