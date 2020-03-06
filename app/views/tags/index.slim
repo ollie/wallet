@@ -12,9 +12,11 @@
           .row
             .col-sm-2.text-center
               span.js-sortable-handle == icon(:grabber)
-            .col-sm-6.pl-0
+            .col-sm-4.pl-0
               a href=tag_path(tag.id)
                 = tag.name
+            .col-sm-2.pr-0
+              = tag.icon
             .col-sm-2.pr-0
               - if tag.primary
                 == icon(:check)

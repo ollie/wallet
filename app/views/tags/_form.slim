@@ -14,6 +14,22 @@ form action=url method="post"
         .invalid-feedback = tag.errors.on(:name).join(', ')
 
   .form-group.row
+    label.col-sm-2.col-form-label for="tag-icon" Ikona
+    .col-sm-5
+      .input-group
+        input.form-control(
+          type="text"
+          name="tag[icon]"
+          id="tag-icon"
+          value=tag.icon
+          class=('is-invalid' if tag.errors.on(:icon))
+        )
+        .input-group-append
+          span.input-group-text Emoji
+        - if tag.errors.on(:icon)
+          .invalid-feedback = tag.errors.on(:icon).join(', ')
+
+  .form-group.row
     label.col-sm-2.col-form-label for="tag-color" Barva
     .col-sm-2
       input.form-control(

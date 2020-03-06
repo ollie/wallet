@@ -73,12 +73,21 @@ class GroupsList
   end
 
   class Tag
-    attr_accessor :id, :name, :color
+    attr_accessor :id, :name, :icon, :color
 
     def initialize(array)
       self.id    = array.fetch(0)
       self.name  = array.fetch(1)
-      self.color = array.fetch(2)
+      self.icon  = array.fetch(2)
+      self.color = array.fetch(3)
+    end
+
+    def color_for_text_or_icon
+      if icon
+        '#ffffff'
+      else
+        color
+      end
     end
 
     def dark?
@@ -108,7 +117,7 @@ class GroupsList
            Sequel[:entries].*,
            Sequel.function(:coalesce, :accounted_on, Sequel.lit('current_date')).as(:accounted_on),
            Sequel.case({ { Sequel[:entries][:accounted_on] => nil } => false }, true).as(:pending),
-           Sequel.lit('array_agg(ARRAY[tags.id::text, tags.name, tags.color] ORDER BY tags.position) FILTER (WHERE tags.id IS NOT NULL)').as(:tags)
+           Sequel.lit('array_agg(ARRAY[tags.id::text, tags.name, tags.icon, tags.color] ORDER BY tags.position) FILTER (WHERE tags.id IS NOT NULL)').as(:tags)
          )
          .left_join(:taggings, entry_id: :id)
          .left_join(:tags, id: Sequel[:taggings][:tag_id])

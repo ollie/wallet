@@ -165,7 +165,7 @@ class App < Sinatra::Base
 
   post '/tags/new' do
     tag = Tag.new
-    tag.set_fields(params[:tag], %i[name color primary])
+    tag.set_fields(params[:tag], %i[name icon color primary])
 
     if tag.valid?
       tag.save
@@ -185,7 +185,7 @@ class App < Sinatra::Base
 
   post '/tags/:id/edit' do
     tag = Tag.with_pk!(params[:id])
-    tag.set_fields(params[:tag], %i[name color primary])
+    tag.set_fields(params[:tag], %i[name icon color primary])
 
     if tag.valid?
       tag.save

@@ -53,7 +53,9 @@ class Tag < Sequel::Model
         [kavarna, kartou, revolut],
         [leky, kartou, csob],
         [leky, kartou, kb],
+        [leky, kartou, revolut],
         [auto, benzin, kartou, kb],
+        [auto, benzin, kartou, revolut],
         [auto, servis, prevodem, kb],
         [auto, cash]
       ].map do |group|
