@@ -33,6 +33,7 @@ Sequel.migration do
       column :position, 'integer'
       column :entries_count, 'integer', default: 0, null: false
       column :primary, 'boolean', default: false, null: false
+      column :icon, 'character varying(40)'
 
       index [:name], unique: true
     end
