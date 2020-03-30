@@ -13,17 +13,26 @@ class @BalanceForm
     e.preventDefault()
 
     text  = @noteArea.val()
-    parts = text.split(/\+/g)
+    lines = text.split(/\s*\n\s*/)
     numbers = []
-    sum   = 0
 
-    for item in parts
-      item = item.replace(/\s/, '')
-      item = item.replace(',', '.')
-      number = Number(item)
-      numbers.push(number) if number
+    lines.forEach (line) ->
+      line  = line.replace(/\s/g, '')
+      match = line.match(/\b\d+([,\.]\d+)?\b/)
 
-    return unless numbers.length
+      unless match
+        console.warn("Cannot find number in line: #{line}")
+        return
+
+      numberAsString = match[0]
+      numberAsString = numberAsString.replace(',', '.')
+      number = Number(numberAsString)
+
+      if isNaN(number)
+        console.warn("Could not convert to number: #{numberAsString} (line: #{line})")
+        return
+
+      numbers.push(number)
 
     sum = 0
     sum += number for number in numbers

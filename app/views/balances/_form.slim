@@ -58,10 +58,10 @@ form action=url method="post" data-js-component="BalanceForm"
       textarea.form-control(
         name="balance[note]"
         id="balance-note"
-        rows="1"
+        rows="5"
       ) = balance.note
     .col-sm-2.pl-0
-      a.js-bilances-sum.btn.btn-light href="" title="Sečíst"
+      button.js-bilances-sum.btn.btn-light type="button" title="Sečíst"
         == icon(:plus)
 
   .form-group.row

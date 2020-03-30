@@ -13,27 +13,31 @@
     }
 
     _handleSumButtonClick(e) {
-      var i, item, j, len, len1, number, numbers, parts, sum, text;
+      var i, len, lines, number, numbers, sum, text;
       e.preventDefault();
       text = this.noteArea.val();
-      parts = text.split(/\+/g);
+      lines = text.split(/\s*\n\s*/);
       numbers = [];
-      sum = 0;
-      for (i = 0, len = parts.length; i < len; i++) {
-        item = parts[i];
-        item = item.replace(/\s/, '');
-        item = item.replace(',', '.');
-        number = Number(item);
-        if (number) {
-          numbers.push(number);
+      lines.forEach(function(line) {
+        var match, number, numberAsString;
+        line = line.replace(/\s/g, '');
+        match = line.match(/\b\d+([,\.]\d+)?\b/);
+        if (!match) {
+          console.warn(`Cannot find number in line: ${line}`);
+          return;
         }
-      }
-      if (!numbers.length) {
-        return;
-      }
+        numberAsString = match[0];
+        numberAsString = numberAsString.replace(',', '.');
+        number = Number(numberAsString);
+        if (isNaN(number)) {
+          console.warn(`Could not convert to number: ${numberAsString} (line: ${line})`);
+          return;
+        }
+        return numbers.push(number);
+      });
       sum = 0;
-      for (j = 0, len1 = numbers.length; j < len1; j++) {
-        number = numbers[j];
+      for (i = 0, len = numbers.length; i < len; i++) {
+        number = numbers[i];
         sum += number;
       }
       sum = Math.round(sum * 100) / 100;
