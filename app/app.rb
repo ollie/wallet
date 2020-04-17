@@ -307,4 +307,17 @@ class App < Sinatra::Base
       search: Search.new(query: params[:q], date_from: params[:date_from], date_to: params[:date_to], page: params[:page])
     }
   end
+
+  ####################
+  # Recurring expenses
+  ####################
+
+  get Route(recurring_expenses: '/recurring_expenses') do
+    slim :'recurring_expenses/index'
+  end
+
+  get Route(recurring_expenses_json: '/recurring_expenses.json') do
+    recurring_expenses = Charts::RecurringExpensesChart.new(Date.today).data
+    MultiJson.dump(recurring_expenses)
+  end
 end
