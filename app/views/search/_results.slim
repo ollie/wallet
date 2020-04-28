@@ -20,10 +20,15 @@
               td
                 - entry.tags.each do |tag|
                   a.badge.badge-secondary(
-                    class=('badge-light' if !tag.color || tag.light?)
+                    class=('badge-light' if tag.icon.present? || !tag.color || tag.light?)
                     href=(tag_path(tag.id, year: pagination_date.year, month: pagination_date.month))
-                    style=("background-color: #{tag.color};" if tag.color)
-                  ) = tag.name
+                    style=("background-color: #{tag.color_for_text_or_icon};" if tag.color_for_text_or_icon)
+                    title=(tag.name if tag.icon.present?)
+                  )
+                    - if tag.icon.present?
+                      = tag.icon
+                    - else
+                      = tag.name
               td.text-right
                 small
                   == formatted_date(entry.date)
@@ -45,4 +50,4 @@
                 == formatted_amount(groups_list.expenses)
             th.table-active
 
-    == partial_slim 'layouts/_pagination', dataset: groups_list.dataset
+    == partial_slim 'layouts/_pagination', dataset: groups_list.dataset if groups_list.dataset.respond_to?(:page_count)
