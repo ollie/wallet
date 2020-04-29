@@ -1,0 +1,9 @@
+h1.mt-3.mb-3 = title "Upravit pravidelnou položku #{recurring_entry.name}"
+
+.row
+  .col-sm-6
+    == partial_slim 'recurring_entries/_form', recurring_entry: recurring_entry, url: edit_recurring_entry_path(recurring_entry.id), edit: true
+
+  .col-sm-6.text-right
+    form action=delete_recurring_entry_path(recurring_entry.id) method="post" data-js-component="Confirm" data-confirm="Opravdu chcete smazat položku?"
+      input.btn.btn-outline-danger type="submit" value="Smazat"

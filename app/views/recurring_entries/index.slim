@@ -1,0 +1,56 @@
+.row.mt-3
+  .col-sm-10
+    h1.mb-3 = title 'Pravidelné položky'
+  .col-sm-2.text-right
+    a.btn.btn-outline-primary.w-100.mb-3 href=new_recurring_entry_path Přidat
+
+- if RecurringEntry.enabled.any?
+  #recurring-entries-chart.mb-3 style="height: 500px;" data-js-component="RecurringEntriesChart" data-url=recurring_entries_json_path
+    .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
+      span.octicon-big == icon(:graph)
+
+table.table.smaller
+  thead
+    tr
+      th Název
+      th.text-center Zapnuto?
+      th.text-right Částka
+      th.text-center Perioda placení
+      th Od
+      th Do
+      th Štítky
+  tbody
+    - recurring_entries.each do |recurring_entry|
+      tr
+        td
+          a href=edit_recurring_entry_path(recurring_entry.id) = recurring_entry.name
+        td.text-center
+          - if recurring_entry.enabled
+            == icon(:check)
+        td.text-right
+          == formatted_amount(recurring_entry.amount)
+        td.text-center
+          - if recurring_entry.months_period == 1
+            | Měsíční
+          - elsif recurring_entry.months_period == 12
+            | Roční
+          - else
+            = recurring_entry.months_period
+        td
+          - if recurring_entry.starts_on
+            = l(recurring_entry.starts_on)
+        td
+          - if recurring_entry.ends_on
+            = l(recurring_entry.ends_on)
+        td
+          - recurring_entry.tags.each do |tag|
+            a.badge.badge-secondary(
+              class=('badge-light' if tag.icon.present? || !tag.color || tag.light?)
+              href=(tag_path(tag.id, year: pagination_date.year, month: pagination_date.month))
+              style=("background-color: #{tag.color_for_text_or_icon};" if tag.color_for_text_or_icon)
+              title=(tag.name if tag.icon.present?)
+            )
+              - if tag.icon.present?
+                = tag.icon
+              - else
+                = tag.name

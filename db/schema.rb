@@ -22,6 +22,22 @@ Sequel.migration do
       index [:date]
     end
 
+    create_table(:recurring_entries) do
+      primary_key :id
+      column :name, 'character varying(255)', null: false
+      column :enabled, 'boolean', default: true, null: false
+      column :amount, 'numeric(10,2)', null: false
+      column :months_period, 'integer', default: 1, null: false
+      column :starts_on, 'date', null: false
+      column :ends_on, 'date'
+      column :note, 'character varying(255)', null: false
+      column :tag_ids, 'integer[]'
+
+      index [:amount]
+      index [:ends_on]
+      index [:starts_on]
+    end
+
     create_table(:schema_info) do
       column :version, 'integer', default: 0, null: false
     end

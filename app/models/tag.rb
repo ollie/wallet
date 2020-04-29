@@ -116,6 +116,14 @@ class Tag < Sequel::Model
   # Public instance methods
   #########################
 
+  def color_for_text_or_icon
+    if icon.present?
+      '#ffffff'
+    else
+      color
+    end
+  end
+
   def dark?
     return @is_dark if defined?(@is_dark)
     return @is_dark = false unless color

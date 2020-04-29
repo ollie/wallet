@@ -1,0 +1,5 @@
+h1.mt-3.mb-3 = title 'Přidat pravidelnou položku'
+
+.row
+  .col-sm-6
+    == partial_slim 'recurring_entries/_form', recurring_entry: recurring_entry, url: new_recurring_entry_path

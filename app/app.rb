@@ -316,8 +316,70 @@ class App < Sinatra::Base
     slim :'recurring_expenses/index'
   end
 
-  get Route(recurring_expenses_json: '/recurring_expenses.json') do
-    recurring_expenses = Charts::RecurringExpensesChart.new(Date.today).data
-    MultiJson.dump(recurring_expenses)
+  ###################
+  # Recurring entries
+  ###################
+
+  get Route(recurring_entries: '/recurring_entries') do
+    recurring_entries = RecurringEntry.ordered
+
+    if recurring_entries.count.zero?
+      redirect new_recurring_entry_path
+    else
+      slim :'recurring_entries/index', locals: {
+        recurring_entries: recurring_entries
+      }
+    end
+  end
+
+  get Route(recurring_entries_json: '/recurring_entries.json') do
+    recurring_entries = Charts::RecurringEntriesChart.new.data
+    MultiJson.dump(recurring_entries)
+  end
+
+  get Route(new_recurring_entry: '/recurring_entries/new') do
+    slim :'recurring_entries/new', locals: {
+      recurring_entry: RecurringEntry.new
+    }
+  end
+
+  post '/recurring_entries/new' do
+    recurring_entry = RecurringEntry.new
+    recurring_entry.set_fields(params[:recurring_entry], %i[name enabled amount months_period starts_on ends_on note tag_ids])
+
+    if recurring_entry.valid?
+      recurring_entry.save
+      redirect recurring_entries_path
+    else
+      slim :'recurring_entries/new', locals: {
+        recurring_entry: recurring_entry
+      }
+    end
+  end
+
+  get Route(edit_recurring_entry: '/recurring_entries/:id/edit') do
+    slim :'recurring_entries/edit', locals: {
+      recurring_entry: RecurringEntry.with_pk!(params[:id])
+    }
+  end
+
+  post '/recurring_entries/:id/edit' do
+    recurring_entry = RecurringEntry.with_pk!(params[:id])
+    recurring_entry.set_fields(params[:recurring_entry], %i[name enabled amount months_period starts_on ends_on note tag_ids])
+
+    if recurring_entry.valid?
+      recurring_entry.save
+      redirect recurring_entries_path
+    else
+      slim :'recurring_entries/edit', locals: {
+        recurring_entry: recurring_entry
+      }
+    end
+  end
+
+  post Route(delete_recurring_entry: '/recurring_entries/:id/delete') do
+    recurring_entry = RecurringEntry.with_pk!(params[:id])
+    recurring_entry.destroy
+    redirect recurring_entries_path
   end
 end

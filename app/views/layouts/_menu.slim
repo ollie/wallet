@@ -12,8 +12,8 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
         a.nav-link href=entries_path Položky
       li.nav-item class=('active' if request.path =~ %r{^#{balances_path}})
         a.nav-link href=balances_path Bilance
-      li.nav-item class=('active' if request.path =~ %r{^#{recurring_expenses_path}})
-        a.nav-link href=recurring_expenses_path Pravidelné výdaje
+      li.nav-item class=('active' if request.path =~ %r{^#{recurring_entries_path}})
+        a.nav-link href=recurring_entries_path Pravidelné položky
       li.nav-item class=('active' if request.path =~ %r{^#{calendar_path}})
         a.nav-link href=calendar_path Kalendář
       li.nav-item class=('active' if request.path =~ %r{^#{tags_path}})

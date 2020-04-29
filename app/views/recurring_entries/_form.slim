@@ -1,0 +1,118 @@
+form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
+  .form-group.row
+    .offset-sm-3.col-sm-9
+      .form-check
+        input type="hidden" name="recurring_entry[enabled]" value="0"
+        input.form-check-input(
+          type="checkbox"
+          name="recurring_entry[enabled]"
+          id="recurring-entry-enabled"
+          value="1"
+          checked=recurring_entry.enabled
+        )
+        label.form-check-label for="recurring-entry-enabled"
+          | Zapnuto?
+
+  .form-group.row
+    label.col-sm-3.col-form-label for="recurring-entry-name" Název
+    .col-sm-6
+      input.form-control(
+        name="recurring_entry[name]"
+        id="recurring-entry-name"
+        value=recurring_entry.name
+        autofocus
+        class=('is-invalid' if recurring_entry.errors.on(:name))
+      )
+      - if recurring_entry.errors.on(:name)
+        .invalid-feedback = recurring_entry.errors.on(:name).join(', ')
+
+  .form-group.row
+    .offset-sm-3.col-sm-9
+      button.js-expense.btn>(
+        class=(!recurring_entry.amount || recurring_entry.amount < 0 ? 'btn-danger active' : 'btn-default')
+        type="button"
+      ) Výdaje
+      button.js-income.btn(
+        class=(recurring_entry.amount && recurring_entry.amount > 0 ? 'btn-success active' : 'btn-default')
+        type="button"
+      ) Příjmy
+
+  .form-group.row
+    label.col-sm-3.col-form-label for="recurring-entry-amount" Částka
+    .col-sm-6
+      .input-group
+        input.js-amount.form-control(
+          type="number"
+          step="0.01"
+          name="recurring_entry[amount]"
+          id="recurring-entry-amount"
+          value=(format('%.2f', recurring_entry.amount) if recurring_entry.amount)
+          data-type=(recurring_entry.amount && recurring_entry.amount > 0 ? 'income' : 'expense')
+          class=('is-invalid' if recurring_entry.errors.on(:amount))
+        )
+        .input-group-append
+          span.input-group-text Kč
+        - if recurring_entry.errors.on(:amount)
+          .invalid-feedback = recurring_entry.errors.on(:amount).join(', ')
+
+  .form-group.row
+    label.col-sm-3.col-form-label for="recurring-entry-months-period" Perioda placení
+    .col-sm-6
+      select.form-control name="recurring_entry[months_period]" id="recurring-entry-months-period"
+        option value=1 selected=(recurring_entry.months_period == 1) Měsíční
+        option value=12 selected=(recurring_entry.months_period == 12) Roční
+
+  .form-group.row
+    label.col-sm-3.col-form-label for="recurring-entry-starts-on" Od
+    .col-sm-6
+      input.form-control(
+        type="date"
+        name="recurring_entry[starts_on]"
+        id="recurring-entry-starts-on"
+        value=prefilled_date(recurring_entry.starts_on)
+        class=('is-invalid' if recurring_entry.errors.on(:starts_on))
+      )
+      - if recurring_entry.errors.on(:starts_on)
+        .invalid-feedback = recurring_entry.errors.on(:starts_on).join(', ')
+
+  .form-group.row
+    label.col-sm-3.col-form-label for="recurring-entry-ends-on" Do
+    .col-sm-6
+      input.form-control(
+        type="date"
+        name="recurring_entry[ends_on]"
+        id="recurring-entry-ends-on"
+        value=prefilled_date(recurring_entry.ends_on)
+        class=('is-invalid' if recurring_entry.errors.on(:ends_on))
+      )
+      - if recurring_entry.errors.on(:ends_on)
+        .invalid-feedback = recurring_entry.errors.on(:ends_on).join(', ')
+
+  .form-group.row
+    label.col-sm-3.col-form-label for="recurring-entry-note" Poznámka
+    .col-sm-9
+      textarea.form-control(
+        name="recurring_entry[note]"
+        id="recurring-entry-note"
+        rows="1"
+        class=('is-invalid' if recurring_entry.errors.on(:note))
+      ) = recurring_entry.note
+      - if recurring_entry.errors.on(:note)
+        .invalid-feedback = recurring_entry.errors.on(:note).join(', ')
+
+  - unless Tag.count.zero?
+    .form-group.row
+      label.col-sm-3.col-form-label for="recurring-entry-tags" Štítky
+      .col-sm-9
+        - recurring_entry_tag_ids = recurring_entry.tag_ids || []
+        - params_tag_ids = params.dig(:recurring_entry, :tag_ids)&.map(&:to_i) || []
+        - tag_ids        = recurring_entry_tag_ids | params_tag_ids
+
+        select.js-selectize.form-control name="recurring_entry[tag_ids][]" id="recurring-entry-tags" multiple="multiple"
+          - Tag.ordered.each do |tag|
+            option value=tag.id selected=tag_ids.include?(tag.id) = tag.name
+
+  .form-group.row
+    .offset-sm-3.col-sm-9
+      button.btn.btn-outline-primary> = locals[:edit] ? 'Uložit' : 'Přidat'
+      a.btn.btn-outline-secondary href=recurring_entries_path Storno
