@@ -66,7 +66,10 @@ form action=url method="post" data-js-component="EntryForm"
         name="entry[note]"
         id="entry-note"
         rows="1"
+        class=('is-invalid' if entry.errors.on(:note))
       ) = entry.note
+      - if entry.errors.on(:note)
+        .invalid-feedback = entry.errors.on(:note).join(', ')
 
   - unless Tag.count.zero?
     .form-group.row
