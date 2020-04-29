@@ -40,23 +40,23 @@ class Tag < Sequel::Model
       prevodem = Tag.first(name: 'Převodem')
       kartou   = Tag.first(name: 'Kartou')
       csob     = Tag.first(name: 'ČSOB')
-      kb       = Tag.first(name: 'KB')
+      air      = Tag.first(name: 'Air')
       revolut  = Tag.first(name: 'Revolut')
       cash     = Tag.first(name: 'Cash')
 
       groups = [
         [nakup, kartou, csob],
-        [nakup, kartou, kb],
+        [nakup, kartou, air],
         [nakup, kartou, revolut],
         [kavarna, kartou, csob],
-        [kavarna, kartou, kb],
+        [kavarna, kartou, air],
         [kavarna, kartou, revolut],
         [leky, kartou, csob],
-        [leky, kartou, kb],
+        [leky, kartou, air],
         [leky, kartou, revolut],
-        [auto, benzin, kartou, kb],
+        [auto, benzin, kartou, air],
         [auto, benzin, kartou, revolut],
-        [auto, servis, prevodem, kb],
+        [auto, servis, prevodem, air],
         [auto, cash]
       ].map do |group|
         next if group.any?(&:nil?)
