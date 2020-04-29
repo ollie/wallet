@@ -308,14 +308,6 @@ class App < Sinatra::Base
     }
   end
 
-  ####################
-  # Recurring expenses
-  ####################
-
-  get Route(recurring_expenses: '/recurring_expenses') do
-    slim :'recurring_expenses/index'
-  end
-
   ###################
   # Recurring entries
   ###################
