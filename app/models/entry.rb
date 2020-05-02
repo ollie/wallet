@@ -52,6 +52,21 @@ class Entry < Sequel::Model
       end
   end
 
+  def init_from_recurring_entry(recurring_entry)
+    self.amount  = recurring_entry.amount
+    self.date    = Date.today
+    self.note    = recurring_entry.note
+    self.tag_ids = recurring_entry.tag_ids
+  end
+
+  def tag_ids
+    @tag_ids ||= tags_dataset.select_map(:id)
+  end
+
+  def tag_ids=(ids)
+    @tag_ids = ids || []
+  end
+
   def save_and_handle_tags(params)
     save
     setup_tags(params)

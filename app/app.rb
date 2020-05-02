@@ -113,6 +113,16 @@ class App < Sinatra::Base
     }
   end
 
+  get Route(new_entry_from_recurring: '/entries/new_recurring') do
+    recurring_entry = RecurringEntry.with_pk!(params[:recurring_entry_id])
+    entry = Entry.new
+    entry.init_from_recurring_entry(recurring_entry)
+
+    slim :'entries/new', locals: {
+      entry: entry
+    }
+  end
+
   post '/entries/:id/edit' do
     entry = Entry.with_pk!(params[:id])
     entry.set_fields(params[:entry], %i[amount date accounted_on note])

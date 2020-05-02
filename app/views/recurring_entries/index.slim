@@ -13,6 +13,7 @@ table.table.smaller
   thead
     tr
       th Název
+      th
       th.text-center Zapnuto?
       th.text-right Částka
       th.text-center Perioda placení
@@ -24,6 +25,8 @@ table.table.smaller
       tr
         td
           a href=edit_recurring_entry_path(recurring_entry.id) = recurring_entry.name
+        td
+          a.btn.btn-sm.btn-outline-secondary href=new_entry_from_recurring_path(recurring_entry_id: recurring_entry.id) Použít
         td.text-center
           - if recurring_entry.enabled
             == icon(:check)
