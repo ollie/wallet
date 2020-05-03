@@ -34,7 +34,8 @@ class Entry < Sequel::Model
   # Public instance methods
   #########################
 
-  def prepare_for_duplication
+  def init_from_entry(entry)
+    self.amount = entry.amount
     today = Date.today
 
     self.date =
@@ -44,12 +45,8 @@ class Entry < Sequel::Model
         Date.new(today.year, today.month, -1)
       end
 
-    self.accounted_on =
-      begin
-        today
-      rescue ArgumentError
-        Date.new(today.year, today.month, -1)
-      end
+    self.note    = entry.note
+    self.tag_ids = entry.tag_ids
   end
 
   def init_from_recurring_entry(recurring_entry)

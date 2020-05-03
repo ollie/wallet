@@ -105,8 +105,9 @@ class App < Sinatra::Base
   end
 
   get Route(duplicate_entry: '/entries/:id/duplicate') do
-    entry = Entry.with_pk!(params[:id])
-    entry.prepare_for_duplication
+    entry_for_duplication = Entry.with_pk!(params[:id])
+    entry = Entry.new
+    entry.init_from_entry(entry_for_duplication)
 
     slim :'entries/new', locals: {
       entry: entry
