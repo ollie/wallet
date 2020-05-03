@@ -57,7 +57,12 @@ class Entry < Sequel::Model
   end
 
   def tag_ids
-    @tag_ids ||= tags_dataset.select_map(:id)
+    @tag_ids ||=
+      if new?
+        []
+      else
+        tags_dataset.select_map(:id)
+      end
   end
 
   def tag_ids=(ids)
