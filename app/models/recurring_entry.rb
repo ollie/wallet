@@ -8,6 +8,20 @@ class RecurringEntry < Sequel::Model
   plugin :defaults_setter
   plugin :eager_each
 
+  ###############
+  # Class methods
+  ###############
+
+  def self.new_from_entry(entry)
+    new.tap do |recurring_entry|
+      recurring_entry.name = entry.note
+      recurring_entry.amount = entry.amount
+      recurring_entry.starts_on = Date.new(Date.today.year, 1, 1)
+      recurring_entry.note    = entry.note
+      recurring_entry.tag_ids = entry.tag_ids
+    end
+  end
+
   #################
   # Dataset methods
   #################

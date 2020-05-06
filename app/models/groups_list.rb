@@ -116,7 +116,7 @@ class GroupsList
          .select(
            Sequel[:entries].*,
            Sequel.function(:coalesce, :accounted_on, Sequel.lit('current_date')).as(:accounted_on),
-           Sequel.case({ { Sequel[:entries][:accounted_on] => nil } => false }, true).as(:pending),
+           Sequel.case({ { Sequel[:entries][:accounted_on] => nil } => false }, true).as(:pending), # TODO: Pending logic should be reversed, or use a different name
            Sequel.lit('array_agg(ARRAY[tags.id::text, tags.name, tags.icon, tags.color] ORDER BY tags.position) FILTER (WHERE tags.id IS NOT NULL)').as(:tags)
          )
          .left_join(:taggings, entry_id: :id)

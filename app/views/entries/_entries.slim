@@ -39,10 +39,17 @@
                 td.text-right
                   small
                     == formatted_date(entry.date)
-                td
-                  - if entry.pending
-                    a href=duplicate_entry_path(entry.id) title="Opakovat"
-                      == icon(:sync)
+                td.text-center
+                  .dropdown
+                    a.text-secondary href="#" role="button" id="entry-menu-#{entry.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                      == icon(:kebab_horizontal)
+
+                    .dropdown-menu.dropdown-menu-right aria-labelledby="entry-menu-#{entry.id}"
+                      a.dropdown-item.small> href=duplicate_entry_path(entry.id)
+                        | Opakovat
+                      a.dropdown-item.small href=new_recurring_entry_from_entry_path(entry_id: entry.id)
+                        | Přidat do pravidelných položek
+
 
           - incomes_and_expenses = !groups_list.incomes.zero? && !groups_list.expenses.zero?
           - unless groups_list.incomes.zero? && groups_list.expenses.zero?
