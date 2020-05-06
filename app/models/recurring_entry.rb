@@ -16,7 +16,7 @@ class RecurringEntry < Sequel::Model
     new.tap do |recurring_entry|
       recurring_entry.name = entry.note
       recurring_entry.amount = entry.amount
-      recurring_entry.starts_on = Date.new(Date.today.year, 1, 1)
+      recurring_entry.starts_on = Date.new(Date.today.year, entry.date.month, entry.date.day)
       recurring_entry.note    = entry.note
       recurring_entry.tag_ids = entry.tag_ids
     end
