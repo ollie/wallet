@@ -86,10 +86,10 @@ class App < Sinatra::Base
 
   post '/entries/new' do
     entry = Entry.new
-    entry.set_fields(params[:entry], %i[amount date accounted_on note])
+    entry.set_fields(params[:entry], %i[amount date accounted_on note tag_ids])
 
     if entry.valid?
-      entry.save_and_handle_tags(params)
+      entry.save_and_handle_tags
       redirect(entries_path(entry_year_month_qs_params(entry)))
     else
       slim :'entries/new', locals: {
@@ -106,8 +106,7 @@ class App < Sinatra::Base
 
   get Route(duplicate_entry: '/entries/:id/duplicate') do
     entry_for_duplication = Entry.with_pk!(params[:id])
-    entry = Entry.new
-    entry.init_from_entry(entry_for_duplication)
+    entry = Entry.new_from_entry(entry_for_duplication)
 
     slim :'entries/new', locals: {
       entry: entry
@@ -116,8 +115,7 @@ class App < Sinatra::Base
 
   get Route(new_entry_from_recurring: '/entries/new_recurring') do
     recurring_entry = RecurringEntry.with_pk!(params[:recurring_entry_id])
-    entry = Entry.new
-    entry.init_from_recurring_entry(recurring_entry)
+    entry = Entry.new_from_recurring_entry(recurring_entry)
 
     slim :'entries/new', locals: {
       entry: entry
@@ -126,10 +124,10 @@ class App < Sinatra::Base
 
   post '/entries/:id/edit' do
     entry = Entry.with_pk!(params[:id])
-    entry.set_fields(params[:entry], %i[amount date accounted_on note])
+    entry.set_fields(params[:entry], %i[amount date accounted_on note tag_ids])
 
     if entry.valid?
-      entry.save_and_handle_tags(params)
+      entry.save_and_handle_tags
       redirect(entries_path(entry_year_month_qs_params(entry)))
     else
       slim :'entries/edit', locals: {

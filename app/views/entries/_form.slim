@@ -75,13 +75,9 @@ form action=url method="post" data-js-component="EntryForm"
     .form-group.row
       label.col-sm-2.col-form-label for="entry-tags" Štítky
       .col-sm-9
-        - entry_tag_ids  = entry.tag_ids
-        - params_tag_ids = params.dig(:entry, :tag_ids)&.map(&:to_i) || []
-        - tag_ids        = entry_tag_ids | params_tag_ids
-
         select.js-selectize.form-control name="entry[tag_ids][]" id="entry-tags" multiple="multiple"
           - Tag.ordered.each do |tag|
-            option value=tag.id selected=tag_ids.include?(tag.id) = tag.name
+            option value=tag.id selected=entry.tag_ids.include?(tag.id) = tag.name
 
   .form-group.row
     .offset-sm-2.col-sm-9
