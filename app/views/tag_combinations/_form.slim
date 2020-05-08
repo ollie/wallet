@@ -1,8 +1,8 @@
 form action=url method="post" data-js-component="TagCombinationForm"
   - unless Tag.count.zero?
     .form-group.row
-      label.col-sm-3.col-form-label for="tag-combination-tags" Štítky
-      .col-sm-9
+      label.col-sm-2.col-form-label for="tag-combination-tags" Štítky
+      .col-sm-10
         - tag_combination_tag_ids = tag_combination.tag_ids || []
         - params_tag_ids = params.dig(:tag_combination, :tag_ids)&.map(&:to_i) || []
         - tag_ids        = tag_combination_tag_ids | params_tag_ids
@@ -20,6 +20,6 @@ form action=url method="post" data-js-component="TagCombinationForm"
           .invalid-feedback = tag_combination.errors.on(:tag_ids).join(', ')
 
   .form-group.row
-    .offset-sm-3.col-sm-9
+    .offset-sm-2.col-sm-10
       button.btn.btn-outline-primary> = locals[:edit] ? 'Uložit' : 'Přidat'
       a.btn.btn-outline-secondary href=tag_combinations_path Storno
