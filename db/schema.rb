@@ -42,6 +42,12 @@ Sequel.migration do
       column :version, 'integer', default: 0, null: false
     end
 
+    create_table(:tag_combinations) do
+      primary_key :id
+      column :tag_ids, 'integer[]', null: false
+      column :position, 'integer'
+    end
+
     create_table(:tags) do
       primary_key :id
       column :name, 'character varying(255)', null: false

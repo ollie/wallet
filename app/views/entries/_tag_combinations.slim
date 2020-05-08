@@ -1,11 +1,11 @@
-- groups = Tag.most_used_combinations
+- tag_combinations = TagCombination.ordered
 
-- if groups.any?
+- if tag_combinations.any?
   ul.list-unstyled
-    - groups.each do |group|
+    - tag_combinations.each do |tag_combination|
       li
         a.js-tag-combination href="#"
-          - group.each do |tag|
+          - tag_combination.tags.each do |tag|
             span.badge>(
               class=('badge-dark' if tag.dark?)
               class=('badge-light' if !tag.color || tag.light?)

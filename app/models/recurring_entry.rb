@@ -61,12 +61,16 @@ class RecurringEntry < Sequel::Model
   def before_validation
     self.note = name unless note.present?
     self.starts_on ||= Date.new(Date.today.year, 1, 1) if new?
+
+    super
   end
 
   def before_save
     self.tag_ids ||= []
     recurring_tag = Tag.first!(name: 'Pravidelné')
     tag_ids << recurring_tag.id unless tag_ids.include?(recurring_tag.id)
+
+    super
   end
 
   #########################

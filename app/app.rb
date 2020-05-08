@@ -234,6 +234,79 @@ class App < Sinatra::Base
     MultiJson.dump(data)
   end
 
+  ##################
+  # Tag combinations
+  ##################
+
+  get Route(tag_combinations: '/tag_combinations') do
+    tag_combinations = TagCombination.ordered
+
+    if tag_combinations.count.zero?
+      redirect new_tag_combination_path
+    else
+      slim :'tag_combinations/index', locals: {
+        tag_combinations: tag_combinations
+      }
+    end
+  end
+
+  get Route(new_tag_combination: '/tag_combinations/new') do
+    slim :'tag_combinations/new', locals: {
+      tag_combination: TagCombination.new
+    }
+  end
+
+  post '/tag_combinations/new' do
+    tag_combination = TagCombination.new
+    tag_combination.set_fields((params[:tag_combination] || {}), %i[tag_ids])
+
+    if tag_combination.valid?
+      tag_combination.save
+      redirect tag_combinations_path
+    else
+      slim :'tag_combinations/new', locals: {
+        tag_combination: tag_combination
+      }
+    end
+  end
+
+  get Route(edit_tag_combination: '/tag_combinations/:id/edit') do
+    slim :'tag_combinations/edit', locals: {
+      tag_combination: TagCombination.with_pk!(params[:id])
+    }
+  end
+
+  post '/tag_combinations/:id/edit' do
+    tag_combination = TagCombination.with_pk!(params[:id])
+    tag_combination.set_fields(params[:tag_combination], %i[tag_ids])
+
+    if tag_combination.valid?
+      tag_combination.save
+      redirect tag_combinations_path
+    else
+      slim :'tag_combinations/edit', locals: {
+        tag_combination: tag_combination
+      }
+    end
+  end
+
+  post Route(delete_tag_combination: '/tag_combinations/:id/delete') do
+    tag_combination = TagCombination.with_pk!(params[:id])
+    tag_combination.destroy
+    redirect tag_combinations_path
+  end
+
+  post Route(update_tag_combinations_positions: '/tag_combinations/update_positions') do
+    positions = params[:positions]
+
+    TagCombination.db.transaction do
+      tag_combinations = TagCombination.where(id: positions.keys)
+      tag_combinations.each { |tag_combination| tag_combination.update(position: positions.fetch(tag_combination.id.to_s)) }
+    end
+
+    halt 201
+  end
+
   ##########
   # Balances
   ##########

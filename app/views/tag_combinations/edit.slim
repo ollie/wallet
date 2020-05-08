@@ -1,0 +1,9 @@
+h1.mt-3.mb-3 = title 'Upravit kombinaci štítků'
+
+.row
+  .col-sm-6
+    == partial_slim 'tag_combinations/_form', tag_combination: tag_combination, url: edit_tag_combination_path(tag_combination.id), edit: true
+
+  .col-sm-6.text-right
+    form action=delete_tag_combination_path(tag_combination.id) method="post" data-js-component="Confirm" data-confirm="Opravdu chcete smazat položku?"
+      input.btn.btn-outline-danger type="submit" value="Smazat"

@@ -28,44 +28,6 @@ class Tag < Sequel::Model
     def light_background?(color)
       !dark_background?(color)
     end
-
-    def most_used_combinations
-      nakup   = Tag.first(name: 'Nákup')
-      kavarna = Tag.first(name: 'Kavárna')
-      auto    = Tag.first(name: 'Auto')
-      leky    = Tag.first(name: 'Léky')
-      benzin  = Tag.first(name: 'Benzín')
-      servis  = Tag.first(name: 'Servis')
-
-      prevodem = Tag.first(name: 'Převodem')
-      kartou   = Tag.first(name: 'Kartou')
-      csob     = Tag.first(name: 'ČSOB')
-      air      = Tag.first(name: 'Air')
-      revolut  = Tag.first(name: 'Revolut')
-      cash     = Tag.first(name: 'Cash')
-
-      groups = [
-        [nakup, kartou, csob],
-        [nakup, kartou, air],
-        [nakup, kartou, revolut],
-        [kavarna, kartou, csob],
-        [kavarna, kartou, air],
-        [kavarna, kartou, revolut],
-        [leky, kartou, csob],
-        [leky, kartou, air],
-        [leky, kartou, revolut],
-        [auto, benzin, kartou, air],
-        [auto, benzin, kartou, revolut],
-        [auto, servis, prevodem, air],
-        [auto, cash]
-      ].map do |group|
-        next if group.any?(&:nil?)
-
-        group
-      end.compact
-
-      groups.each { |group| group.sort! { |a, b| a.position <=> b.position } }
-    end
   end
 
   #################
