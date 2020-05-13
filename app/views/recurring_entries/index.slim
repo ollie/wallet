@@ -5,9 +5,15 @@
     a.btn.btn-outline-primary.w-100.mb-3 href=new_recurring_entry_path Přidat
 
 - if RecurringEntry.enabled.any?
-  #recurring-entries-chart.mb-3 style="height: 500px;" data-js-component="RecurringEntriesChart" data-url=recurring_entries_json_path
+  #recurring-entries-chart.mb-2 style="height: 500px;" data-js-component="RecurringEntriesChart" data-url=recurring_entries_json_path
     .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
       span.octicon-big == icon(:graph)
+
+  p.text-center.mt-0.mb-4
+    button.js-chart-button.btn.btn-outline-secondary.active> data-url=recurring_entries_json_path type="button"
+      | Tento rok
+    button.js-chart-button.btn.btn-outline-secondary data-url=two_years_recurring_entries_json_path type="button"
+      | Rok dopředu
 
 table.table.smaller
   thead

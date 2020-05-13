@@ -2,114 +2,194 @@
 (function() {
   this.RecurringEntriesChart = class RecurringEntriesChart {
     constructor() {
+      this._handleClick = this._handleClick.bind(this);
       this.element = $('#recurring-entries-chart');
       if (!this.element.length) {
         return;
       }
+      this.dataCache = {};
       HighchartsConfig.init();
       this.init();
+      this.buttons = $('.js-chart-button');
+      this.buttons.on('click', this._handleClick);
     }
 
     init() {
-      return $.getJSON(this.element.data('url'), (data) => {
-        var balance, categories, expenses, item, month, options, predictedBalance, remainder, series;
-        categories = [];
-        series = {
-          expenses: {
-            name: 'Výdaje',
-            color: '#C73C35',
-            stacking: 'normal',
-            index: 2,
-            data: []
-          },
-          remainder: {
-            name: 'Polštář',
-            color: '#108A00',
-            stacking: 'normal',
-            index: 1,
-            data: []
-          },
-          predictedBalance: {
-            type: 'line',
-            yAxis: 1,
-            name: 'Odhad bilance',
-            color: '#fedd44',
-            index: 3,
-            lineWidth: 4,
-            marker: {
-              symbol: 'circle',
-              lineWidth: 4,
-              radius: 6,
-              lineColor: '#fedd44',
-              fillColor: 'white'
-            },
-            data: []
-          },
-          balance: {
-            type: 'line',
-            yAxis: 1,
-            name: 'Bilance',
-            color: '#7cb5ec',
-            index: 4,
-            lineWidth: 4,
-            marker: {
-              symbol: 'circle',
-              lineWidth: 4,
-              radius: 6,
-              lineColor: '#7cb5ec',
-              fillColor: 'white'
-            },
-            data: []
-          }
-        };
-        for (month in data) {
-          item = data[month];
-          categories.push(month);
-          expenses = Number(item.expenses);
-          remainder = Number(item.remainder);
-          predictedBalance = item.predicted_balance === null ? false : Number(item.predicted_balance);
-          balance = item.balance === null ? false : Number(item.balance);
-          series.expenses.data.push(expenses);
-          series.remainder.data.push(remainder);
-          series.predictedBalance.data.push(predictedBalance);
-          series.balance.data.push(balance);
-        }
-        options = {
-          chart: {
-            type: 'column',
-            height: 500,
-            spacing: [5, 0, 5, 0]
-          },
-          title: null,
-          xAxis: {
-            categories: categories
-          },
-          yAxis: [
-            {
-              title: null
-            },
-            {
-              title: null,
-              opposite: true
-            }
-          ],
-          tooltip: {
-            pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} Kč</b><br/>',
-            shared: true
-          },
-          // plotOptions:
-          //   series:
-          //     stacking: 'normal'
-          legend: {
-            enabled: false
-          },
-          series: [series.expenses, series.remainder, series.predictedBalance, series.balance],
-          credits: {
-            enabled: false
-          }
-        };
-        return Highcharts.chart(this.element.attr('id'), options);
+      return this._loadData(this.element.data('url'), (data) => {
+        return this._loadChart(data);
       });
+    }
+
+    _handleClick(e) {
+      var $button, $otherButton, url;
+      $button = $(e.currentTarget);
+      $otherButton = this.buttons.not($button);
+      url = $button.data('url');
+      return this._loadData(url, (data) => {
+        var chartData;
+        $button.addClass('active');
+        $otherButton.removeClass('active');
+        chartData = this._processChartData(data);
+        this.chart.series[1].setData(chartData.series.expenses.data);
+        this.chart.series[0].setData(chartData.series.remainder.data);
+        this.chart.series[2].setData(chartData.series.predictedBalance.data);
+        this.chart.series[3].setData(chartData.series.balance.data);
+        this.chart.xAxis[0].setCategories(chartData.categories);
+        this.chart.xAxis[0].removePlotLine('year-separator');
+        return $.each(chartData.plotLines, (_, plotLine) => {
+          return this.chart.xAxis[0].addPlotLine(plotLine);
+        });
+      });
+    }
+
+    _loadData(url, callback) {
+      if (this.dataCache[url]) {
+        return callback(this.dataCache[url]);
+      }
+      return $.getJSON(url, (data) => {
+        this.dataCache[url] = data;
+        return callback(this.dataCache[url]);
+      });
+    }
+
+    _loadChart(data) {
+      var chartData, options;
+      chartData = this._processChartData(data);
+      options = {
+        chart: {
+          type: 'column',
+          height: 500,
+          spacing: [5, 0, 5, 0]
+        },
+        title: null,
+        xAxis: {
+          categories: chartData.categories,
+          plotLines: chartData.plotLines
+        },
+        yAxis: [
+          {
+            title: null
+          },
+          {
+            title: null,
+            opposite: true
+          }
+        ],
+        tooltip: {
+          pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y} Kč</b><br/>',
+          shared: true
+        },
+        // plotOptions:
+        //   series:
+        //     stacking: 'normal'
+        legend: {
+          enabled: false
+        },
+        series: [chartData.series.expenses, chartData.series.remainder, chartData.series.predictedBalance, chartData.series.balance],
+        credits: {
+          enabled: false
+        }
+      };
+      return this.chart = Highcharts.chart(this.element.attr('id'), options);
+    }
+
+    _processChartData(data) {
+      var balance, categories, date, expenses, index, item, month, plotLines, predictedBalance, remainder, series, year, yearTmp;
+      categories = [];
+      series = {
+        expenses: {
+          name: 'Výdaje',
+          color: '#C73C35',
+          stacking: 'normal',
+          index: 2,
+          data: []
+        },
+        remainder: {
+          name: 'Polštář',
+          color: '#108A00',
+          stacking: 'normal',
+          index: 1,
+          data: []
+        },
+        predictedBalance: {
+          type: 'line',
+          yAxis: 1,
+          name: 'Odhad bilance',
+          color: '#fedd44',
+          index: 3,
+          lineWidth: 4,
+          marker: {
+            symbol: 'circle',
+            lineWidth: 4,
+            radius: 6,
+            lineColor: '#fedd44',
+            fillColor: 'white'
+          },
+          data: []
+        },
+        balance: {
+          type: 'line',
+          yAxis: 1,
+          name: 'Bilance',
+          color: '#7cb5ec',
+          index: 4,
+          lineWidth: 4,
+          marker: {
+            symbol: 'circle',
+            lineWidth: 4,
+            radius: 6,
+            lineColor: '#7cb5ec',
+            fillColor: 'white'
+          },
+          data: []
+        }
+      };
+      plotLines = [];
+      yearTmp = null;
+      index = 0;
+      for (date in data) {
+        item = data[date];
+        date = new Date(date);
+        month = Highcharts.getOptions().lang.months[date.getMonth()];
+        year = date.getFullYear();
+        if (!yearTmp) {
+          yearTmp = year;
+        }
+        categories.push(month);
+        expenses = Number(item.expenses);
+        remainder = Number(item.remainder);
+        predictedBalance = item.predicted_balance === null ? false : Number(item.predicted_balance);
+        balance = item.balance === null ? false : Number(item.balance);
+        if (year !== yearTmp) {
+          plotLines.push(this._createPlotLine(index - 0.5, date.getFullYear()));
+          yearTmp = year;
+        }
+        series.expenses.data.push(expenses);
+        series.remainder.data.push(remainder);
+        series.predictedBalance.data.push(predictedBalance);
+        series.balance.data.push(balance);
+        index += 1;
+      }
+      return {
+        series: series,
+        categories: categories,
+        plotLines: plotLines
+      };
+    }
+
+    _createPlotLine(value, text) {
+      return {
+        id: 'year-separator',
+        color: '#e6e6e6',
+        value: value,
+        width: 1,
+        label: {
+          text: text,
+          style: {
+            color: '#cccccc'
+          }
+        }
+      };
     }
 
   };
