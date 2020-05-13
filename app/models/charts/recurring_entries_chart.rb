@@ -81,13 +81,13 @@ module Charts
 
       months_data.each do |month_date, hash|
         remainder = hash.fetch(:incomes) - hash.fetch(:expenses)
-        remainder = 0.to_d if remainder < 0
 
         if month_date == date
           predicted_balance = Balance.by_date(date.prev_month)&.amount
         end
 
         predicted_balance += remainder if predicted_balance
+        remainder = 0.to_d if remainder < 0
 
         hash[:remainder]         = remainder
         hash[:predicted_balance] = predicted_balance
