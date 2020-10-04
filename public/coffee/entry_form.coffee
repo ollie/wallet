@@ -7,15 +7,12 @@ class @EntryForm
     @incomeButton     = $('.js-income')
     @amount           = $('.js-amount')
     @accountedOnInput = $('#entry-accounted_on')
-    @dateInput        = $('#entry-date')
-    @copyDate         = $('.js-copy-date')
     @todayDate        = $('.js-today-date')
     @tagCombinations  = $('.js-tag-combination')
 
     @expenseButton.on('click', @_handleExpenseButtonClick)
     @incomeButton.on('click', @_handleIncomeButtonClick)
     @amount.on('input', @_handleAmountInput)
-    @copyDate.on('click', @_handleCopyDateClick)
     @todayDate.on('click', @_handleTodayDateClick)
     @tagCombinations.on('click', @_handleTagCombinationClick)
 
@@ -66,25 +63,13 @@ class @EntryForm
     (@amount.data('type') == 'income' && number < 0)
       @amount.val(-value)
 
-  _handleCopyDateClick: =>
-    date = @dateInput.val()
-
-    unless date
-      @dateInput.focus()
-      return
-
-    @accountedOnInput
-      .val(date)
-      .focus()
-
-  _handleTodayDateClick: =>
+  _handleTodayDateClick: (e) =>
     today = new Date
     today = today.toISOString().substr(0, 10)
 
-    @dateInput.val(today)
-    @accountedOnInput
-      .val(today)
-      .focus()
+    $button = $(e.currentTarget)
+    $input = $button.parents('.form-group').find('input')
+    $input.val(today)
 
   _handleTagCombinationClick: (e) =>
     e.preventDefault()

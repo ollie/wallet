@@ -42,8 +42,6 @@ form action=url method="post" data-js-component="EntryForm"
       - if entry.errors.on(:date)
         .invalid-feedback = entry.errors.on(:date).join(', ')
     .col-sm-4.pl-0
-      button.js-copy-date.btn.btn-light> type="button" title="Zkopírovat datum"
-        == icon('arrow-down')
       button.js-today-date.btn.btn-light type="button" Dnes
 
   .form-group.row
@@ -58,6 +56,8 @@ form action=url method="post" data-js-component="EntryForm"
       )
       - if entry.errors.on(:accounted_on)
         .invalid-feedback = entry.errors.on(:accounted_on).join(', ')
+    .col-sm-4.pl-0
+      button.js-today-date.btn.btn-light type="button" Dnes
 
   .form-group.row
     label.col-sm-2.col-form-label for="entry-note" Poznámka

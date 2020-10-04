@@ -136,6 +136,12 @@ class App < Sinatra::Base
     end
   end
 
+  get Route(mark_entry_as_accounted_on_today: '/entries/:id/mark_as_accounted_on_today') do
+    entry = Entry.with_pk!(params[:id])
+    entry.mark_as_accounted_on_today unless entry.accounted_on
+    redirect(entries_path(entry_year_month_qs_params(entry)))
+  end
+
   post Route(delete_entry: '/entries/:id/delete') do
     entry = Entry.with_pk!(params[:id])
     entry.destroy

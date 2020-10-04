@@ -96,4 +96,8 @@ class Entry < Sequel::Model
       tag_ids_to_remove.each { |tag_id| remove_tag(tag_id) }
     end
   end
+
+  def mark_as_accounted_on_today
+    update(accounted_on: Date.today)
+  end
 end
