@@ -45,13 +45,13 @@
                       == icon(:kebab_horizontal)
 
                     .dropdown-menu.dropdown-menu-right aria-labelledby="entry-menu-#{entry.id}"
+                      - unless entry.pending
+                        a.dropdown-item.small< href=mark_entry_as_accounted_on_today_path(entry.id)
+                          | Zaúčtováno dnes
                       a.dropdown-item.small> href=duplicate_entry_path(entry.id)
                         | Opakovat
                       a.dropdown-item.small href=new_recurring_entry_from_entry_path(entry_id: entry.id)
                         | Přidat do pravidelných položek
-                      - unless entry.pending
-                        a.dropdown-item.small< href=mark_entry_as_accounted_on_today_path(entry.id)
-                          | Zaúčtováno dnes
 
 
           - incomes_and_expenses = !groups_list.incomes.zero? && !groups_list.expenses.zero?
