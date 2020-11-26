@@ -97,7 +97,7 @@ class Entry < Sequel::Model
     end
   end
 
-  def mark_as_accounted_on_today
-    update(accounted_on: Date.today)
+  def mark_as_accounted_on(day)
+    update(accounted_on: day)
   end
 end

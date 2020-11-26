@@ -47,7 +47,9 @@
                     .dropdown-menu.dropdown-menu-right aria-labelledby="entry-menu-#{entry.id}"
                       - unless entry.pending
                         a.dropdown-item.small< href=mark_entry_as_accounted_on_today_path(entry.id)
-                          | Zaúčtováno dnes
+                          | Zaúčtováno dnes #{Date.today.strftime('%d. %m.')}
+                        a.dropdown-item.small< href=mark_entry_as_accounted_on_yesterday_path(entry.id)
+                          | Zaúčtováno včera #{(Date.today - 1).strftime('%d. %m.')}
                       a.dropdown-item.small> href=duplicate_entry_path(entry.id)
                         | Opakovat
                       a.dropdown-item.small href=new_recurring_entry_from_entry_path(entry_id: entry.id)

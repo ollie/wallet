@@ -138,7 +138,13 @@ class App < Sinatra::Base
 
   get Route(mark_entry_as_accounted_on_today: '/entries/:id/mark_as_accounted_on_today') do
     entry = Entry.with_pk!(params[:id])
-    entry.mark_as_accounted_on_today unless entry.accounted_on
+    entry.mark_as_accounted_on(Date.today) unless entry.accounted_on
+    redirect(entries_path(entry_year_month_qs_params(entry)))
+  end
+
+  get Route(mark_entry_as_accounted_on_yesterday: '/entries/:id/mark_as_accounted_on_yesterday') do
+    entry = Entry.with_pk!(params[:id])
+    entry.mark_as_accounted_on(Date.today - 1) unless entry.accounted_on
     redirect(entries_path(entry_year_month_qs_params(entry)))
   end
 
