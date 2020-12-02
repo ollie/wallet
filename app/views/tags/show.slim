@@ -6,6 +6,6 @@
 
 #tag-entries-chart.mb-3 style="height: 500px;" data-js-component="TagEntriesChart" data-url=tag_entries_json_path(tag.id, year: pagination_date.year, month: pagination_date.month)
   .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
-    span.octicon-big == icon(:graph)
+    span.octicon-big == icon('graph-24')
 
 == partial_slim 'entries/_entries', groups_list: GroupsList.by_month_and_tag(pagination_date, tag: tag)
