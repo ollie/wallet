@@ -178,6 +178,12 @@ class App < Sinatra::Base
     end
   end
 
+  get Route(tags_report: '/tags/report') do
+    slim :'tags/report', locals: {
+      years: TagsReport.new.data
+    }
+  end
+
   get Route(new_tag: '/tags/new') do
     slim :'tags/new', locals: {
       tag: Tag.new

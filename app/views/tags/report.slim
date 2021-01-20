@@ -1,0 +1,15 @@
+h1.mt-3.mb-3 = title 'Report'
+
+.row
+  - years.each do |year, tags|
+    .col-sm-4
+      table.table.table-sm.smaller
+        thead
+          tr
+            th.table-active colspan="3" = l(year, format: :month_year)
+        tbody
+          - tags.each do |tag|
+            tr
+              td.text-center = tag.fetch(:icon)
+              td = tag.fetch(:name)
+              td.text-right == formatted_amount(tag.fetch(:amount))
