@@ -1,7 +1,9 @@
 h1.mt-3.mb-3 = title 'Report'
 
+h2.mt-4.mb-3 Měsíčně
+
 .row
-  - years.each do |year, tags|
+  - report.monthly.each do |year, tags|
     .col-sm-4
       table.table.table-sm.smaller
         thead
@@ -9,7 +11,27 @@ h1.mt-3.mb-3 = title 'Report'
             th.table-active colspan="3" = l(year, format: :month_year)
         tbody
           - tags.each do |tag|
+            - if tag[:separator]
+              - style = 'border-top-width: 3px;'
             tr
-              td.text-center = tag.fetch(:icon)
-              td = tag.fetch(:name)
-              td.text-right == formatted_amount(tag.fetch(:amount))
+              td.text-center style=style = tag.fetch(:icon)
+              td style=style = tag.fetch(:name)
+              td.text-right style=style == formatted_amount(tag.fetch(:amount))
+
+h2.mt-4.mb-3 Ročně
+
+.row
+  - report.yearly.each do |year, tags|
+    .col-sm-4
+      table.table.table-sm.smaller
+        thead
+          tr
+            th.table-active colspan="3" = l(year, format: '%Y')
+        tbody
+          - tags.each do |tag|
+            - if tag[:separator]
+              - style = 'border-top-width: 3px;'
+            tr
+              td.text-center style=style = tag.fetch(:icon)
+              td style=style = tag.fetch(:name)
+              td.text-right style=style == formatted_amount(tag.fetch(:amount))

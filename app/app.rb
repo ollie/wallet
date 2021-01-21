@@ -180,7 +180,7 @@ class App < Sinatra::Base
 
   get Route(tags_report: '/tags/report') do
     slim :'tags/report', locals: {
-      years: TagsReport.new.data
+      report: TagsReport.new
     }
   end
 
