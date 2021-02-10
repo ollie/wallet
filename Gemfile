@@ -34,7 +34,7 @@ group :development do
 end
 
 group :test do
-  gem 'database_cleaner'
+  # gem 'database_cleaner' # It needs ActiveRecord :(
   gem 'rack-test'
   gem 'rspec'
   gem 'simplecov'
