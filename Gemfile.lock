@@ -24,7 +24,7 @@ GEM
     docile (1.4.0)
     ed25519 (1.2.4)
     ffi (1.15.4)
-    i18n (1.8.10)
+    i18n (1.8.11)
       concurrent-ruby (~> 1.0)
     listen (3.7.0)
       rb-fsevent (~> 0.10, >= 0.10.3)
@@ -39,7 +39,7 @@ GEM
     nio4r (2.5.8)
     oj (3.13.9)
     parallel (1.21.0)
-    parser (3.0.2.0)
+    parser (3.0.3.0)
       ast (~> 2.4.1)
     pg (1.2.3)
     pry (0.13.1)
@@ -77,8 +77,8 @@ GEM
     rspec-mocks (3.10.2)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.10.0)
-    rspec-support (3.10.2)
-    rubocop (1.22.1)
+    rspec-support (3.10.3)
+    rubocop (1.23.0)
       parallel (~> 1.10)
       parser (>= 3.0.0.0)
       rainbow (>= 2.2.2, < 4.0)
@@ -87,11 +87,11 @@ GEM
       rubocop-ast (>= 1.12.0, < 2.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (>= 1.4.0, < 3.0)
-    rubocop-ast (1.12.0)
+    rubocop-ast (1.13.0)
       parser (>= 3.0.1.1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    sequel (5.49.0)
+    sequel (5.50.0)
     sequel_pg (1.14.0)
       pg (>= 0.18.0, != 1.2.0)
       sequel (>= 4.38.0)
@@ -118,7 +118,7 @@ GEM
     tilt (2.0.10)
     unicode-display_width (2.1.0)
     yard (0.9.26)
-    zeitwerk (2.4.2)
+    zeitwerk (2.5.1)
 
 PLATFORMS
   ruby
@@ -151,4 +151,4 @@ DEPENDENCIES
   zeitwerk
 
 BUNDLED WITH
-   2.2.27
+   2.2.32
