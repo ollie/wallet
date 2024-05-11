@@ -1,24 +1,25 @@
-nav.navbar.navbar-expand-lg.navbar-light.bg-light
-  a href=entries_path
-    span.mr-2
-      img src="/images/favicon-64x64.png" alt="" width="32" height="32"
+nav.navbar.navbar-expand-lg.bg-body-tertiary
+  .container-fluid
+    a href=entries_path
+      span.me-2
+        img src="/images/favicon-64x64.png" alt="" width="32" height="32"
 
-  button.navbar-toggler type="button" data-toggle="collapse" data-target="#navbar-collapse"
-    span.navbar-toggler-icon
+    button.navbar-toggler type="button" data-bs-toggle="collapse" data-bs-target="#navbar-collapse" aria-controls="navbar-collapse" aria-expanded="false" aria-label="Toggle navigation"
+      span.navbar-toggler-icon
 
-  .collapse.navbar-collapse id="navbar-collapse"
-    ul.navbar-nav.mr-auto
-      li.nav-item class=('active' if request.path =~ %r{^#{entries_path}})
-        a.nav-link href=entries_path Položky
-      li.nav-item class=('active' if request.path =~ %r{^#{balances_path}})
-        a.nav-link href=balances_path Bilance
-      li.nav-item class=('active' if request.path =~ %r{^#{recurring_entries_path}})
-        a.nav-link href=recurring_entries_path Pravidelné položky
-      li.nav-item class=('active' if request.path =~ %r{^#{calendar_path}})
-        a.nav-link href=calendar_path Kalendář
-      li.nav-item class=('active' if request.path =~ %r{^#{tags_path}})
-        a.nav-link href=tags_path Štítky
-      li.nav-item class=('active' if request.path =~ %r{^#{tag_combinations_path}})
-        a.nav-link href=tag_combinations_path Oblíbené štítky
-      li.nav-item class=('active' if request.path =~ %r{^#{search_path}})
-        a.nav-link href=search_path Vyhledávání
+    .collapse.navbar-collapse id="navbar-collapse"
+      ul.navbar-nav.me-auto
+        li.nav-item
+          a.nav-link class=('active' if request.path =~ %r{^#{entries_path}}) href=entries_path Položky
+        li.nav-item
+          a.nav-link class=('active' if request.path =~ %r{^#{balances_path}}) href=balances_path Bilance
+        li.nav-item
+          a.nav-link class=('active' if request.path =~ %r{^#{recurring_entries_path}}) href=recurring_entries_path Pravidelné položky
+        li.nav-item
+          a.nav-link class=('active' if request.path =~ %r{^#{calendar_path}}) href=calendar_path Kalendář
+        li.nav-item
+          a.nav-link class=('active' if request.path =~ %r{^#{tags_path}}) href=tags_path Štítky
+        li.nav-item
+          a.nav-link class=('active' if request.path =~ %r{^#{tag_combinations_path}}) href=tag_combinations_path Oblíbené štítky
+        li.nav-item
+          a.nav-link class=('active' if request.path =~ %r{^#{search_path}}) href=search_path Vyhledávání

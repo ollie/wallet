@@ -4,11 +4,11 @@
   ul.list-unstyled
     - tag_combinations.each do |tag_combination|
       li
-        a.js-tag-combination href="#"
+        a.js-tag-combination.text-decoration-none href="#"
           - tag_combination.tags.each do |tag|
-            span.badge>(
+            span.badge.rounded-pill.text-bg-dark>(
               class=('badge-dark' if tag.dark?)
               class=('badge-light' if !tag.color || tag.light?)
-              style=("background-color: #{tag.color};" if tag.color)
+              style=("background-color: #{tag.color} !important;" if tag.color)
               data-tag-id=tag.id
             ) = tag.name

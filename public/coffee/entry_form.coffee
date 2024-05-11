@@ -68,7 +68,7 @@ class @EntryForm
     today = today.toISOString().substr(0, 10)
 
     $button = $(e.currentTarget)
-    $input = $button.parents('.form-group').find('input')
+    $input = $button.parents('.row:first').find('input')
     $input.val(today)
 
   _handleTagCombinationClick: (e) =>

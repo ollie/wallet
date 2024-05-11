@@ -1,5 +1,5 @@
 form action=url method="post"
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="tag-name" Název
     .col-sm-5
       input.form-control(
@@ -13,7 +13,7 @@ form action=url method="post"
       - if tag.errors.on(:name)
         .invalid-feedback = tag.errors.on(:name).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="tag-icon" Ikona
     .col-sm-5
       .input-group
@@ -29,7 +29,7 @@ form action=url method="post"
         - if tag.errors.on(:icon)
           .invalid-feedback = tag.errors.on(:icon).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="tag-color" Barva
     .col-sm-2
       input.form-control(
@@ -42,7 +42,7 @@ form action=url method="post"
       - if tag.errors.on(:color)
         .invalid-feedback = tag.errors.on(:color).join(', ')
 
-  .form-group.row
+  .mb-3.row
     .offset-sm-2.col-sm-10
       .form-check
         input type="hidden" name="tag[primary]" value="0"
@@ -56,8 +56,8 @@ form action=url method="post"
         label.form-check-label for="tag-primary"
           | Primární?
 
-  .form-group.row
+  .mb-3.row
     .offset-sm-2.col-sm-10
-      button.btn.btn-outline-primary> = tag.new? ? 'Přidat' : 'Uložit'
+      button.btn.btn-primary> = tag.new? ? 'Přidat' : 'Uložit'
       - href = tag.new? ? tags_path : tag_path(tag.id)
-      a.btn.btn-outline-secondary href=href Storno
+      a.btn.btn-secondary href=href Storno

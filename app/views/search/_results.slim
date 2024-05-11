@@ -6,35 +6,35 @@
           tr
             th.table-active colspan="2"
               = l(day)
-            th.table-active.text-right.font-weight-normal colspan="3"
+            th.table-active.text-end.font-weight-normal colspan="3"
               small
                 == formatted_amount(group.total)
 
           - group.entries.each do |entry|
             tr class=('table-warning' unless entry.pending)
-              td.text-right
+              td.text-end
                 a href=edit_entry_path(entry.id) == formatted_amount(entry.amount)
               td
                 - if entry.note
                   = entry.note
               td
                 - entry.tags.each do |tag|
-                  a.badge.badge-secondary(
-                    class=('badge-light' if tag.icon.present? || !tag.color || tag.light?)
+                  a.badge.rounded-pill.text-decoration-none(
+                    class=(tag.light? ? 'text-bg-light' : 'text-bg-dark')
                     href=(tag_path(tag.id, year: pagination_date.year, month: pagination_date.month))
-                    style=("background-color: #{tag.color_for_text_or_icon};" if tag.color_for_text_or_icon)
+                    style=("background-color: #{tag.color_for_text_or_icon} !important;" if tag.color_for_text_or_icon)
                     title=(tag.name if tag.icon.present?)
                   )
                     - if tag.icon.present?
                       = tag.icon
                     - else
                       = tag.name
-              td.text-right
+              td.text-end
                 small
                   == formatted_date(entry.date)
               td.text-center
                 .dropdown
-                  a.text-secondary href="#" role="button" id="entry-menu-#{entry.id}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                  a.text-secondary href="#" role="button" id="entry-menu-#{entry.id}" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                     == icon(:kebab_horizontal)
 
                   .dropdown-menu.dropdown-menu-right aria-labelledby="entry-menu-#{entry.id}"

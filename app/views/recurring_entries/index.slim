@@ -1,19 +1,8 @@
 .row.mt-3
   .col-sm-10
     h1.mb-3 = title 'Pravidelné položky'
-  .col-sm-2.text-right
-    a.btn.btn-outline-primary.w-100.mb-3 href=new_recurring_entry_path Přidat
-
-- if RecurringEntry.enabled.any?
-  #recurring-entries-chart.mb-2 style="height: 500px;" data-js-component="RecurringEntriesChart" data-url=recurring_entries_json_path
-    .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
-      span.octicon-big == icon('graph-24')
-
-  p.text-center.mt-0.mb-4
-    button.js-chart-button.btn.btn-outline-secondary.active> data-url=recurring_entries_json_path type="button"
-      | Tento rok
-    button.js-chart-button.btn.btn-outline-secondary data-url=two_years_recurring_entries_json_path type="button"
-      | Rok dopředu
+  .col-sm-2.text-end
+    a.btn.btn-primary.w-100.mb-3 href=new_recurring_entry_path Přidat
 
 table.table.smaller
   thead
@@ -21,7 +10,7 @@ table.table.smaller
       th Název
       th
       th.text-center Zapnuto?
-      th.text-right Částka
+      th.text-end Částka
       th.text-center Perioda placení
       th Od
       th Do
@@ -32,11 +21,11 @@ table.table.smaller
         td
           a href=edit_recurring_entry_path(recurring_entry.id) = recurring_entry.name
         td
-          a.btn.btn-sm.btn-outline-secondary href=new_entry_from_recurring_path(recurring_entry_id: recurring_entry.id) Použít
+          a.btn.btn-sm.btn-secondary href=new_entry_from_recurring_path(recurring_entry_id: recurring_entry.id) Použít
         td.text-center
           - if recurring_entry.enabled
             == icon(:check)
-        td.text-right
+        td.text-end
           == formatted_amount(recurring_entry.amount)
         td.text-center
           - if recurring_entry.months_period == 1
@@ -53,10 +42,10 @@ table.table.smaller
             = l(recurring_entry.ends_on)
         td
           - recurring_entry.tags.each do |tag|
-            a.badge.badge-secondary(
-              class=('badge-light' if tag.icon.present? || !tag.color || tag.light?)
+            a.badge.rounded-pill.text-decoration-none(
+              class=(tag.light? ? 'text-bg-light' : 'text-bg-dark')
               href=(tag_path(tag.id, year: pagination_date.year, month: pagination_date.month))
-              style=("background-color: #{tag.color_for_text_or_icon};" if tag.color_for_text_or_icon)
+              style=("background-color: #{tag.color_for_text_or_icon} !important;" if tag.color_for_text_or_icon)
               title=(tag.name if tag.icon.present?)
             )
               - if tag.icon.present?

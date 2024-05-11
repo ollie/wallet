@@ -1,8 +1,8 @@
 .row.mt-3
   .col-sm-10
     h1.mb-3 = title 'Kombinace štítků'
-  .col-sm-2.text-right
-    a.btn.btn-outline-primary.w-100.mb-3 href=new_tag_combination_path Přidat
+  .col-sm-2.text-end
+    a.btn.btn-primary.w-100.mb-3 href=new_tag_combination_path Přidat
 
 .row
   .col-sm-3
@@ -12,18 +12,18 @@
           .row
             .col-sm-2.text-center
               span.js-sortable-handle == icon(:grabber)
-            .col-sm-8.pl-0.pr-0
+            .col-sm-8.ps-0.pe-0
               - tag_combination.tags.each do |tag|
-                a.badge.badge-secondary(
-                  class=('badge-light' if tag.icon.present? || !tag.color || tag.light?)
+                a.badge.rounded-pill.text-decoration-none(
+                  class=(tag.light? ? 'text-bg-light' : 'text-bg-dark')
                   href=(tag_path(tag.id))
-                  style=("background-color: #{tag.color_for_text_or_icon};" if tag.color_for_text_or_icon)
+                  style=("background-color: #{tag.color_for_text_or_icon} !important;" if tag.color_for_text_or_icon)
                   title=(tag.name if tag.icon.present?)
                 )
                   - if tag.icon.present?
                     = tag.icon
                   - else
                     = tag.name
-            .col-sm-2.pl-0.text-center
+            .col-sm-2.ps-0.text-center
               a href=edit_tag_combination_path(tag_combination.id)
                 == icon(:pencil)

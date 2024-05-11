@@ -1,5 +1,5 @@
 form action=url method="post" data-js-component="EntryForm"
-  .form-group.row
+  .mb-3.row
     .offset-sm-2.col-sm-9
       button.js-expense.btn>(
         class=(!entry.amount || entry.amount < 0 ? 'btn-danger active' : 'btn-default')
@@ -10,7 +10,7 @@ form action=url method="post" data-js-component="EntryForm"
         type="button"
       ) Příjmy
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="entry-amount" Částka
     .col-sm-6
       .input-group
@@ -29,7 +29,7 @@ form action=url method="post" data-js-component="EntryForm"
         - if entry.errors.on(:amount)
           .invalid-feedback = entry.errors.on(:amount).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="entry-date" Zaplaceno
     .col-sm-6
       input.form-control(
@@ -41,10 +41,10 @@ form action=url method="post" data-js-component="EntryForm"
       )
       - if entry.errors.on(:date)
         .invalid-feedback = entry.errors.on(:date).join(', ')
-    .col-sm-4.pl-0
-      button.js-today-date.btn.btn-light type="button" Dnes
+    .col-sm-4.ps-0
+      button.js-today-date.btn.btn-secondary type="button" Dnes
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="entry-accounted_on" Zaúčtováno
     .col-sm-6
       input.form-control(
@@ -56,10 +56,10 @@ form action=url method="post" data-js-component="EntryForm"
       )
       - if entry.errors.on(:accounted_on)
         .invalid-feedback = entry.errors.on(:accounted_on).join(', ')
-    .col-sm-4.pl-0
-      button.js-today-date.btn.btn-light type="button" Dnes
+    .col-sm-4.ps-0
+      button.js-today-date.btn.btn-secondary type="button" Dnes
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="entry-note" Poznámka
     .col-sm-9
       textarea.form-control(
@@ -72,14 +72,14 @@ form action=url method="post" data-js-component="EntryForm"
         .invalid-feedback = entry.errors.on(:note).join(', ')
 
   - unless Tag.count.zero?
-    .form-group.row
+    .mb-3.row
       label.col-sm-2.col-form-label for="entry-tags" Štítky
       .col-sm-9
         select.js-selectize.form-control name="entry[tag_ids][]" id="entry-tags" multiple="multiple"
           - Tag.ordered.each do |tag|
             option value=tag.id selected=entry.tag_ids.include?(tag.id) = tag.name
 
-  .form-group.row
+  .mb-3.row
     .offset-sm-2.col-sm-9
-      button.btn.btn-outline-primary> = locals[:edit] ? 'Uložit' : 'Přidat'
-      a.btn.btn-outline-secondary href=entries_path(entry_year_month_qs_params(entry)) Storno
+      button.btn.btn-primary> = locals[:edit] ? 'Uložit' : 'Přidat'
+      a.btn.btn-secondary href=entries_path(entry_year_month_qs_params(entry)) Storno

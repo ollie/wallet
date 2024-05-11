@@ -84,7 +84,7 @@ class GroupsList
 
     def color_for_text_or_icon
       if icon.present?
-        '#ffffff'
+        'rgba(0, 0, 0, 0)'
       else
         color
       end

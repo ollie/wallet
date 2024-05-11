@@ -1,5 +1,5 @@
 form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
-  .form-group.row
+  .mb-3.row
     .offset-sm-3.col-sm-9
       .form-check
         input type="hidden" name="recurring_entry[enabled]" value="0"
@@ -13,7 +13,7 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
         label.form-check-label for="recurring-entry-enabled"
           | Zapnuto?
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-3.col-form-label for="recurring-entry-name" Název
     .col-sm-6
       input.form-control(
@@ -26,7 +26,7 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
       - if recurring_entry.errors.on(:name)
         .invalid-feedback = recurring_entry.errors.on(:name).join(', ')
 
-  .form-group.row
+  .mb-3.row
     .offset-sm-3.col-sm-9
       button.js-expense.btn>(
         class=(!recurring_entry.amount || recurring_entry.amount < 0 ? 'btn-danger active' : 'btn-default')
@@ -37,7 +37,7 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
         type="button"
       ) Příjmy
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-3.col-form-label for="recurring-entry-amount" Částka
     .col-sm-6
       .input-group
@@ -55,14 +55,14 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
         - if recurring_entry.errors.on(:amount)
           .invalid-feedback = recurring_entry.errors.on(:amount).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-3.col-form-label for="recurring-entry-months-period" Perioda placení
     .col-sm-6
       select.form-control name="recurring_entry[months_period]" id="recurring-entry-months-period"
         option value=1 selected=(recurring_entry.months_period == 1) Měsíční
         option value=12 selected=(recurring_entry.months_period == 12) Roční
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-3.col-form-label for="recurring-entry-starts-on" Od
     .col-sm-6
       input.form-control(
@@ -75,7 +75,7 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
       - if recurring_entry.errors.on(:starts_on)
         .invalid-feedback = recurring_entry.errors.on(:starts_on).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-3.col-form-label for="recurring-entry-ends-on" Do
     .col-sm-6
       input.form-control(
@@ -88,7 +88,7 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
       - if recurring_entry.errors.on(:ends_on)
         .invalid-feedback = recurring_entry.errors.on(:ends_on).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-3.col-form-label for="recurring-entry-note" Poznámka
     .col-sm-9
       textarea.form-control(
@@ -101,7 +101,7 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
         .invalid-feedback = recurring_entry.errors.on(:note).join(', ')
 
   - unless Tag.count.zero?
-    .form-group.row
+    .mb-3.row
       label.col-sm-3.col-form-label for="recurring-entry-tags" Štítky
       .col-sm-9
         - recurring_entry_tag_ids = recurring_entry.tag_ids || []
@@ -112,7 +112,7 @@ form action=url method="post" data-js-component="EntryForm, RecurringEntryForm"
           - Tag.ordered.each do |tag|
             option value=tag.id selected=tag_ids.include?(tag.id) = tag.name
 
-  .form-group.row
+  .mb-3.row
     .offset-sm-3.col-sm-9
-      button.btn.btn-outline-primary> = locals[:edit] ? 'Uložit' : 'Přidat'
-      a.btn.btn-outline-secondary href=recurring_entries_path Storno
+      button.btn.btn-primary> = locals[:edit] ? 'Uložit' : 'Přidat'
+      a.btn.btn-secondary href=recurring_entries_path Storno

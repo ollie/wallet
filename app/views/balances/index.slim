@@ -1,8 +1,8 @@
 .row.mt-3
   .col-sm-10
     h1.mb-3 = title 'Bilance'
-  .col-sm-2.text-right
-    a.btn.btn-outline-primary.w-100.mb-3 href=new_balance_path Přidat
+  .col-sm-2.text-end
+    a.btn.btn-primary.w-100.mb-3 href=new_balance_path Přidat
 
 #balances-chart.mb-3 style="height: 500px;" data-js-component="BalanceChart" data-url=balances_json_path
   .w-100.h-100.border.text-center style="line-height: 500px; color: #dee2e6;"
@@ -13,13 +13,13 @@
     table.table data-js-component="BalanceDiff"
       - balances.each do |balance|
         tr
-          td.pl-0
+          td.ps-0
             a href=edit_balance_path(balance.id) = l(balance.date, format: :month_year)
             - if balance.note && !balance.note.empty?
               br
               small = balance.note
-          td.text-right == formatted_amount(balance.amount, plus: false)
-          td.pr-0.text-center
+          td.text-end == formatted_amount(balance.amount, plus: false)
+          td.pe-0.text-center
             input.js-balance-diff type="checkbox" value=balance.amount data-date=balance.date
 
     == partial_slim 'layouts/_pagination', dataset: balances

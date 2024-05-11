@@ -1,7 +1,7 @@
 - previous_balance = Balance.by_date(previous_month(balance.date))
 
 form action=url method="post" data-js-component="BalanceForm"
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="balance-amount" Částka
     .col-sm-6
       .input-group
@@ -19,7 +19,7 @@ form action=url method="post" data-js-component="BalanceForm"
         - if balance.errors.on(:amount)
           .invalid-feedback = balance.errors.on(:amount).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="balance-amount" Cíl
     .col-sm-6
       .input-group
@@ -39,7 +39,7 @@ form action=url method="post" data-js-component="BalanceForm"
           .form-text.small.w-100
             == "Předchozí bilance: #{formatted_amount(previous_balance.amount, plus: false)}"
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="balance-year-month" Měsíc
     .col-sm-6
       input.form-control(
@@ -52,7 +52,7 @@ form action=url method="post" data-js-component="BalanceForm"
       - if balance.errors.on(:year_month)
         .invalid-feedback = balance.errors.on(:year_month).join(', ')
 
-  .form-group.row
+  .mb-3.row
     label.col-sm-2.col-form-label for="balance-note" Poznámka
     .col-sm-8
       textarea.form-control(
@@ -60,11 +60,11 @@ form action=url method="post" data-js-component="BalanceForm"
         id="balance-note"
         rows="5"
       ) = balance.note
-    .col-sm-2.pl-0
-      button.js-bilances-sum.btn.btn-light type="button" title="Sečíst"
+    .col-sm-2.ps-0
+      button.js-bilances-sum.btn.btn-secondary type="button" title="Sečíst"
         == icon(:plus)
 
-  .form-group.row
+  .mb-3.row
     .offset-sm-2.col-sm-10
-      button.btn.btn-outline-primary> = balance.new? ? 'Přidat' : 'Uložit'
-      a.btn.btn-outline-secondary href=balances_path Storno
+      button.btn.btn-primary> = balance.new? ? 'Přidat' : 'Uložit'
+      a.btn.btn-secondary href=balances_path Storno

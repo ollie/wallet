@@ -7,6 +7,6 @@ h1.mt-3.mb-3 = title "Upravit bilanci #{l(balance.date, format: :month_year)}"
   .col-sm-6
     == partial_slim 'balances/_form', balance: balance, url: edit_balance_path(balance.id)
 
-  .col-sm-6.text-right
+  .col-sm-6.text-end
     form action=delete_balance_path(balance.id) method="post" data-js-component="Confirm" data-confirm="Opravdu chcete smazat položku?"
-      input.btn.btn-outline-danger type="submit" value="Smazat"
+      input.btn.btn-danger type="submit" value="Smazat"

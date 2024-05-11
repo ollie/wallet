@@ -1,8 +1,8 @@
 .row.mt-3
   .col-sm-10
     h1.mb-3 = title 'Štítky'
-  .col-sm-2.text-right
-    a.btn.btn-outline-primary.w-100.mb-3 href=new_tag_path Přidat
+  .col-sm-2.text-end
+    a.btn.btn-primary.w-100.mb-3 href=new_tag_path Přidat
 
 .row
   .col-sm-3
@@ -12,18 +12,18 @@
           .row
             .col-sm-2.text-center
               span.js-sortable-handle == icon(:grabber)
-            .col-sm-4.pl-0
+            .col-sm-4.ps-0
               a href=tag_path(tag.id)
                 = tag.name
-            .col-sm-2.pr-0
+            .col-sm-2.pe-0
               = tag.icon
-            .col-sm-2.pr-0
+            .col-sm-2.pe-0
               - if tag.primary
                 == icon(:check)
-            .col-sm-2.pl-0.text-right
-              span.badge.badge-secondary(
+            .col-sm-2.ps-0.text-end
+              span.badge.rounded-pill.text-bg-secondary(
                 class=('badge-light' if tag.light?)
-                style=("background-color: #{tag.color};" if tag.color)
+                style=("background-color: #{tag.color} !important;" if tag.color)
               ) = tag.entries_count
 
 p.my-3

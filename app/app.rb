@@ -424,16 +424,6 @@ class App < Sinatra::Base
     end
   end
 
-  get Route(recurring_entries_json: '/recurring_entries.json') do
-    recurring_entries = Charts::RecurringEntriesChart.new.data
-    MultiJson.dump(recurring_entries)
-  end
-
-  get Route(two_years_recurring_entries_json: '/two_years_recurring_entries.json') do
-    recurring_entries = Charts::RecurringEntriesChart.new(next_year: true).data
-    MultiJson.dump(recurring_entries)
-  end
-
   get Route(new_recurring_entry: '/recurring_entries/new') do
     slim :'recurring_entries/new', locals: {
       recurring_entry: RecurringEntry.new

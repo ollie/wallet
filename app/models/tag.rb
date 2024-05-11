@@ -22,7 +22,7 @@ class Tag < Sequel::Model
   class << self
     def dark_background?(color)
       parts = color.delete('#').scan(/.{2}/).map { |s| s.to_i(16) }
-      parts.reduce(:+) < 255 * 2
+      parts.reduce(:+) < 255 * 1.5
     end
 
     def light_background?(color)
@@ -80,7 +80,7 @@ class Tag < Sequel::Model
 
   def color_for_text_or_icon
     if icon.present?
-      '#ffffff'
+      'rgba(0, 0, 0, 0)'
     else
       color
     end
