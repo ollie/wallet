@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'i18n'
+gem 'logger'
 gem 'multi_json'
 gem 'oj'
 gem 'pg'
