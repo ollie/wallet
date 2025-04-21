@@ -63,11 +63,11 @@ class GroupsList
 
     def initialize(hash)
       self.id           = hash.fetch(:id)
-      self.amount       = hash.fetch(:amount)
+      self.amount       = Settings.privacy_mode? ? [-1000, -500, 200].sample : hash.fetch(:amount)
       self.date         = hash.fetch(:date)
       self.accounted_on = hash.fetch(:accounted_on)
       self.pending      = hash.fetch(:pending)
-      self.note         = hash.fetch(:note)
+      self.note         = Settings.privacy_mode? ? ('text ' * rand(1..5)).strip.capitalize : hash.fetch(:note)
       self.tags         = (hash.fetch(:tags) || []).map { |array| Tag.new(array) }
     end
   end
@@ -77,7 +77,7 @@ class GroupsList
 
     def initialize(array)
       self.id    = array.fetch(0)
-      self.name  = array.fetch(1)
+      self.name  = Settings.privacy_mode? ? 'Text' : array.fetch(1)
       self.icon  = array.fetch(2)
       self.color = array.fetch(3)
     end

@@ -1,17 +1,25 @@
-form action=url method="post" data-js-component="TagCombinationForm"
+form action=url method="post"
   - unless Tag.count.zero?
-    .mb-3.row
+    .mb-3.row data-js-component="TagSelect"
       label.col-sm-2.col-form-label for="tag-combination-tags" Štítky
       .col-sm-10
         - tag_combination_tag_ids = tag_combination.tag_ids || []
         - params_tag_ids = params.dig(:tag_combination, :tag_ids)&.map(&:to_i) || []
         - tag_ids        = tag_combination_tag_ids | params_tag_ids
 
-        select.js-selectize.form-control(
+        input.js-tags-search-input.form-control class=('is-invalid' if tag_combination.errors.on(:tag_ids)) list="tags-data-list"
+        datalist.js-tags-datalist#tags-data-list
+          - Tag.ordered.each do |tag|
+            option data-id=tag.id value=tag.name
+        .js-tags-list.smaller.mt-2
+          - Tag.where(id: tag_ids).ordered.each do |tag|
+            == partial_slim 'entries/_tag', name: tag.name, id: tag.id
+        template.js-tags-select-template
+          == partial_slim 'entries/_tag', name: '#name#', id: '#id#'
+        select.js-tags-select.d-none(
           name="tag_combination[tag_ids][]"
           id="tag-combination-tags"
           multiple="multiple"
-          class=('is-invalid' if tag_combination.errors.on(:tag_ids))
           autofocus
         )
           - Tag.ordered.each do |tag|

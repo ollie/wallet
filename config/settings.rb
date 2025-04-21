@@ -21,6 +21,10 @@ module Settings
     environment == 'production'
   end
 
+  def privacy_mode?
+    false
+  end
+
   def load_files(path)
     Dir[root.join(path, '*.rb')].each { |file| require file }
   end

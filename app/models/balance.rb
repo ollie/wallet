@@ -34,7 +34,17 @@ class Balance < Sequel::Model
 
     def by_date(date)
       month = date.strftime('%m')
-      first(year_month: "#{date.year}-#{month}")
+
+      if Settings.privacy_mode?
+        model.new(amount: 100_000, year_month: "#{date.year}-#{month}").tap do |instance|
+          def instance.id
+            1
+          end
+        end
+      else
+        month = date.strftime('%m')
+        first(year_month: "#{date.year}-#{month}")
+      end
     end
   end
 

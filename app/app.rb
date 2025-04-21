@@ -296,7 +296,7 @@ class App < Sinatra::Base
 
   post '/tag_combinations/:id/edit' do
     tag_combination = TagCombination.with_pk!(params[:id])
-    tag_combination.set_fields(params[:tag_combination], %i[tag_ids])
+    tag_combination.set_fields((params[:tag_combination] || {}), %i[tag_ids])
 
     if tag_combination.valid?
       tag_combination.save

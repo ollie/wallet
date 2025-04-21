@@ -7,12 +7,10 @@ html lang="cs" data-bs-theme="dark"
     link rel="icon" href=version_asset('/images/favicon-64x64.png') sizes="32x32" type="image/png"
     link rel="stylesheet" href=version_asset('/css-vendor/bootstrap-5.3.3.min.css')
     link rel="stylesheet" href=version_asset('/css-vendor/octicons.css')
-    link rel="stylesheet" href=version_asset('/css-vendor/selectize.bootstrap5.css')
     link rel="stylesheet" href=version_asset('/css/app.css')
     script src=version_asset('/js-vendor/jquery-3.7.1.min.js')
     script src=version_asset('/js-vendor/jquery-ui-1.13.3.min.js')
     script src=version_asset('/js-vendor/bootstrap-5.3.3.bundle.min.js')
-    script src=version_asset('/js-vendor/selectize-0.15.2.min.js')
     script src=version_asset('/js-vendor/highstock-11.4.0.min.js')
     script src=version_asset('/js-vendor/themes/gray.min.js')
     - if Settings.production?
@@ -25,9 +23,9 @@ html lang="cs" data-bs-theme="dark"
       script src=version_asset('/js/expenses_chart.js')
       script src=version_asset('/js/highcharts_config.js')
       script src=version_asset('/js/recurring_entry_form.js')
-      script src=version_asset('/js/tag_combination_form.js')
       script src=version_asset('/js/tag_entries_chart.js')
       script src=version_asset('/js/tags_sort.js')
+      script src=version_asset('/js/tag_select.js')
 
       script src=version_asset('/js/app.js')
     - else
@@ -40,9 +38,9 @@ html lang="cs" data-bs-theme="dark"
       script type="text/coffeescript" src=version_asset('/coffee/expenses_chart.coffee')
       script type="text/coffeescript" src=version_asset('/coffee/highcharts_config.coffee')
       script type="text/coffeescript" src=version_asset('/coffee/recurring_entry_form.coffee')
-      script type="text/coffeescript" src=version_asset('/coffee/tag_combination_form.coffee')
       script type="text/coffeescript" src=version_asset('/coffee/tag_entries_chart.coffee')
       script type="text/coffeescript" src=version_asset('/coffee/tags_sort.coffee')
+      script type="text/coffeescript" src=version_asset('/coffee/tag_select.coffee')
 
       script type="text/coffeescript" src=version_asset('/coffee/app.coffee')
       script src=version_asset('/compilers/coffeescript-2.7.0.min.js')

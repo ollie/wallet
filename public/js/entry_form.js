@@ -13,15 +13,14 @@
       }
       this.incomeButton = $('.js-income');
       this.amount = $('.js-amount');
-      this.accountedOnInput = $('#entry-accounted_on');
       this.todayDate = $('.js-today-date');
       this.tagCombinations = $('.js-tag-combination');
+      this.tagsSearchInput = $('.js-tags-search-input');
       this.expenseButton.on('click', this._handleExpenseButtonClick);
       this.incomeButton.on('click', this._handleIncomeButtonClick);
       this.amount.on('input', this._handleAmountInput);
       this.todayDate.on('click', this._handleTodayDateClick);
       this.tagCombinations.on('click', this._handleTagCombinationClick);
-      this.select = $('.js-selectize').selectize();
     }
 
     _handleExpenseButtonClick() {
@@ -68,13 +67,14 @@
     }
 
     _handleTagCombinationClick(e) {
-      var $link, tagIds;
+      var $link;
       e.preventDefault();
       $link = $(e.currentTarget);
-      tagIds = $link.find('[data-tag-id]').map(function(_, tag) {
-        return $(tag).data('tag-id');
-      }).toArray();
-      return this.select[0].selectize.setValue(tagIds);
+      return $link.find('[data-tag-name]').each((_, tag) => {
+        var tagName;
+        tagName = $(tag).data('tag-name');
+        return this.tagsSearchInput.val(tagName).trigger('change');
+      });
     }
 
   };

@@ -6,17 +6,15 @@ class @EntryForm
 
     @incomeButton     = $('.js-income')
     @amount           = $('.js-amount')
-    @accountedOnInput = $('#entry-accounted_on')
     @todayDate        = $('.js-today-date')
     @tagCombinations  = $('.js-tag-combination')
+    @tagsSearchInput  = $('.js-tags-search-input')
 
     @expenseButton.on('click', @_handleExpenseButtonClick)
     @incomeButton.on('click', @_handleIncomeButtonClick)
     @amount.on('input', @_handleAmountInput)
     @todayDate.on('click', @_handleTodayDateClick)
     @tagCombinations.on('click', @_handleTagCombinationClick)
-
-    @select = $('.js-selectize').selectize()
 
   _handleExpenseButtonClick: =>
     value = Number(@amount.val())
@@ -75,10 +73,7 @@ class @EntryForm
     e.preventDefault()
 
     $link  = $(e.currentTarget)
-    tagIds = $link
-      .find('[data-tag-id]')
-      .map (_, tag) ->
-        $(tag).data('tag-id')
-      .toArray()
 
-    @select[0].selectize.setValue(tagIds)
+    $link.find('[data-tag-name]').each (_, tag) =>
+      tagName = $(tag).data('tag-name')
+      @tagsSearchInput.val(tagName).trigger('change')

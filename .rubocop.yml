@@ -45,5 +45,5 @@ Metrics/MethodLength:
 Metrics/PerceivedComplexity:
   Max: 13
 
-Metrics/LineLength:
+Layout/LineLength:
   Max: 221
