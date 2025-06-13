@@ -19,6 +19,12 @@ class App < Sinatra::Base
   #######
 
   before do
+    privacy_mode = session[:privacy_mode]
+
+    Settings.define_singleton_method(:privacy_mode?) do
+      privacy_mode == 'true'
+    end
+
     pass if request.path == new_session_path
     pass if Login.valid?(session[:encrypted_username], session[:encrypted_password])
 
@@ -477,5 +483,18 @@ class App < Sinatra::Base
     recurring_entry = RecurringEntry.with_pk!(params[:id])
     recurring_entry.destroy
     redirect recurring_entries_path
+  end
+
+  # ############
+  # Privacy mode
+  # ############
+  get Route(toggle_privacy_mode: '/privacy_mode/toggle') do
+    if session[:privacy_mode] == 'true'
+      session.delete(:privacy_mode)
+    else
+      session[:privacy_mode] = 'true'
+    end
+
+    redirect entries_path
   end
 end

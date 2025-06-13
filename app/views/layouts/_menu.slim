@@ -23,3 +23,9 @@ nav.navbar.navbar-expand-lg.bg-body-tertiary
           a.nav-link class=('active' if request.path =~ %r{^#{tag_combinations_path}}) href=tag_combinations_path Oblíbené štítky
         li.nav-item
           a.nav-link class=('active' if request.path =~ %r{^#{search_path}}) href=search_path Vyhledávání
+        li.nav-item
+          a.nav-link href=toggle_privacy_mode_path
+            - if Settings.privacy_mode?
+              span title="Disable privacy" == icon(:eye)
+            - else
+              span title="Enable privacy" == icon(:eye_closed)
