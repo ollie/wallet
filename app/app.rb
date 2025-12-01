@@ -354,7 +354,7 @@ class App < Sinatra::Base
 
   get Route(new_balance: '/balances/new') do
     slim :'balances/new', locals: {
-      balance: Balance.new(year_month: Date.today.strftime('%Y-%m'))
+      balance: Balance.new_for_next_month
     }
   end
 

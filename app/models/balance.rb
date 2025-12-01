@@ -46,6 +46,17 @@ class Balance < Sequel::Model
         first(year_month: "#{date.year}-#{month}")
       end
     end
+
+    def new_for_next_month
+      year_month =
+        if none?
+          Date.today
+        else
+          ordered.first.date.next_month
+        end
+
+      model.new(year_month: year_month.strftime('%Y-%m'))
+    end
   end
 
   #########################
