@@ -76,12 +76,7 @@ form action=url method="post" data-js-component="EntryForm"
       label.col-sm-2.col-form-label for="entry-tags" Štítky
       .col-sm-9
         input.js-tags-search-input.form-control list="tags-data-list"
-        datalist.js-tags-datalist#tags-data-list(
-          autocomplete="off"
-          autocapitalize="off"
-          autocorrect="off"
-          spellcheck="off"
-        )
+        datalist.js-tags-datalist#tags-data-list
           - Tag.ordered.each do |tag|
             option data-id=tag.id value=tag.name
         .js-tags-list.smaller.mt-2
