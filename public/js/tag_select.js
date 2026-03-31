@@ -12,7 +12,7 @@ class TagSelect {
     this.#tagsList = $(".js-tags-list")
     this.#template = $(".js-tags-select-template")
 
-    this.#searchInput.on("change", this.#handleChange.bind(this))
+    this.#searchInput.on("input", this.#handleChange.bind(this))
     this.#tagsList.on("click", ".js-tag-remove", this.#handleTagRemove.bind(this))
   }
 
