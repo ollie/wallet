@@ -95,7 +95,7 @@ class EntryForm {
 
     $link.find("[data-tag-name]").each((_, tag) => {
       const tagName = $(tag).data("tag-name")
-      this.#tagsSearchInput.val(tagName).trigger("change")
+      this.#tagsSearchInput.val(tagName).trigger("input")
     })
   }
 }
